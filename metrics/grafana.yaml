@@ -22,18 +22,18 @@ spec:
         - name: grafana
           image: grafana/grafana:7.3.7
           ports:
-          - name: grafana
-            containerPort: 3000
-            protocol: TCP
+            - name: grafana
+              containerPort: 3000
+              protocol: TCP
           volumeMounts:
-          - name: grafana-data
-            mountPath: /var/lib/grafana
-          - name: grafana-logs
-            mountPath: /var/log/grafana
-          - name: grafana-config
-            mountPath: /etc/grafana/provisioning/datasources/datasource.yaml
-            readOnly: true
-            subPath: datasource.yaml
+            - name: grafana-data
+              mountPath: /var/lib/grafana
+            - name: grafana-logs
+              mountPath: /var/log/grafana
+            - name: grafana-config
+              mountPath: /etc/grafana/provisioning/datasources/datasource.yaml
+              readOnly: true
+              subPath: datasource.yaml
           readinessProbe:
             httpGet:
               path: /api/health

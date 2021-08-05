@@ -13,18 +13,18 @@ spec:
   authorization:
     type: simple
     acls:
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data
-      operation: Write
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data
-      operation: Create
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data
-      operation: Describe
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data
+        operation: Write
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data
+        operation: Create
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data
+        operation: Describe
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
@@ -40,35 +40,35 @@ spec:
   authorization:
     type: simple
     acls:
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data
-      operation: Read
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data
-      operation: Describe
-    - resource:
-        type: group
-        name: kafka-anubis-internal-data-streams
-        patternType: prefix
-      operation: Read
-    - resource:
-        type: group
-        name: kafka-anubis-internal-data-reversed
-      operation: Describe
-    - resource:
-        type: topic
-        name: kafka-anubis-nternal-data-reversed
-      operation: Write
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data-reversed
-      operation: Create
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data-reversed
-      operation: Describe
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data
+        operation: Read
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data
+        operation: Describe
+      - resource:
+          type: group
+          name: kafka-anubis-internal-data-streams
+          patternType: prefix
+        operation: Read
+      - resource:
+          type: group
+          name: kafka-anubis-internal-data-reversed
+        operation: Describe
+      - resource:
+          type: topic
+          name: kafka-anubis-nternal-data-reversed
+        operation: Write
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data-reversed
+        operation: Create
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data-reversed
+        operation: Describe
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
@@ -84,19 +84,19 @@ spec:
   authorization:
     type: simple
     acls:
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data-reversed
-      operation: Read
-    - resource:
-        type: topic
-        name: kafka-anubis-internal-data-reversed
-      operation: Describe
-    - resource:
-        type: group
-        name: kafka-anubis-internal-data-consumer
-      operation: Read
-    - resource:
-        type: group
-        name: kafka-anubis-internal-data-consumer
-      operation: Describe
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data-reversed
+        operation: Read
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data-reversed
+        operation: Describe
+      - resource:
+          type: group
+          name: kafka-anubis-internal-data-consumer
+        operation: Read
+      - resource:
+          type: group
+          name: kafka-anubis-internal-data-consumer
+        operation: Describe
