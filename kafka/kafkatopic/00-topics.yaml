@@ -1,0 +1,58 @@
+################################
+#### External clients topics ###
+################################
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: kafka-anubis-external-data
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+spec:
+  replicas: 3
+  partitions: 40
+  config:
+    min.insync.replicas: 3
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: kafka-anubis-external-data-reversed
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+spec:
+  replicas: 3
+  partitions: 40
+  config:
+    min.insync.replicas: 3
+################################
+#### Internal clients topics ###
+################################
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: kafka-anubis-internal-data
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+spec:
+  replicas: 5
+  partitions: 20
+  config:
+    min.insync.replicas: 4
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: kafka-anubis-internal-data-reversed
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+spec:
+  replicas: 5
+  partitions: 20
+  config:
+    min.insync.replicas: 4

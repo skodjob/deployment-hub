@@ -1,0 +1,122 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kafka-internal-producer
+  name: kafka-internal-producer
+  namespace: strimzi-clients
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-internal-producer
+  template:
+    metadata:
+      labels:
+        app: kafka-internal-producer
+    spec:
+      containers:
+        - name: kafka-internal-producer
+          image: quay.io/tealc/java-kafka-producer:config-provider
+          imagePullPolicy: Always
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/kafka-internal-producer:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/kafka-internal-producer:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: TOPIC
+              value: kafka-internal
+            - name: DELAY_MS
+              value: "100"
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "1000000"
+            - name: PRODUCER_ACKS
+              value: all
+            - name: ADDITIONAL_CONFIG
+            - name: BLOCKING_PRODUCER
+              value: "true"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kafka-internal-streams
+  name: kafka-internal-streams
+  namespace: strimzi-clients
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-internal-streams
+  template:
+    metadata:
+      labels:
+        app: kafka-internal-streams
+    spec:
+      containers:
+        - name: kafka-internal-streams
+          image: quay.io/tealc/java-kafka-streams:config-provider
+          imagePullPolicy: Always
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/kafka-internal-streams:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/kafka-internal-streams:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: APPLICATION_ID
+              value: kafka-anubis-internal-data-streams
+            - name: SOURCE_TOPIC
+              value: kafka-anubis-internal-data
+            - name: TARGET_TOPIC
+              value: kafka-anubs-internal-reversed
+            - name: LOG_LEVEL
+              value: "INFO"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kafka-internal-consumer
+  name: kafka-internal-consumer
+  namespace: strimzi-clients
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-internal-consumer
+  template:
+    metadata:
+      labels:
+        app: kafka-internal-consumer
+    spec:
+      containers:
+        - name: kafka-internal-consumer
+          image: quay.io/tealc/java-kafka-consumer:config-provider
+          imagePullPolicy: Always
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: TOPIC
+              value: kafka-anubis-internal-data-reversed
+            - name: GROUP_ID
+              value: kafka-anubis-internal-data-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "1000000"

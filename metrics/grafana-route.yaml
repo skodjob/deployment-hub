@@ -1,0 +1,16 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: grafana
+  labels:
+    app: strimzi
+spec:
+  host: GRAFANA_HOST_PLACEHOLDER
+  port:
+    targetPort: 3000
+  to:
+    kind: Service
+    name: grafana
+    weight: 100
+  wildcardPolicy: None
