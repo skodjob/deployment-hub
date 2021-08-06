@@ -13,18 +13,18 @@ spec:
   authorization:
     type: simple
     acls:
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data
-      operation: Write
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data
-      operation: Create
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data
-      operation: Describe
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data
+        operation: Write
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data
+        operation: Create
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data
+        operation: Describe
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
@@ -40,35 +40,35 @@ spec:
   authorization:
     type: simple
     acls:
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data
-      operation: Read
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data
-      operation: Describe
-    - resource:
-        type: group
-        name: kafka-anubis-external-data-streams
-        patternType: prefix
-      operation: Read
-    - resource:
-        type: group
-        name: kafka-anubis-external-data-reversed
-      operation: Describe
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data-reversed
-      operation: Write
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data-reversed
-      operation: Create
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data-reversed
-      operation: Describe
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data
+        operation: Read
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data
+        operation: Describe
+      - resource:
+          type: group
+          name: kafka-anubis-external-data-streams
+          patternType: prefix
+        operation: Read
+      - resource:
+          type: group
+          name: kafka-anubis-external-data-reversed
+        operation: Describe
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data-reversed
+        operation: Write
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data-reversed
+        operation: Create
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data-reversed
+        operation: Describe
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
@@ -84,19 +84,19 @@ spec:
   authorization:
     type: simple
     acls:
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data-reversed
-      operation: Read
-    - resource:
-        type: topic
-        name: kafka-anubis-external-data-reversed
-      operation: Describe
-    - resource:
-        type: group
-        name: kafka-anubis-external-data-consumer
-      operation: Read
-    - resource:
-        type: group
-        name: kafka-anubis-external-data-consumer
-      operation: Describe
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data-reversed
+        operation: Read
+      - resource:
+          type: topic
+          name: kafka-anubis-external-data-reversed
+        operation: Describe
+      - resource:
+          type: group
+          name: kafka-anubis-external-data-consumer
+        operation: Read
+      - resource:
+          type: group
+          name: kafka-anubis-external-data-consumer
+        operation: Describe
