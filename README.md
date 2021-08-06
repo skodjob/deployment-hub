@@ -17,7 +17,7 @@ Contains configurations files for Grafana and Prometheus.
 It should be used to metrics visualization.
 
 ```oc apply -f metrics/ -n strimzi-monitoring```
-
+   
 ## kafka
 Contains Kafka cluster configuration. 
 Those configs should be in-sync with with Strimzi main branch with latest version.
