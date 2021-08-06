@@ -4,7 +4,7 @@ Collection of deployment files for Strimzi operator and its operands.
 At first, you should somehow create proper namespaces:
 - strimzi-operator
 - strimzi-kafka
-- strimzi-clients
+- strimzi-clients   
 
 ## cluster-operator
 Contains Strimzi install files for cluster operator. 
