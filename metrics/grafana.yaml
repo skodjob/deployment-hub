@@ -33,7 +33,7 @@ spec:
             - name: grafana-config
               mountPath: /etc/grafana/provisioning/datasources/datasource.yaml
               readOnly: true
-              subPath: grafana-datasource.yaml
+              subPath: datasource.yaml
           readinessProbe:
             httpGet:
               path: /api/health
@@ -44,7 +44,7 @@ spec:
             httpGet:
               path: /api/health
               port: 3000
-            initialDelaySeconds: 15
+            initialDelaySeconds: 1
             periodSeconds: 20
       volumes:
         - name: grafana-data
