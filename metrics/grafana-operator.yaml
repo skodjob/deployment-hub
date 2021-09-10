@@ -1,0 +1,23 @@
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: grafana-group
+  namespace: strimzi-monitoring
+  labels:
+    app: grafana
+spec:
+  targetNamespaces:
+    - strimzi-monitoring
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: grafana-operator
+  namespace: strimzi-monitoring
+spec:
+  channel: alpha
+  installPlanApproval: Automatic
+  name: grafana-operator
+  source: community-operators
+  sourceNamespace: openshift-marketplace
