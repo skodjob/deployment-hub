@@ -74,6 +74,20 @@ metadata:
   labels:
     app: strimzi
     monitoring-key: middleware
+  name: strimzi-kafka-connect
+  namespace: strimzi-monitoring
+spec:
+  name: kafka-connect.json
+  configMapRef:
+    name: grafana-dashboard-config
+    key: kafka-connect.json
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: strimzi
+    monitoring-key: middleware
   name: strimzi-kafka-mirror-maker-2
   namespace: strimzi-monitoring
 spec:
