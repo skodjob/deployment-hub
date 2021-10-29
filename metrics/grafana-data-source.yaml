@@ -3,6 +3,10 @@ kind: GrafanaDataSource
 metadata:
   name: grafanadatasource
   namespace: strimzi-monitoring
+  annotations:
+    # Exclude from ArgoCD sync
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
 spec:
   name: middleware.yaml
   datasources:
