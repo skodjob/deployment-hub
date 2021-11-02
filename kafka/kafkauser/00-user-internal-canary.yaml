@@ -1,0 +1,48 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: canary
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+    clients: used
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: __strimzi_canary
+          patternType: prefix
+        operation: Write
+      - resource:
+          type: topic
+          name: __strimzi_canary
+          patternType: prefix
+        operation: Create
+      - resource:
+          type: topic
+          name: __strimzi_canary
+          patternType: prefix
+        operation: Describe
+      - resource:
+          type: topic
+          name: __strimzi_canary
+          patternType: prefix
+        operation: Read
+      - resource:
+          type: group
+          name: strimzi-canary-client
+        operation: Read
+      - resource:
+          type: group
+          name: strimzi-canary-group
+        operation: Read
+      - resource:
+          type: cluster
+          name: anubis
+          patternType: literal
+        operation: Alter

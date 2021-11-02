@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: strimzi-canary
+  namespace: strimzi-kafka
+  labels:
+    app: strimzi-canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: strimzi-canary
+  template:
+    metadata:
+      labels:
+        app: strimzi-canary
+    spec:
+      serviceAccountName: strimzi-canary
+      containers:
+        - name: strimzi-canary
+          image: quay.io/strimzi/canary:latest
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: RECONCILE_INTERVAL_MS
+              value: "10000"
+            - name: TLS_ENABLED
+              value: "true"
+            - name: TLS_CA_CERT
+              value: /tmp/tls-ca-cert/ca.crt
+            - name: TLS_CLIENT_CERT
+              value: /tmp/client-cert/user.crt
+            - name: TLS_CLIENT_KEY
+              value: /tmp/client-cert/user.key
+            - name: KAFKA_VERSION
+              value: "3.0.0"
+            - name: SARAMA_LOG_ENABLED
+              value: "true"
+            - name: TLS_INSECURE_SKIP_VERIFY
+              value: "true"
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+          volumeMounts:
+            - mountPath: /tmp/tls-ca-cert
+              name: anubis-cluster-ca
+            - mountPath: /tmp/client-cert
+              name: client-cert
+      volumes:
+        - name: anubis-cluster-ca
+          secret:
+            secretName: anubis-cluster-ca-cert
+        - name: client-cert
+          secret:
+            secretName: canary
+  strategy:
+    type: Recreate
