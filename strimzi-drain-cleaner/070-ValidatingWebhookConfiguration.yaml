@@ -6,6 +6,8 @@ metadata:
     app: strimzi-drain-cleaner
   annotations:
     service.beta.openshift.io/inject-cabundle: "true"
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
 webhooks:
   - name: strimzi-drain-cleaner.strimzi.io
     rules:
