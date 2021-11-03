@@ -30,3 +30,8 @@ It also contains configuration files for KafkaTopics and KafkaUsers.
 Contains configuration for our clients which will verify that Kafka is working.
 
 ```oc apply -f kafkaclients/ -n strimzi-clients```
+
+## strimzi-canary
+Contains configuration for our canary tool which will verify that Kafka is working.
+
+```oc apply -f strimzi-canary/ -n strimzi-kafka```
