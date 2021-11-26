@@ -1,0 +1,576 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: strimzi
+  name: kafka-prometheus-rules
+spec:
+  groups:
+    - name: kafka-api-slo
+      rules:
+        - alert: ErrorBudgetBurn_ProduceRequests
+          annotations:
+            message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate5m{}) > (14.40 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1h{}) > (14.40 * (1-0.99000))
+          for: 2m
+          labels:
+            name: FailedProduceRequestsPerSec
+            severity: critical
+        - alert: ErrorBudgetBurn_ProduceRequests
+          annotations:
+            message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate30m{}) > (6.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate6h{}) > (6.00 * (1-0.99000))
+          for: 15m
+          labels:
+            name: FailedProduceRequestsPerSec
+            severity: critical
+        - alert: ErrorBudgetBurn_ProduceRequests
+          annotations:
+            message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate2h{}) > (3.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1d{}) > (3.00 * (1-0.99000))
+          for: 1h
+          labels:
+            name: FailedProduceRequestsPerSec
+            severity: warning
+        - alert: ErrorBudgetBurn_ProduceRequests
+          annotations:
+            message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate6h{}) > (1.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate3d{}) > (1.00 * (1-0.99000))
+          for: 3h
+          labels:
+            name: FailedProduceRequestsPerSec
+            severity: warning
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[1d]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[1d]))
+          labels:
+            name: FailedProduceRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1d
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[1h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[1h]))
+          labels:
+            name: FailedProduceRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1h
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[2h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[2h]))
+          labels:
+            name: FailedProduceRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate2h
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[30m]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[30m]))
+          labels:
+            name: FailedProduceRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate30m
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[3d]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[3d]))
+          labels:
+            name: FailedProduceRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate3d
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[5m]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[5m]))
+          labels:
+            name: FailedProduceRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate5m
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[6h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[6h]))
+          labels:
+            name: FailedProduceRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate6h
+        - alert: ErrorBudgetBurn_FetchRequests
+          annotations:
+            message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate5m{}) > (14.40 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1h{}) > (14.40 * (1-0.99000))
+          for: 2m
+          labels:
+            name: FailedFetchRequestsPerSec
+            severity: critical
+        - alert: ErrorBudgetBurn_FetchRequests
+          annotations:
+            message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate30m{}) > (6.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate6h{}) > (6.00 * (1-0.99000))
+          for: 15m
+          labels:
+            name: FailedFetchRequestsPerSec
+            severity: critical
+        - alert: ErrorBudgetBurn_FetchRequests
+          annotations:
+            message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate2h{}) > (3.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1d{}) > (3.00 * (1-0.99000))
+          for: 1h
+          labels:
+            name: FailedFetchRequestsPerSec
+            severity: warning
+        - alert: ErrorBudgetBurn_FetchRequests
+          annotations:
+            message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate6h{}) > (1.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate3d{}) > (1.00 * (1-0.99000))
+          for: 3h
+          labels:
+            name: FailedFetchRequestsPerSec
+            severity: warning
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[1d]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[1d]))
+          labels:
+            name: FailedFetchRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1d
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[1h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[1h]))
+          labels:
+            name: FailedFetchRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1h
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[2h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[2h]))
+          labels:
+            name: FailedFetchRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate2h
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[30m]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[30m]))
+          labels:
+            name: FailedFetchRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate30m
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[3d]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[3d]))
+          labels:
+            name: FailedFetchRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate3d
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[5m]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[5m]))
+          labels:
+            name: FailedFetchRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate5m
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[6h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[6h]))
+          labels:
+            name: FailedFetchRequestsPerSec
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate6h
+        - alert: ErrorBudgetBurn_Connections
+          annotations:
+            message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
+          expr: |
+            sum(haproxy_backend_connection_errors_total:burnrate5m) > (14.40 * (1-0.99000))
+            and
+            sum(haproxy_backend_connection_errors_total:burnrate1h) > (14.40 * (1-0.99000))
+          for: 2m
+          labels:
+            name: FailedConnectionsPerSec
+            severity: warning
+        - alert: ErrorBudgetBurn_Connections
+          annotations:
+            message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
+          expr: |
+            sum(haproxy_backend_connection_errors_total:burnrate30m) > (6.00 * (1-0.99000))
+            and
+            sum(haproxy_backend_connection_errors_total:burnrate6h) > (6.00 * (1-0.99000))
+          for: 15m
+          labels:
+            name: FailedConnectionsPerSec
+            severity: warning
+        - alert: ErrorBudgetBurn_Connections
+          annotations:
+            message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
+          expr: |
+            sum(haproxy_backend_connection_errors_total:burnrate2h) > (3.00 * (1-0.99000))
+            and
+            sum(haproxy_backend_connection_errors_total:burnrate1d) > (3.00 * (1-0.99000))
+          for: 1h
+          labels:
+            name: FailedConnectionsPerSec
+            severity: warning
+        - alert: ErrorBudgetBurn_Connections
+          annotations:
+            message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
+          expr: |
+            sum(haproxy_backend_connection_errors_total:burnrate6h) > (1.00 * (1-0.99000))
+            and
+            sum(haproxy_backend_connection_errors_total:burnrate3d) > (1.00 * (1-0.99000))
+          for: 3h
+          labels:
+            name: FailedConnectionsPerSec
+            severity: warning
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1d]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1d]))
+          labels:
+            name: FailedConnectionsPerSec
+          record: haproxy_backend_connection_errors_total:burnrate1d
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1h]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1h]))
+          labels:
+            name: FailedConnectionsPerSec
+          record: haproxy_backend_connection_errors_total:burnrate1h
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[2h]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[2h]))
+          labels:
+            name: FailedConnectionsPerSec
+          record: haproxy_backend_connection_errors_total:burnrate2h
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[30m]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[30m]))
+          labels:
+            name: FailedConnectionsPerSec
+          record: haproxy_backend_connection_errors_total:burnrate30m
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[3d]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[3d]))
+          labels:
+            name: FailedConnectionsPerSec
+          record: haproxy_backend_connection_errors_total:burnrate3d
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[5m]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[5m]))
+          labels:
+            name: FailedConnectionsPerSec
+          record: haproxy_backend_connection_errors_total:burnrate5m
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[6h]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[6h]))
+          labels:
+            name: FailedConnectionsPerSec
+          record: haproxy_backend_connection_errors_total:burnrate6h
+    - name: kafka
+      rules:
+        - expr: |
+            sum(kafka_topic_partition_current_offset) by (namespace)
+          labels:
+          record: kafka_topic_part_currentOffset
+        - expr: >
+             clamp_max(clamp_min((sum without(networkProcessor) (kafka_server_socket_server_metrics_connection_count{listener="EXTERNAL-9094"}) > 990) or
+             on (namespace,brokerid) (kafka_server_socket_listener_connection_accept_throttle_time{listener="EXTERNAL-9094"} > 0), 1), 1)
+          # The connection limit per broker is 1000, we use > 990 to compensate for error introduced by sampling intervals etc.
+          record: kafka_external_connections_unavailable
+        - alert: KafkaPersistentVolumeFillingUp
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"data-([0-9]+)?-(.+)-kafka-[0-9]+"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"data-([0-9]+)?-(.+)-kafka-[0-9]+"} < 0.05
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Kafka Broker PersistentVolume is filling up.'
+            description: 'The Kafka Broker PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is only {{ $value | humanizePercentage }} free.'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/persistent_volume_filling_up.asciidoc'
+        - alert: UnderReplicatedPartitions
+          expr: kafka_server_replicamanager_under_replicated_partitions > 0
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Kafka under replicated partitions'
+            description: 'There are {{ $value }} under replicated partitions on {{ $labels.kubernetes_pod_name }}'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/partition_under_replicated.asciidoc'
+        - alert: AbnormalControllerState
+          expr: sum(kafka_controller_kafkacontroller_active_controller_count) by(strimzi_io_name,namespace) != 1
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Kafka abnormal controller state'
+            description: 'There are {{ $value }} active controllers in the cluster'
+        - alert: OfflinePartitions
+          expr: sum(kafka_controller_kafkacontroller_offline_partitions_count) > 0
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Kafka offline partitions'
+            description: 'One or more partitions have no leader'
+        - alert: UnderMinIsrPartitionCount
+          expr: (kafka_cluster_partition_under_min_isr > 0) AND on (topic, partition) ((kafka_topic_partition_replicas != 1)) > 0
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Kafka under min ISR partitions'
+            description: 'There are {{ $value }} partitions under the min ISR on {{ $labels.kubernetes_pod_name }}'
+        - alert: OfflineLogDirectoryCount
+          expr: kafka_log_logmanager_offline_log_directory_count > 0
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Kafka offline log directories'
+            description: 'There are {{ $value }} offline log directories on {{ $labels.kubernetes_pod_name }}'
+        - alert: BrokerScrapeProblem
+          expr: 100 * (count by (namespace) (up{kubernetes_pod_name=~".+-kafka-[0-9]+"} == 0) / count by (namespace) (up{kubernetes_namespace!~"openshift-.+",kubernetes_pod_name=~".+-kafka-[0-9]+"})) > 34
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Prometheus unable to scrape metrics from {{ printf "%.4g" $value }}% of the {{ $labels.kubernetes_pod_name }}/{{ $labels.instance }} targets in Namespace {{ $labels.namespace }}'
+            description: 'Prometheus unable to scrape metrics {{ printf "%.4g" $value }}% of the {{ $labels.kubernetes_pod_name }}/{{ $labels.instance }} targets in Namespace {{ $labels.namespace }}'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/broker_scrape.asciidoc'
+        - alert: KafkaBrokerContainersDown
+          expr: sum by(namespace) (kube_pod_container_status_ready{container="kafka"}) < 1 and on() sum(strimzi_resources{kind="Kafka"}) >= 1
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'All `kafka` containers down or in CrashLookBackOff status'
+            description: 'All `kafka` containers have been down or in CrashLookBackOff status for 1 minute'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/container_down.asciidoc'
+        - alert: KafkaContainerRestartedInTheLast5Minutes
+          expr: increase(kube_pod_container_status_restarts_total{container="kafka"}[5m]) > 3
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'One or more Kafka containers restarted too often'
+            description: 'One or more Kafka containers were restarted too often within the last 5 minutes'
+        - alert: KafkaColocatingBrokers
+          expr: count by(label_topology_kubernetes_io_zone, namespace) ((kube_pod_container_info{container="kafka",container_id!=""} * on(namespace, pod) group_left(node) kube_pod_info{pod_ip!=""}) * on(node) group_left(label_topology_kubernetes_io_zone) kube_node_labels) > 1
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Colocating kafka brokers'
+            description: 'One or more kafka brokers belonging to the same kafka instance co-located within an availablity zone (reduced resiliency)'
+        - alert: KafkaDataplaneNamespaceNotTerminatingSuccessful
+          expr: kube_namespace_labels{label_app_kubernetes_io_managed_by="kas-fleetshard-operator"} * on (namespace) (kube_namespace_status_phase{phase="Terminating"}==1) == 1
+          for: 5h
+          labels:
+            severity: warning
+          annotations:
+            summary: '{{ $labels.namespace }} is not terminating successfully'
+            description: 'Namespace {{ $labels.namespace }} is caught in a terminating state longer than expected'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/namespace_not_terminating.asciidoc'
+    - name: zookeeper
+      rules:
+        - alert: AvgRequestLatency
+          expr: zookeeper_avg_request_latency > 10
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Zookeeper average request latency'
+            description: 'The average request latency is {{ $value }} on {{ $labels.kubernetes_pod_name }}'
+        - alert: OutstandingRequests
+          expr: zookeeper_outstanding_requests > 10
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Zookeeper outstanding requests'
+            description: 'There are {{ $value }} outstanding requests on {{ $labels.kubernetes_pod_name }}'
+        - alert: ZookeeperPersistentVolumeFillingUp
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"data-(.+)-zookeeper-[0-9]+"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"data-(.+)-zookeeper-[0-9]+"} < 0.03
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Zookeeper PersistentVolume is filling up.'
+            description: 'The Zookeeper PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is only {{ $value | humanizePercentage }} free.'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/persistent_volume_filling_up.asciidoc'
+        - alert: ZookeeperPersistentVolumeFillingUp
+          expr: (kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"data-(.+)-zookeeper-[0-9]+"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"data-(.+)-zookeeper-[0-9]+"} < 0.15) and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"data-(.+)-zookeeper-[0-9]+"}[6h], 4 * 24 * 3600) < 0
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Zookeeper PersistentVolume is filling up.'
+            description: 'Based on recent sampling, the Zookeeper PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is expected to fill up within four days. Currently {{ $value | humanizePercentage }} is available.'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/persistent_volume_filling_up.asciidoc'
+        - alert: ZookeeperContainerRestartedInTheLast5Minutes
+          expr: increase(kube_pod_container_status_restarts_total{container="zookeeper"}[5m]) > 3
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'One or more Zookeeper containers were restarted too often'
+            description: 'One or more Zookeeper containers were restarted too often within the last 5 minutes. This alert can be ignored when the Zookeeper cluster is scaling up'
+        - alert: ZookeeperContainersDown
+          expr: sum by(namespace) (kube_pod_container_status_ready{container="zookeeper"}) < 1 and on() sum(strimzi_resources{kind="Kafka"}) >= 1
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'All `zookeeper` containers in the Zookeeper pods down or in CrashLookBackOff status'
+            description: 'All `zookeeper` containers in the Zookeeper pods have been down or in CrashLookBackOff status for 1 minute'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/container_down.asciidoc'
+        - alert: ZookeepersColocating
+          expr: count by(label_topology_kubernetes_io_zone, namespace) ((kube_pod_container_info{container="zookeeper",container_id!=""} * on(namespace, pod) group_left(node) kube_pod_info{pod_ip!=""}) * on(node) group_left(label_topology_kubernetes_io_zone) kube_node_labels) > 1
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Colocating zookeepers'
+            description: 'One or more kafka zookeeper belonging to the same kafka instance co-located within an availablity zone (reduced resiliency)'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/master/sops/kafka/correcting_two_zookeepers_placed_in_same_zone.asciidoc'
+    - name: canary
+      rules:
+        - alert: CanaryContainerFrequentlyRestarting
+          expr: increase(kube_pod_container_status_restarts_total{container="canary"}[60m]) > 3
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} restarting frequently'
+            description: 'canary container in namespace {{ $labels.namespace }} restarted frequently in the last 60 minutes'
+        - alert: CanaryNotActive
+          expr: >
+             (sum by (namespace) (sum without (partition) (increase(strimzi_canary_records_consumed_latency_bucket {le="+Inf"} [5m])) == 0)) unless
+             on (namespace) (max_over_time(kafka_external_connections_unavailable[5m]))
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} inactive'
+            description: 'canary container in namespace {{ $labels.namespace }} has not produced/consumed messages for 5m'
+        - alert: CanaryClusterSizeError
+          expr: (rate(strimzi_canary_expected_cluster_size_error_total[5m]) > 0) * on (namespace) ((sum(kube_pod_container_info{container="kafka"}) by(namespace)) == 3)
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} cluster sizing error'
+            description: 'Kafka cluster in namespace {{ $labels.namespace }} does not have all 3 brokers available yet'
+        - alert: CanaryClientCreationError
+          expr: (rate(strimzi_canary_client_creation_error_total[5m]) > 0) * on (namespace) ((sum(kube_pod_container_info{container="kafka"}) by(namespace)) == 3)
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} sarama client failure'
+            description: 'canary in namespace {{ $labels.namespace }} is reporting that the sarama client has failed evaluation on startup'
+        - alert: CanaryProduceConsumeLatency
+          expr: >
+             histogram_quantile(0.98, rate(strimzi_canary_records_consumed_latency_bucket[10m])) > 300 unless
+             on (namespace) (max_over_time(kafka_external_connections_unavailable[10m]))
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} message latencies extended'
+            description: 'canary in namespace {{ $labels.namespace }} is reporting extended produce/consume message latencies'
+          # Note: Message latency is tested once every 5 seconds and 1 sample over that time will be affected by MGDSTRM-6146
+        - alert: CanaryConnectionEstablishmentLatency
+          expr: >
+             histogram_quantile(0.80,rate(strimzi_canary_connection_latency_bucket[10m])) > 300 unless
+             on (namespace,brokerid) (max_over_time(kafka_external_connections_unavailable[10m]))
+          # Connection establishment is tested once every two minutes
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} connection latencies extended'
+            description: 'canary in namespace {{ $labels.namespace }} is reporting extended connection establishment latencies'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/canary_connection_errors.asciidoc'
+          # Note: Connection establishment is tested once every two minutes
+        - alert: CanaryConnectionEstablishmentError
+          expr: >
+             rate(strimzi_canary_connection_error_total[5m]) > 0 unless
+             on (namespace,brokerid) (max_over_time(kafka_external_connections_unavailable[5m]))
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} connection failure'
+            description: 'canary in namespace {{ $labels.namespace }} is reporting connection establishment failures'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/canary_connection_errors.asciidoc'
+    - name: strimziOperator
+      rules:
+        - alert: StrimziKafkaStuck
+          expr: strimzi_resource_state != 1
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Strimzi Kafka is stuck in a non-ready state'
+            description: 'The Strimzi Kafka {{ $labels.name }} in the {{ $labels.resource_namespace }} namespace, managed by Strimzi pod {{ $labels.pod }} has been in a non-ready state for 10 minutes'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/strimzi_kafka_stuck.asciidoc'
+        - alert: StrimziOperatorClusterOperatorContainerDown
+          expr: absent(up{container="strimzi-cluster-operator"})
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Strimzi Cluster Operator down'
+            description: 'The Strimzi Cluster Operator has been down for longer than 10 minutes'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/container_down.asciidoc'
+    - name: strimzi-drain-cleaner
+      rules:
+        - alert: StrimziDrainCleanerDown
+          expr: kube_pod_container_status_ready{container="strimzi-drain-cleaner"}!= 1
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'strimzi-drain-cleaner down'
+            description: 'strimzi-drain-cleaner has been down for longer than 10 minutes'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/strimzi_drain_cleaner_component_down.asciidoc'
+        - alert: StrimziDrainCleanerDown
+          expr: kube_pod_container_status_ready{container="strimzi-drain-cleaner"}!= 1
+          for: 30m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'strimzi-drain-cleaner down'
+            description: 'strimzi-drain-cleaner has been down for longer than 30 minutes'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/strimzi_drain_cleaner_component_down.asciidoc'
+        - alert: StrimziDrainCleanerFrequentlyRestarting
+          expr: increase(kube_pod_container_status_restarts_total{container="strimzi-drain-cleaner"}[60m]) >3
+          labels:
+            severity: warning
+          annotations:
+            summary: 'strimzi-drain-cleaner restarting frequently'
+            description: 'strimzi-drain-cleaner restarted frequently in the last 60 minutes'

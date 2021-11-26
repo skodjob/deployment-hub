@@ -100,3 +100,21 @@ spec:
           targetLabel: node_ip
           replacement: $1
           action: replace
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: canary-metrics
+  labels:
+    app: strimzi
+  namespace: strimzi-kafka
+spec:
+  selector:
+    matchLabels:
+      app: "strimzi-canary"
+  namespaceSelector:
+    - strimzi-kafka
+  podMetricsEndpoints:
+    - path: /metrics
+      port: metrics

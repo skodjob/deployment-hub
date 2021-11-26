@@ -109,3 +109,17 @@ spec:
   configMapRef:
     name: grafana-dashboard-cruise-control-config
     key: cruise-control
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: strimzi
+    monitoring-key: middleware
+  name: strimzi-canary
+  namespace: strimzi-monitoring
+spec:
+  json: ""
+  configMapRef:
+    name: grafana-dashboard-canary-config
+    key: canary

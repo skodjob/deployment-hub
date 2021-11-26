@@ -19,6 +19,9 @@ spec:
       containers:
         - name: strimzi-canary
           image: quay.io/strimzi/canary@sha256:8dc1cc0c5e7bd3d49db1919088f0872986d3a8bc41afa11fb7fb0dcc2d541482
+          ports:
+            - containerPort: 8080
+              name: metrics
           env:
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
