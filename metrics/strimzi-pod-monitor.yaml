@@ -114,7 +114,8 @@ spec:
     matchLabels:
       app: "strimzi-canary"
   namespaceSelector:
-    - strimzi-kafka
+    matchNames:
+      - strimzi-kafka
   podMetricsEndpoints:
     - path: /metrics
       port: metrics
