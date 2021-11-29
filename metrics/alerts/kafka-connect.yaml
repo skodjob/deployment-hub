@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    role: alert-rules
+    app: tealc
+  name: kafka-connect-rules
+spec:
+  groups:
+    - name: connect
+      rules:
+        - alert: ConnectContainersDown
+          expr: absent(container_last_seen{container=~".+-connect",pod=~".+-connect-.+"})
+          for: 3m
+          labels:
+            severity: major
+          annotations:
+            summary: 'All Kafka Connect containers down or in CrashLookBackOff status'
+            description: 'All Kafka Connect containers have been down or in CrashLookBackOff status for 3 minutes'
