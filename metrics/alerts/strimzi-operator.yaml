@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: tealc
+  name: strimzi-operator-rules
+spec:
+  groups:
+    - name: strimziOperator
+      rules:
+        - alert: StrimziKafkaStuck
+          expr: strimzi_resource_state != 1
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Strimzi Kafka is stuck in a non-ready state'
+            description: 'The Strimzi Kafka {{ $labels.name }} in the {{ $labels.resource_namespace }} namespace, managed by Strimzi pod {{ $labels.pod }} has been in a non-ready state for 10 minutes'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/strimzi_kafka_stuck.asciidoc'
+        - alert: StrimziOperatorClusterOperatorContainerDown
+          expr: absent(up{container="strimzi-cluster-operator"})
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Strimzi Cluster Operator down'
+            description: 'The Strimzi Cluster Operator has been down for longer than 10 minutes'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/container_down.asciidoc'
