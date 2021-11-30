@@ -26,6 +26,102 @@ data:
       "links": [],
       "panels": [
         {
+          "bgColor": null,
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 16,
+            "x": 0,
+            "y": 0
+          },
+          "id": 58,
+          "pluginVersion": "7.5.11",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "(rate(strimzi_canary_records_produced_total[1m]) * 60)",
+              "format": "time_series",
+              "interval": "",
+              "legendFormat": "{{clientid}}-{{partition}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Producer status",
+          "trafficLightSettings": {
+            "digits": 1,
+            "fontColor": "rgb(255, 255, 255)",
+            "fontSize": "20px",
+            "greenThreshold": 6,
+            "invertScale": false,
+            "lightsPerLine": 5,
+            "linkTargetBlank": false,
+            "linkTooltip": "",
+            "linkUrl": "",
+            "max": 100,
+            "redThreshold": 4,
+            "renderLink": false,
+            "showTrend": false,
+            "showValue": true,
+            "sortLights": false,
+            "spreadControls": false,
+            "units": "",
+            "width": 45
+          },
+          "type": "snuids-trafficlights-panel"
+        },
+        {
+          "bgColor": null,
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 16,
+            "x": 0,
+            "y": 6
+          },
+          "id": 59,
+          "pluginVersion": "7.5.11",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "(rate(strimzi_canary_records_consumed_total[1m]) * 60)",
+              "format": "time_series",
+              "interval": "",
+              "legendFormat": "{{clientid}}-{{partition}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Consumer status",
+          "trafficLightSettings": {
+            "digits": 1,
+            "fontColor": "rgb(255, 255, 255)",
+            "fontSize": "20px",
+            "greenThreshold": 6,
+            "invertScale": false,
+            "lightsPerLine": 5,
+            "linkTargetBlank": false,
+            "linkTooltip": "",
+            "linkUrl": "",
+            "max": 100,
+            "redThreshold": 4,
+            "renderLink": false,
+            "showTrend": false,
+            "showValue": true,
+            "sortLights": false,
+            "spreadControls": false,
+            "units": "",
+            "width": 45
+          },
+          "type": "snuids-trafficlights-panel"
+        },
+        {
           "fieldConfig": {
             "defaults": {
               "color": {
