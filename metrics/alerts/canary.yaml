@@ -1,0 +1,77 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    role: alert-rules
+    app: tealc
+  name: canary-rules
+spec:
+  groups:
+    - name: canary
+      rules:
+        - alert: CanaryContainerFrequentlyRestarting
+          expr: increase(kube_pod_container_status_restarts_total{container="canary"}[60m]) > 3
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} restarting frequently'
+            description: 'canary container in namespace {{ $labels.namespace }} restarted frequently in the last 60 minutes'
+        - alert: CanaryNotActive
+          expr: >
+            (sum by (namespace) (sum without (partition) (increase(strimzi_canary_records_consumed_latency_bucket {le="+Inf"} [5m])) == 0)) unless
+            on (namespace) (max_over_time(kafka_external_connections_unavailable[5m]))
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} inactive'
+            description: 'canary container in namespace {{ $labels.namespace }} has not produced/consumed messages for 5m'
+        - alert: CanaryClusterSizeError
+          expr: (rate(strimzi_canary_expected_cluster_size_error_total[5m]) > 0) * on (namespace) ((sum(kube_pod_container_info{container="kafka"}) by(namespace)) == 3)
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} cluster sizing error'
+            description: 'Kafka cluster in namespace {{ $labels.namespace }} does not have all 3 brokers available yet'
+        - alert: CanaryClientCreationError
+          expr: (rate(strimzi_canary_client_creation_error_total[5m]) > 0) * on (namespace) ((sum(kube_pod_container_info{container="kafka"}) by(namespace)) == 3)
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} sarama client failure'
+            description: 'canary in namespace {{ $labels.namespace }} is reporting that the sarama client has failed evaluation on startup'
+        - alert: CanaryProduceConsumeLatency
+          expr: >
+            histogram_quantile(0.98, rate(strimzi_canary_records_consumed_latency_bucket[10m])) > 300 unless
+            on (namespace) (max_over_time(kafka_external_connections_unavailable[10m]))
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} message latencies extended'
+            description: 'canary in namespace {{ $labels.namespace }} is reporting extended produce/consume message latencies'
+          # Note: Message latency is tested once every 5 seconds and 1 sample over that time will be affected by MGDSTRM-6146
+        - alert: CanaryConnectionEstablishmentLatency
+          expr: >
+            histogram_quantile(0.80,rate(strimzi_canary_connection_latency_bucket[10m])) > 300 unless
+            on (namespace,brokerid) (max_over_time(kafka_external_connections_unavailable[10m]))
+          # Connection establishment is tested once every two minutes
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} connection latencies extended'
+            description: 'canary in namespace {{ $labels.namespace }} is reporting extended connection establishment latencies'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/canary_connection_errors.asciidoc'
+          # Note: Connection establishment is tested once every two minutes
+        - alert: CanaryConnectionEstablishmentError
+          expr: >
+            rate(strimzi_canary_connection_error_total[5m]) > 0 unless
+            on (namespace,brokerid) (max_over_time(kafka_external_connections_unavailable[5m]))
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'canary in namespace {{ $labels.namespace }} connection failure'
+            description: 'canary in namespace {{ $labels.namespace }} is reporting connection establishment failures'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/canary_connection_errors.asciidoc'
