@@ -24,6 +24,10 @@ spec:
               value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
             - name: RECONCILE_INTERVAL_MS
               value: "10000"
+            - name: EXPECTED_CLUSTER_SIZE
+              value: "5"
+            - name: TOPIC
+              value: "__strimzi_canary"
             - name: TLS_ENABLED
               value: "true"
             - name: TLS_CA_CERT
@@ -36,6 +40,8 @@ spec:
               value: "3.0.0"
             - name: SARAMA_LOG_ENABLED
               value: "true"
+            - name: VERBOSITY_LOG_LEVEL
+              value: 1
             - name: TLS_INSECURE_SKIP_VERIFY
               value: "true"
           livenessProbe:
