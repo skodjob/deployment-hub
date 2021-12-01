@@ -3,7 +3,7 @@ kind: PrometheusRule
 metadata:
   labels:
     app: tealc
-  name: strimzi-operator-rules
+  name: strimzi-drain-cleaner-rules
 spec:
   groups:
     - name: strimzi-drain-cleaner
@@ -13,6 +13,7 @@ spec:
           for: 10m
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'strimzi-drain-cleaner down'
             description: 'strimzi-drain-cleaner has been down for longer than 10 minutes'
@@ -22,6 +23,7 @@ spec:
           for: 30m
           labels:
             severity: critical
+            app: tealc
           annotations:
             summary: 'strimzi-drain-cleaner down'
             description: 'strimzi-drain-cleaner has been down for longer than 30 minutes'
@@ -30,6 +32,7 @@ spec:
           expr: increase(kube_pod_container_status_restarts_total{container="strimzi-drain-cleaner"}[60m]) >3
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'strimzi-drain-cleaner restarting frequently'
             description: 'strimzi-drain-cleaner restarted frequently in the last 60 minutes'

@@ -13,6 +13,7 @@ spec:
           expr: increase(kube_pod_container_status_restarts_total{container="canary"}[60m]) > 3
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} restarting frequently'
             description: 'canary container in namespace {{ $labels.namespace }} restarted frequently in the last 60 minutes'
@@ -22,22 +23,25 @@ spec:
             on (namespace) (max_over_time(kafka_external_connections_unavailable[5m]))
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} inactive'
             description: 'canary container in namespace {{ $labels.namespace }} has not produced/consumed messages for 5m'
         - alert: CanaryClusterSizeError
-          expr: (rate(strimzi_canary_expected_cluster_size_error_total[5m]) > 0) * on (namespace) ((sum(kube_pod_container_info{container="kafka"}) by(namespace)) == 3)
+          expr: (rate(strimzi_canary_expected_cluster_size_error_total[5m]) > 0) * on (namespace) ((sum(kube_pod_container_info{container="kafka"}) by(namespace)) == 5)
           for: 5m
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} cluster sizing error'
             description: 'Kafka cluster in namespace {{ $labels.namespace }} does not have all 3 brokers available yet'
         - alert: CanaryClientCreationError
-          expr: (rate(strimzi_canary_client_creation_error_total[5m]) > 0) * on (namespace) ((sum(kube_pod_container_info{container="kafka"}) by(namespace)) == 3)
+          expr: (rate(strimzi_canary_client_creation_error_total[5m]) > 0) * on (namespace) ((sum(kube_pod_container_info{container="kafka"}) by(namespace)) == 5)
           for: 10m
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} sarama client failure'
             description: 'canary in namespace {{ $labels.namespace }} is reporting that the sarama client has failed evaluation on startup'
@@ -47,6 +51,7 @@ spec:
             on (namespace) (max_over_time(kafka_external_connections_unavailable[10m]))
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} message latencies extended'
             description: 'canary in namespace {{ $labels.namespace }} is reporting extended produce/consume message latencies'
@@ -59,6 +64,7 @@ spec:
           for: 5m
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} connection latencies extended'
             description: 'canary in namespace {{ $labels.namespace }} is reporting extended connection establishment latencies'
@@ -71,6 +77,7 @@ spec:
           for: 5m
           labels:
             severity: warning
+            app: tealc
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} connection failure'
             description: 'canary in namespace {{ $labels.namespace }} is reporting connection establishment failures'

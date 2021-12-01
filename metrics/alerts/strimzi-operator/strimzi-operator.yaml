@@ -3,7 +3,6 @@ kind: PrometheusRule
 metadata:
   labels:
     app: tealc
-    strimzi: canary
   name: strimzi-operator-rules
 spec:
   groups:
@@ -14,6 +13,7 @@ spec:
           for: 10m
           labels:
             severity: critical
+            app: tealc
           annotations:
             summary: 'Strimzi Kafka is stuck in a non-ready state'
             description: 'The Strimzi Kafka {{ $labels.name }} in the {{ $labels.resource_namespace }} namespace, managed by Strimzi pod {{ $labels.pod }} has been in a non-ready state for 10 minutes'
@@ -23,6 +23,7 @@ spec:
           for: 10m
           labels:
             severity: critical
+            app: tealc
           annotations:
             summary: 'Strimzi Cluster Operator down'
             description: 'The Strimzi Cluster Operator has been down for longer than 10 minutes'
