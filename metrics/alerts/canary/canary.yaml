@@ -49,6 +49,7 @@ spec:
           expr: >
             histogram_quantile(0.98, rate(strimzi_canary_records_consumed_latency_bucket[10m])) > 500 unless
             on (namespace) (max_over_time(kafka_external_connections_unavailable[10m]))
+          for: 20m
           labels:
             severity: warning
             app: tealc
