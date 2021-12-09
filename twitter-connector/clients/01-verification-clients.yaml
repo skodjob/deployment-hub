@@ -1,0 +1,114 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: twitter-stargate-consumer
+  name: twitter-stargate-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twitter-stargate-consumer
+  template:
+    metadata:
+      labels:
+        app: twitter-stargate-consumer
+    spec:
+      containers:
+        - name: twitter-stargate-consumer
+          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          imagePullPolicy: Always
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/hathor:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/hathor:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: TOPIC
+              value: stargate-twitter-search
+            - name: GROUP_ID
+              value: connect-stargate-twitter-group
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "1000000"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: twitter-kafka-consumer
+  name: twitter-kafka-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twitter-kafka-consumer
+  template:
+    metadata:
+      labels:
+        app: twitter-kafka-consumer
+    spec:
+      containers:
+        - name: twitter-kafka-consumer
+          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          imagePullPolicy: Always
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/hathor:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/hathor:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: TOPIC
+              value: kafka-twitter-search
+            - name: GROUP_ID
+              value: connect-kafka-twitter-group
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "1000000"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: twitter-strimzi-consumer
+  name: twitter-strimzi-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twitter-strimzi-consumer
+  template:
+    metadata:
+      labels:
+        app: twitter-strimzi-consumer
+    spec:
+      containers:
+        - name: twitter-strimzi-consumer
+          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          imagePullPolicy: Always
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/hathor:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/hathor:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: TOPIC
+              value: strimzi-twitter-search
+            - name: GROUP_ID
+              value: connect-strimzi-twitter-group
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "1000000"
