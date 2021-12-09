@@ -1,0 +1,98 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: hathor
+  labels:
+    app: hathor
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  replicas: 1
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 500m
+    limits:
+      memory: 2Gi
+      cpu: 1000m
+  bootstrapServers: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+  config:
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: org.apache.kafka.connect.storage.StringConverter
+    key.converter.schemas.enable: false
+    value.converter.schemas.enable: false
+    config.providers: env
+    config.providers.env.class: io.strimzi.kafka.EnvVarConfigProvider
+    group.id: connect-cluster
+    config.storage.replication.factor: 3
+    offset.storage.replication.factor: 3
+    status.storage.replication.factor: 3
+    max.poll.records: 5
+    consumer.enable.auto.commit: true
+    consumer.auto.offset.reset: latest
+  tls:
+    trustedCertificates:
+      - secretName: anubis-cluster-ca-cert
+        certificate: ca.crt
+  authentication:
+    type: tls
+    certificateAndKey:
+      secretName: hathor
+      certificate: user.crt
+      key: user.key
+  metricsConfig:
+    type: jmxPrometheusExporter
+    valueFrom:
+      configMapKeyRef:
+        name: hathor-connect-metrics
+        key: hathor-connect-metrics.yaml
+  build:
+    output:
+      type: docker
+      # Update to match your own container repository
+      image: quay.io/tealc/kafka-twitter-connect:latest
+      pushSecret: quay-pull-secret
+    # Uncomment if you want to push the container image to the OpenShift built-in registry
+    # If you use other namespace than myproject, you will also need to fix the name
+#    output:
+#      type: docker
+#      image: image-registry.openshift-image-registry.svc:5000/strimzi-twitter-connect/kafka-twitter-connect-build:latest
+    plugins:
+      - name: camel-twitter-search
+        artifacts:
+          - type: tgz
+            url: https://repo.maven.apache.org/maven2/org/apache/camel/kafkaconnector/camel-twitter-search-kafka-connector/0.11.0/camel-twitter-search-kafka-connector-0.11.0-package.tar.gz
+            sha512sum: af92f529d77f25dcaf617c8f5c100d1fbcf6668c26f926851f6f265dd2f6a5d50a50ac87847b58ea317ed515bf608f5806a1756e5cba444fbd43b531e366050e
+      - name: camel-telegram
+        artifacts:
+          - type: tgz
+            url: https://repo.maven.apache.org/maven2/org/apache/camel/kafkaconnector/camel-telegram-kafka-connector/0.11.0/camel-telegram-kafka-connector-0.11.0-package.tar.gz
+            sha512sum: f3813a686f05be6e0955aa1655d4f3cc68d563c09667dc4b7f3a1ce8a112dc860d3c3139ceaa128534a3e6abc344fd8e9062f62ab77e6596c0a7fd05d60671b5
+  externalConfiguration:
+    env:
+      - name: TWITTER_CONSUMER_KEY
+        valueFrom:
+          secretKeyRef:
+            name: credentials
+            key: consumerKey
+      - name: TWITTER_CONSUMER_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: credentials
+            key: consumerSecret
+      - name: TWITTER_ACCESS_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: credentials
+            key: accessToken
+      - name: TWITTER_ACCESS_TOKEN_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: credentials
+            key: accessTokenSecret
+      - name: TELEGRAM_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: credentials
+            key: telegramToken
