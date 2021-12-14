@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: strimzi-canary
-  namespace: strimzi-kafka
   labels:
     app: strimzi-canary
 spec:
@@ -18,7 +17,7 @@ spec:
       serviceAccountName: strimzi-canary
       containers:
         - name: strimzi-canary
-          image: quay.io/strimzi/canary@sha256:009fdda28ec8fadea0467b5dacad3578085c587796a65ebbd9259915094db76e
+          image: quay.io/strimzi/canary@sha256:d643f6dc14e1770690da3ae4d45cd02e8c135fa597de72d9b413d7c718825b04
           env:
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
