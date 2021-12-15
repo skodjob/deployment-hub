@@ -17,7 +17,10 @@ spec:
       serviceAccountName: strimzi-canary
       containers:
         - name: strimzi-canary
-          image: quay.io/strimzi/canary@sha256:d643f6dc14e1770690da3ae4d45cd02e8c135fa597de72d9b413d7c718825b04
+          image: quay.io/strimzi/canary@sha256:d18c7d9ed022911926cad30c86984e72818c7c9a97bbc8df61bd92d3001e568d
+          ports:
+            - containerPort: 8080
+              name: metrics
           env:
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
@@ -67,9 +70,6 @@ spec:
               name: anubis-cluster-ca
             - mountPath: /tmp/client-cert
               name: client-cert
-          ports:
-            - containerPort: 8080
-              name: metrics
       volumes:
         - name: anubis-cluster-ca
           secret:
