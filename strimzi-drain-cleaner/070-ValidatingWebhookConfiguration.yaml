@@ -6,17 +6,14 @@ metadata:
     app: strimzi-drain-cleaner
   annotations:
     service.beta.openshift.io/inject-cabundle: "true"
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-options: Prune=false
-    argocd.argoproj.io/hook: Skip
 webhooks:
   - name: strimzi-drain-cleaner.strimzi.io
     rules:
-      - apiGroups: [""]
+      - apiGroups:   [""]
         apiVersions: ["v1"]
-        operations: ["CREATE"]
-        resources: ["pods/eviction"]
-        scope: "Namespaced"
+        operations:  ["CREATE"]
+        resources:   ["pods/eviction"]
+        scope:       "Namespaced"
     clientConfig:
       service:
         namespace: "strimzi-drain-cleaner"
