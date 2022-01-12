@@ -19,50 +19,50 @@ metadata:
     app: "strimzi-drain-cleaner"
     app.kubernetes.io/instance: "strimzi-drain-cleaner"
   managedFields:
-    - apiVersion: "v1"
-      fieldsType: "FieldsV1"
-      fieldsV1:
-        f:metadata:
-          f:annotations:
-            ".": { }
-            f:kubectl.kubernetes.io/last-applied-configuration: { }
-            f:service.beta.openshift.io/serving-cert-secret-name: { }
-          f:labels:
-            ".": { }
-            f:app: { }
-            f:app.kubernetes.io/instance: { }
-        f:spec:
-          f:internalTrafficPolicy: { }
-          f:ports:
-            ".": { }
-            k:{"port":80,"protocol":"TCP"}:
-              ".": { }
-              f:name: { }
-              f:port: { }
-              f:protocol: { }
-              f:targetPort: { }
-            k:{"port":443,"protocol":"TCP"}:
-              ".": { }
-              f:name: { }
-              f:port: { }
-              f:protocol: { }
-              f:targetPort: { }
-          f:selector: { }
-          f:sessionAffinity: { }
-          f:type: { }
-      manager: "argocd-application-controller"
-      operation: "Update"
-      time: "2022-01-10T13:30:15Z"
-    - apiVersion: "v1"
-      fieldsType: "FieldsV1"
-      fieldsV1:
-        f:metadata:
-          f:annotations:
-            f:service.alpha.openshift.io/serving-cert-signed-by: { }
-            f:service.beta.openshift.io/serving-cert-signed-by: { }
-      manager: "service-ca-operator"
-      operation: "Update"
-      time: "2022-01-10T13:30:15Z"
+  - apiVersion: "v1"
+    fieldsType: "FieldsV1"
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          ".": {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:service.beta.openshift.io/serving-cert-secret-name: {}
+        f:labels:
+          ".": {}
+          f:app: {}
+          f:app.kubernetes.io/instance: {}
+      f:spec:
+        f:internalTrafficPolicy: {}
+        f:ports:
+          ".": {}
+          k:{"port":80,"protocol":"TCP"}:
+            ".": {}
+            f:name: {}
+            f:port: {}
+            f:protocol: {}
+            f:targetPort: {}
+          k:{"port":443,"protocol":"TCP"}:
+            ".": {}
+            f:name: {}
+            f:port: {}
+            f:protocol: {}
+            f:targetPort: {}
+        f:selector: {}
+        f:sessionAffinity: {}
+        f:type: {}
+    manager: "argocd-application-controller"
+    operation: "Update"
+    time: "2022-01-10T13:30:15Z"
+  - apiVersion: "v1"
+    fieldsType: "FieldsV1"
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:service.alpha.openshift.io/serving-cert-signed-by: {}
+          f:service.beta.openshift.io/serving-cert-signed-by: {}
+    manager: "service-ca-operator"
+    operation: "Update"
+    time: "2022-01-10T13:30:15Z"
   name: "strimzi-drain-cleaner"
   namespace: "strimzi-drain-cleaner"
   resourceVersion: "79872"
@@ -70,20 +70,20 @@ metadata:
 spec:
   clusterIP: "172.30.18.64"
   clusterIPs:
-    - "172.30.18.64"
+  - "172.30.18.64"
   internalTrafficPolicy: "Cluster"
   ipFamilies:
-    - "IPv4"
+  - "IPv4"
   ipFamilyPolicy: "SingleStack"
   ports:
-    - name: "http"
-      port: 80
-      protocol: "TCP"
-      targetPort: 8080
-    - name: "https"
-      port: 443
-      protocol: "TCP"
-      targetPort: 8443
+  - name: "http"
+    port: 80
+    protocol: "TCP"
+    targetPort: 8080
+  - name: "https"
+    port: 443
+    protocol: "TCP"
+    targetPort: 8443
   selector:
     app: "strimzi-drain-cleaner"
   sessionAffinity: "None"
