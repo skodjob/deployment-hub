@@ -214,3 +214,75 @@ spec:
             items:
               - key: user.p12
                 path: user.p12
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: devconf-twitter-parser
+  name: devconf-twitter-parser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devconf-twitter-parser
+  template:
+    metadata:
+      labels:
+        app: devconf-twitter-parser
+    spec:
+      containers:
+        - name: devconf-twitter-parser
+          image: quay.io/tealc/twitter-message-parser@sha256:bba3a1299eb93a4f2dab81153c8dcc3a3833a084edfd78eb736d1718497618f9
+          imagePullPolicy: Always
+          env:
+            - name: QUARKUS_KAFKA_STREAMS_TOPICS
+              value: "devconf-twitter-search,devconf-telegram"
+            - name: QUARKUS_KAFKA_STREAMS_BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: QUARKUS_KAFKA_STREAMS_APPLICATION_ID
+              value: stargate-message-parser
+            - name: QUARKUS_KAFKA_STREAMS_SECURITY_PROTOCOL
+              value: SSL
+            - name: QUARKUS_KAFKA_STREAMS_SSL_TRUSTSTORE_TYPE
+              value: PKCS12
+            - name: QUARKUS_KAFKA_STREAMS_SSL_TRUSTSTORE_LOCATION
+              value: /etc/truststore/ca.p12
+            - name: QUARKUS_KAFKA_STREAMS_SSL_TRUSTSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: anubis-cluster-ca-cert
+                  key: ca.password
+            - name: QUARKUS_KAFKA_STREAMS_SSL_KEYSTORE_TYPE
+              value: PKCS12
+            - name: QUARKUS_KAFKA_STREAMS_SSL_KEYSTORE_LOCATION
+              value: /etc/keystore/user.p12
+            - name: QUARKUS_KAFKA_STREAMS_SSL_KEYSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: her-ur
+                  key: user.password
+            - name: SOURCE_TOPIC
+              value: stargate-twitter-search
+            - name: TARGET_TOPIC
+              value: stargate-telegram
+          volumeMounts:
+            - name: truststore
+              mountPath: "/etc/truststore"
+              readOnly: true
+            - name: keystore
+              mountPath: "/etc/keystore"
+              readOnly: true
+      volumes:
+        - name: truststore
+          secret:
+            secretName: anubis-cluster-ca-cert
+            items:
+              - key: ca.p12
+                path: ca.p12
+        - name: keystore
+          secret:
+            secretName: her-ur
+            items:
+              - key: user.p12
+                path: user.p12
