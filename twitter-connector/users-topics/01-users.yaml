@@ -123,6 +123,18 @@ spec:
           type: topic
           name: strimzi-twitter-search
         operation: Read
+      - resource:
+          type: topic
+          name: devconf-twitter-search
+        operation: Read
+      - resource:
+          type: topic
+          name: devconf-twitter-search
+        operation: Describe
+      - resource:
+          type: topic
+          name: devconf-twitter-search
+        operation: Write
       # Topcis for telegram
       - resource:
           type: topic
@@ -137,6 +149,11 @@ spec:
       - resource:
           type: topic
           name: strimzi-telegram
+          patternType: prefix
+        operation: Read
+      - resource:
+          type: topic
+          name: devconf-telegram
           patternType: prefix
         operation: Read
 # Message parser user
@@ -169,6 +186,11 @@ spec:
           name: strimzi-twitter
           patternType: prefix
         operation: Read
+      - resource:
+          type: topic
+          name: devconf-twitter
+          patternType: prefix
+        operation: Read
       # Group used by the Kafka Streams app
       - resource:
           type: group
@@ -181,6 +203,10 @@ spec:
       - resource:
           type: group
           name: strimzi-message-parser
+        operation: Read
+      - resource:
+          type: group
+          name: devconf-message-parser
         operation: Read
       # Target topic
       - resource:
@@ -196,5 +222,10 @@ spec:
       - resource:
           type: topic
           name: strimzi-telegram
+          patternType: prefix
+        operation: Write
+      - resource:
+          type: topic
+          name: devconf-telegram
           patternType: prefix
         operation: Write
