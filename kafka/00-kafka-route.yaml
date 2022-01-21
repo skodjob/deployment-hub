@@ -94,6 +94,11 @@ spec:
   entityOperator:
     template:
       pod:
+        tolerations:
+          - key: "nodetype"
+            operator: "Equal"
+            value: "kafka"
+            effect: "NoSchedule"
         affinity:
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
