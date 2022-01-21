@@ -47,6 +47,22 @@ spec:
         configMapKeyRef:
           key: anubis-kafka-jmx-exporter-configuration.yaml
           name: anubis-kafka-jmx-exporter-configuration
+    template:
+      pod:
+        tolerations:
+          - key: "dedicated"
+            operator: "Equal"
+            value: "kafka"
+            effect: "NoSchedule"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: nodetype
+                      operator: In
+                      values:
+                        - kafka
   zookeeper:
     replicas: 3
     storage:
@@ -58,10 +74,54 @@ spec:
         configMapKeyRef:
           key: anubis-zookeeper-jmx-exporter-configuration.yaml
           name: anubis-zookeeper-jmx-exporter-configuration
+    template:
+      pod:
+        tolerations:
+          - key: "dedicated"
+            operator: "Equal"
+            value: "kafka"
+            effect: "NoSchedule"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: nodetype
+                      operator: In
+                      values:
+                        - kafka
+
   entityOperator:
+    template:
+      pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: nodetype
+                      operator: In
+                      values:
+                        - kafka
     topicOperator: {}
     userOperator: {}
-  kafkaExporter: {}
+  kafkaExporter:
+    template:
+      pod:
+        tolerations:
+          - key: "dedicated"
+            operator: "Equal"
+            value: "kafka"
+            effect: "NoSchedule"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: nodetype
+                      operator: In
+                      values:
+                        - kafka
   cruiseControl:
     metricsConfig:
       type: jmxPrometheusExporter
@@ -69,6 +129,22 @@ spec:
         configMapKeyRef:
           key: anubis-cruise-control-jmx-exporter-configuration.yaml
           name: anubis-cruise-control-jmx-exporter-configuration
+    template:
+      pod:
+        tolerations:
+          - key: "dedicated"
+            operator: "Equal"
+            value: "kafka"
+            effect: "NoSchedule"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: nodetype
+                      operator: In
+                      values:
+                        - kafka
 ---
 apiVersion: v1
 kind: ConfigMap

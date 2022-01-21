@@ -70,6 +70,15 @@ spec:
             items:
               - key: user.p12
                 path: user.p12
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - connect
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -142,6 +151,15 @@ spec:
             items:
               - key: user.p12
                 path: user.p12
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - connect
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -214,6 +232,15 @@ spec:
             items:
               - key: user.p12
                 path: user.p12
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - connect
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -286,3 +313,12 @@ spec:
             items:
               - key: user.p12
                 path: user.p12
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - connect

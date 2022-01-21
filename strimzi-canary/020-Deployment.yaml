@@ -77,5 +77,14 @@ spec:
         - name: client-cert
           secret:
             secretName: canary
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - kafka
   strategy:
     type: Recreate
