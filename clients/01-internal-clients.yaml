@@ -7,7 +7,7 @@ metadata:
   name: kafka-internal-producer
   namespace: strimzi-clients
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: kafka-internal-producer
@@ -36,12 +36,22 @@ spec:
             - name: LOG_LEVEL
               value: "INFO"
             - name: MESSAGE_COUNT
-              value: "1000000"
+              value: "10000000"
             - name: PRODUCER_ACKS
               value: all
             - name: ADDITIONAL_CONFIG
             - name: BLOCKING_PRODUCER
               value: "true"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -51,7 +61,7 @@ metadata:
   name: kafka-internal-streams
   namespace: strimzi-clients
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: kafka-internal-streams
@@ -81,6 +91,16 @@ spec:
               value: kafka-anubis-internal-data-reversed
             - name: LOG_LEVEL
               value: "INFO"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -90,7 +110,7 @@ metadata:
   name: kafka-internal-consumer
   namespace: strimzi-clients
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: kafka-internal-consumer
@@ -119,4 +139,14 @@ spec:
             - name: LOG_LEVEL
               value: "INFO"
             - name: MESSAGE_COUNT
-              value: "1000000"
+              value: "10000000"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra
+
