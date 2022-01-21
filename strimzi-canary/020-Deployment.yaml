@@ -77,6 +77,11 @@ spec:
         - name: client-cert
           secret:
             secretName: canary
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "kafka"
+          effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
