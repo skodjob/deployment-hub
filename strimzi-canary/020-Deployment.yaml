@@ -77,11 +77,6 @@ spec:
         - name: client-cert
           secret:
             secretName: canary
-      tolerations:
-        - key: "nodetype"
-          operator: "Equal"
-          value: "kafka"
-          effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -91,5 +86,10 @@ spec:
                     operator: In
                     values:
                       - kafka
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "kafka"
+          effect: "NoSchedule"
   strategy:
     type: Recreate
