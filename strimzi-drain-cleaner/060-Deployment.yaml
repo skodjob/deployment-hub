@@ -49,14 +49,5 @@ spec:
         - name: webhook-certificates
           secret:
             secretName: strimzi-drain-cleaner
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: nodetype
-                    operator: In
-                    values:
-                      - infra
   strategy:
     type: RollingUpdate
