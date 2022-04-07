@@ -111,8 +111,22 @@ spec:
                       operator: In
                       values:
                         - kafka
-    topicOperator: {}
-    userOperator: {}
+    topicOperator:
+      resources:
+        limits:
+          cpu: '1'
+          memory: 256Mi
+        requests:
+          cpu: '0.2'
+          memory: 256Mi
+    userOperator:
+      resources:
+        limits:
+          cpu: '1'
+          memory: 512Mi
+        requests:
+          cpu: '0.2'
+          memory: 512Mi
   kafkaExporter:
     template:
       pod:
