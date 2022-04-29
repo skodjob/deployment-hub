@@ -36,9 +36,10 @@ spec:
     storage:
       volumes:
         - type: persistent-claim
-          size: 100Gi
+          size: 200Gi
           id: 0
       type: jbod
+      class: standard-csi
     authorization:
       type: simple
       superUsers:
@@ -70,7 +71,8 @@ spec:
     replicas: 3
     storage:
       type: persistent-claim
-      size: 100Gi
+      size: 50Gi
+      class: standard-csi
     metricsConfig:
       type: jmxPrometheusExporter
       valueFrom:
