@@ -2,13 +2,13 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
-  name: anubis
+  name: heimdall
   namespace: strimzi-kafka
   labels:
     clients: used
 spec:
   kafka:
-    version: 3.2.0
+    version: 3.1.0
     replicas: 5
     listeners:
       - name: plain
@@ -31,8 +31,8 @@ spec:
       offsets.topic.replication.factor: 5
       transaction.state.log.replication.factor: 5
       transaction.state.log.min.isr: 3
-      log.message.format.version: "3.2"
-      inter.broker.protocol.version: "3.2"
+      log.message.format.version: "3.1"
+      inter.broker.protocol.version: "3.1"
     storage:
       volumes:
         - type: persistent-claim
@@ -49,8 +49,8 @@ spec:
       type: jmxPrometheusExporter
       valueFrom:
         configMapKeyRef:
-          key: anubis-kafka-jmx-exporter-configuration.yaml
-          name: anubis-kafka-jmx-exporter-configuration
+          key: heimdall-kafka-jmx-exporter-configuration.yaml
+          name: heimdall-kafka-jmx-exporter-configuration
     template:
       pod:
         tolerations:
@@ -77,8 +77,8 @@ spec:
       type: jmxPrometheusExporter
       valueFrom:
         configMapKeyRef:
-          key: anubis-zookeeper-jmx-exporter-configuration.yaml
-          name: anubis-zookeeper-jmx-exporter-configuration
+          key: heimdall-zookeeper-jmx-exporter-configuration.yaml
+          name: heimdall-zookeeper-jmx-exporter-configuration
     template:
       pod:
         tolerations:
@@ -151,8 +151,8 @@ spec:
       type: jmxPrometheusExporter
       valueFrom:
         configMapKeyRef:
-          key: anubis-cruise-control-jmx-exporter-configuration.yaml
-          name: anubis-cruise-control-jmx-exporter-configuration
+          key: heimdall-cruise-control-jmx-exporter-configuration.yaml
+          name: heimdall-cruise-control-jmx-exporter-configuration
     template:
       pod:
         tolerations:
@@ -173,9 +173,9 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: anubis-kafka-jmx-exporter-configuration
+  name: heimdall-kafka-jmx-exporter-configuration
 data:
-  anubis-kafka-jmx-exporter-configuration.yaml: |
+  heimdall-kafka-jmx-exporter-configuration.yaml: |
     lowercaseOutputName: true
     rules:
     - pattern: "kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>Value"
@@ -295,9 +295,9 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: anubis-zookeeper-jmx-exporter-configuration
+  name: heimdall-zookeeper-jmx-exporter-configuration
 data:
-  anubis-zookeeper-jmx-exporter-configuration.yaml: |
+  heimdall-zookeeper-jmx-exporter-configuration.yaml: |
     lowercaseOutputName: true
     rules:
     - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+)><>(\\w+)"
@@ -334,9 +334,9 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: anubis-cruise-control-jmx-exporter-configuration
+  name: heimdall-cruise-control-jmx-exporter-configuration
 data:
-  anubis-cruise-control-jmx-exporter-configuration.yaml: |
+  heimdall-cruise-control-jmx-exporter-configuration.yaml: |
     lowercaseOutputName: true
     rules:
     - pattern: "kafka.cruisecontrol<name=(.+)><>(\\w+)"
