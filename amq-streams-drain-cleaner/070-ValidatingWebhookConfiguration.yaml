@@ -1,0 +1,29 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: strimzi-drain-cleaner
+  labels:
+    app: strimzi-drain-cleaner
+  annotations:
+    service.beta.openshift.io/inject-cabundle: "true"
+    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/hook: Skip
+webhooks:
+  - name: strimzi-drain-cleaner.strimzi.io
+    rules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods/eviction"]
+        scope: "Namespaced"
+    clientConfig:
+      service:
+        namespace: "strimzi-kafka"
+        name: "strimzi-drain-cleaner"
+        path: /drainer
+        port: 443
+      caBundle: Cg==
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    failurePolicy: Ignore
+    timeoutSeconds: 5
