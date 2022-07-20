@@ -955,6 +955,12 @@ data:
               "interval": "",
               "legendFormat": "#producer connections",
               "refId": "B"
+            },
+            {
+              "expr": "sum(kafka_admin_client_connection_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "legendFormat": "#admin connections",
+              "interval": "",
+              "refId": "C"
             }
           ],
           "thresholds": [],
