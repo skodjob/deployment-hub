@@ -17,7 +17,7 @@ spec:
       serviceAccountName: strimzi-canary
       containers:
         - name: strimzi-canary
-          image: quay.io/strimzi/canary@sha256:853b957520fd60fd581e44c6f10015074e90a9ecf02d98b47d4aa98e95c42602
+          image: quay.io/strimzi/canary@sha256:b73cf48d60be0a8e45f9d9646d501485e9ba82fd7692585c3dbd3a7ea54aae0c
           ports:
             - containerPort: 8080
               name: metrics
@@ -65,6 +65,9 @@ spec:
             requests:
               memory: "64Mi"
               cpu: "100m"
+          ports:
+            - containerPort: 8080
+              name: metrics
           volumeMounts:
             - mountPath: /tmp/tls-ca-cert
               name: anubis-cluster-ca
