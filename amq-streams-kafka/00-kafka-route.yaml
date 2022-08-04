@@ -67,6 +67,16 @@ spec:
                       operator: In
                       values:
                         - kafka
+        topologySpreadConstraints:
+          # Deploy Kafka pods with spread with difference max 1 pod
+          - maxSkew: 1
+            # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule
+            labelSelector:
+              matchLabels:
+                # label on Kafka pods
+                strimzi.io/name: heimdall-kafka
   zookeeper:
     replicas: 3
     storage:
@@ -95,7 +105,16 @@ spec:
                       operator: In
                       values:
                         - kafka
-
+        topologySpreadConstraints:
+          # Deploy Zookeeper pods with spread with difference max 2 pod
+          - maxSkew: 2
+            # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule
+            labelSelector:
+              matchLabels:
+                # label on Zookeper pods
+                strimzi.io/kind: Kafka
   entityOperator:
     template:
       pod:
@@ -113,6 +132,16 @@ spec:
                       operator: In
                       values:
                         - kafka
+        topologySpreadConstraints:
+          # Deploy Zookeeper pods with spread with difference max 2 pod
+          - maxSkew: 2
+            # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule
+            labelSelector:
+              matchLabels:
+                # label on Zookeper pods
+                strimzi.io/kind: Kafka
     topicOperator:
       resources:
         limits:
@@ -146,6 +175,16 @@ spec:
                       operator: In
                       values:
                         - kafka
+        topologySpreadConstraints:
+          # Deploy Zookeeper pods with spread with difference max 2 pod
+          - maxSkew: 2
+            # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule
+            labelSelector:
+              matchLabels:
+                # label on Zookeper pods
+                strimzi.io/kind: Kafka
   cruiseControl:
     metricsConfig:
       type: jmxPrometheusExporter
@@ -169,6 +208,16 @@ spec:
                       operator: In
                       values:
                         - kafka
+        topologySpreadConstraints:
+          # Deploy Zookeeper pods with spread with difference max 2 pod
+          - maxSkew: 2
+            # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule
+            labelSelector:
+              matchLabels:
+                # label on Zookeper pods
+                strimzi.io/kind: Kafka
 ---
 apiVersion: v1
 kind: ConfigMap
