@@ -18,16 +18,13 @@ spec:
       containers:
         - name: strimzi-canary
           image: quay.io/strimzi/canary@sha256:34087dcd911621882e50b855b7c0f2762024f214d6219c1fa78164bff2d1a3da
-          ports:
-            - containerPort: 8080
-              name: metrics
           env:
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
             - name: RECONCILE_INTERVAL_MS
               value: "10000"
             - name: EXPECTED_CLUSTER_SIZE
-              value: "5"
+              value: "7"
             - name: TOPIC
               value: "__strimzi_canary"
             - name: TLS_ENABLED
@@ -39,7 +36,7 @@ spec:
             - name: TLS_CLIENT_KEY
               value: /tmp/client-cert/user.key
             - name: KAFKA_VERSION
-              value: "3.0.0"
+              value: "3.2.0"
             - name: SARAMA_LOG_ENABLED
               value: "true"
             - name: VERBOSITY_LOG_LEVEL
