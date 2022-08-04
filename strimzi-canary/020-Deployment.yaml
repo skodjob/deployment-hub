@@ -65,6 +65,10 @@ spec:
             requests:
               memory: "64Mi"
               cpu: "100m"
+          ports:
+            - containerPort: 8080
+              name: metrics
+              protocol: TCP
           volumeMounts:
             - mountPath: /tmp/tls-ca-cert
               name: anubis-cluster-ca
