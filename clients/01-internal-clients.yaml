@@ -7,7 +7,7 @@ metadata:
   name: kafka-internal-producer
   namespace: strimzi-clients
 spec:
-  replicas: 12
+  replicas: 6
   selector:
     matchLabels:
       app: kafka-internal-producer
@@ -32,7 +32,7 @@ spec:
             - name: TOPIC
               value: kafka-anubis-internal-data
             - name: DELAY_MS
-              value: "0"
+              value: "500"
             - name: LOG_LEVEL
               value: "INFO"
             - name: MESSAGE_COUNT
