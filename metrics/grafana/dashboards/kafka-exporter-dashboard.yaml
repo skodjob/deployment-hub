@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-kafka-exporter-config
-  namespace: strimzi-monitoring
 data:
   kafka-exporter: |
     {
@@ -36,6 +35,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -102,7 +102,7 @@ data:
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -117,6 +117,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -183,7 +184,7 @@ data:
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -198,6 +199,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -264,7 +266,7 @@ data:
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -279,6 +281,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -345,7 +348,7 @@ data:
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -360,6 +363,7 @@ data:
             "#F2495C",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -426,7 +430,7 @@ data:
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -441,6 +445,7 @@ data:
             "#F2495C",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Number of partitions which are at their minimum in sync replica count (| ISR | == | min.insync.replicas |)",
           "format": "none",
           "gauge": {
@@ -508,7 +513,7 @@ data:
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -523,6 +528,7 @@ data:
             "#F2495C",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Number of partitions which are under their minimum in sync replica count (| ISR | < | min.insync.replicas |)",
           "format": "none",
           "gauge": {
@@ -590,7 +596,7 @@ data:
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -605,6 +611,7 @@ data:
             "#F2495C",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -671,7 +678,7 @@ data:
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -682,6 +689,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 0,
           "gridPos": {
             "h": 10,
@@ -772,6 +780,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 0,
           "gridPos": {
             "h": 10,
@@ -862,6 +871,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 0,
           "gridPos": {
             "h": 10,
@@ -1325,8 +1335,25 @@ data:
       "templating": {
         "list": [
           {
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": false,
+            "label": "Cluster",
+            "multi": false,
+            "name": "OPENSHIFT_CLUSTER",
+            "options": [],
+            "query": "prometheus",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
+          },
+          {
             "allValue": null,
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "",
             "hide": 0,
             "includeAll": false,
@@ -1348,6 +1375,7 @@ data:
           {
             "allValue": null,
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "",
             "hide": 0,
             "includeAll": false,
@@ -1374,6 +1402,7 @@ data:
                 "$__all"
               ]
             },
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "label_values(kafka_consumergroup_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}, consumergroup)",
             "hide": 0,
             "includeAll": true,
@@ -1400,6 +1429,7 @@ data:
                 "$__all"
               ]
             },
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "label_values(kafka_topic_partition_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}, topic)",
             "hide": 0,
             "includeAll": true,
@@ -1450,7 +1480,5 @@ data:
         ]
       },
       "timezone": "browser",
-      "title": "Strimzi Kafka Exporter",
-      "uid": "jwPKIsniz",
-      "version": 1
+      "title": "Strimzi Kafka Exporter"
     }

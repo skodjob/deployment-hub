@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-kafka-config
-  namespace: strimzi-monitoring
 data:
   kafka: |
     {
@@ -34,7 +33,8 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "description": "Number of Brokers Online",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Number of brokers online",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -118,7 +118,8 @@ data:
             "#e5ac0e",
             "#bf1b00"
           ],
-          "description": "Number of active controllers in the cluster.",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Number of active controllers in the cluster",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -199,6 +200,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Unclean leader election rate",
           "format": "none",
           "gauge": {
@@ -280,6 +282,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Replicas that are online",
           "format": "none",
           "gauge": {
@@ -360,6 +363,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#bf1b00"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Number of under-replicated partitions (| ISR | < | all replicas |).",
           "format": "none",
           "gauge": {
@@ -441,7 +445,8 @@ data:
             "#ef843c",
             "#bf1b00"
           ],
-          "description": "Number of partitions which are at their minimum in sync replica count (| ISR | == | min.insync.replicas |).",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Number of partitions which are at their minimum in sync replica count (| ISR | == | min.insync.replicas |)",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -522,7 +527,8 @@ data:
             "#ef843c",
             "#bf1b00"
           ],
-          "description": "Number of partitions which are under their minimum in sync replica count (| ISR | < | min.insync.replicas |).",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Number of partitions which are under their minimum in sync replica count (| ISR | < | min.insync.replicas |)",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -603,7 +609,8 @@ data:
             "#ef843c",
             "#bf1b00"
           ],
-          "description": "Number of partitions that don’t have an active leader and are hence not writable or readable.",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Number of partitions that don’t have an active leader and are hence not writable or readable",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -693,7 +700,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Kafka Broker Pods Memory Usage",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Kafka broker pods memory usage",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -780,7 +788,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Aggregated Kafka Broker Pods CPU Usage",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Aggregated Kafka broker pods CPU usage",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -867,7 +876,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Kafka Broker Pods Disk Usage",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Kafka broker pods disk usage",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -954,6 +964,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Open File Descriptors",
           "fill": 1,
           "gridPos": {
@@ -1041,6 +1052,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -1126,6 +1138,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -1211,6 +1224,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -1296,7 +1310,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "JVM Thread Count",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "JVM thread count",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -1386,7 +1401,8 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "description": "Total Incoming Byte Rate",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Total incoming byte rate",
           "format": "Bps",
           "gauge": {
             "maxValue": 100,
@@ -1469,7 +1485,8 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "description": "Total Outgoing Byte Rate",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Total outgoing byte rate",
           "format": "Bps",
           "gauge": {
             "maxValue": 100,
@@ -1552,7 +1569,8 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "description": "Incoming Messages Rate",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Incoming messages rate",
           "format": "wps",
           "gauge": {
             "maxValue": 100,
@@ -1635,7 +1653,8 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "description": "Total Produce Request Rate",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Total produce request rate",
           "format": "reqps",
           "gauge": {
             "maxValue": 100,
@@ -1714,7 +1733,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Byte Rate",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Byte rate",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -1816,6 +1836,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -1902,7 +1923,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Produce Request Rate.",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Produce request rate",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -1996,7 +2018,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Fetch Request Rate",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Fetch request rate",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2089,7 +2112,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Network Processor Avg Idle Percent",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Average percentage of time network processor is idle",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2175,7 +2199,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Request Handler Avg Idle Percent",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Average percentage of time request handler threads are idle",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2262,6 +2287,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Disk writes",
           "fill": 1,
           "gridPos": {
@@ -2349,6 +2375,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Disk reads",
           "fill": 1,
           "gridPos": {
@@ -2436,6 +2463,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Disk reads",
           "fill": 1,
           "gridPos": {
@@ -2523,6 +2551,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 13,
@@ -2615,8 +2644,25 @@ data:
       "templating": {
         "list": [
           {
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": false,
+            "label": "Cluster",
+            "multi": false,
+            "name": "OPENSHIFT_CLUSTER",
+            "options": [],
+            "query": "prometheus",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
+          },
+          {
             "allValue": null,
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "",
             "hide": 0,
             "includeAll": false,
@@ -2638,6 +2684,7 @@ data:
           {
             "allValue": null,
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "",
             "hide": 0,
             "includeAll": false,
@@ -2659,6 +2706,7 @@ data:
           {
             "allValue": ".*",
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "",
             "hide": 0,
             "includeAll": true,
@@ -2668,7 +2716,7 @@ data:
             "options": [],
             "query": "query_result(kafka_server_replicamanager_leadercount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
             "refresh": 1,
-            "regex": "/.*statefulset_kubernetes_io_pod_name=\"$strimzi_cluster_name-([^\"]*).*/",
+            "regex": "/.*pod_name=\"$strimzi_cluster_name-([^\"]*).*/",
             "skipUrlSync": false,
             "sort": 0,
             "tagValuesQuery": "",
@@ -2680,6 +2728,7 @@ data:
           {
             "allValue": ".+",
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "",
             "hide": 0,
             "includeAll": true,
@@ -2701,6 +2750,7 @@ data:
           {
             "allValue": ".*",
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "definition": "",
             "hide": 0,
             "includeAll": true,
@@ -2751,7 +2801,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Kafka",
-      "uid": "86cc98e66c294b299b37102f0cc74ead",
-      "version": 2
+      "title": "Strimzi Kafka"
     }

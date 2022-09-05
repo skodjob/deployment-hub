@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-kafka-mirror-maker-2-config
-  namespace: strimzi-monitoring
 data:
   kafka-mirror-maker-2: |
     {
@@ -35,6 +34,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -116,7 +116,8 @@ data:
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
-          ],          
+          ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -193,7 +194,8 @@ data:
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
-          "dashes": false,          
+          "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -280,7 +282,8 @@ data:
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
-          "dashes": false,          
+          "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -364,7 +367,8 @@ data:
           }
         },
         {
-          "cacheTimeout": null,          
+          "cacheTimeout": null,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -445,7 +449,8 @@ data:
             "#299c46",
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
-          ],          
+          ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -569,7 +574,9 @@ data:
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
-          "dashes": false,   
+          "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
+
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -656,7 +663,8 @@ data:
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
-          "dashes": false,          
+          "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -744,7 +752,8 @@ data:
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
-          "dashes": false,          
+          "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -831,7 +840,8 @@ data:
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
-          "dashes": false,   
+          "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -925,7 +935,8 @@ data:
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
-          "dashes": false,     
+          "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -1020,6 +1031,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -1110,6 +1122,7 @@ data:
           }
         },
         {
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1323,7 +1336,8 @@ data:
           ],
           "type": "table"
         },
-        {          
+        {
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1537,7 +1551,8 @@ data:
           ],
           "type": "table"
         },
-        {          
+        {
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1770,8 +1785,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          
-    
+          "datasource": "${OPENSHIFT_CLUSTER}",
+
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1856,7 +1871,8 @@ data:
             "alignLevel": null
           }
         },
-        {          
+        {
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1938,12 +1954,28 @@ data:
       "templating": {
         "list": [
           {
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": false,
+            "label": "Cluster",
+            "multi": false,
+            "name": "OPENSHIFT_CLUSTER",
+            "options": [],
+            "query": "prometheus",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
+          },
+          {
             "allValue": null,
             "current": {
               "text": "",
               "value": ""
             },
-            
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
@@ -1965,7 +1997,8 @@ data:
             "current": {
               "text": "my-mirror-maker-2-cluster",
               "value": "my-mirror-maker-2-cluster"
-            },            
+            },
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster Name",
@@ -2014,7 +2047,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Kafka Mirror Maker 2",
-      "uid": "spCQwc0mz",
-      "version": 6
+      "title": "Strimzi Kafka Mirror Maker 2"
     }

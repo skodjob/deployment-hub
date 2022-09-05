@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-bridge-config
-  namespace: strimzi-monitoring
 data:
   kafka-bridge: |
     {
@@ -45,6 +44,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -165,6 +165,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -285,6 +286,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -407,6 +409,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -529,6 +532,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -618,7 +622,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "count(strimzi_bridge_kafka_consumer_last_heartbeat_seconds_ago != -1)",
+              "expr": "sum(strimzi_bridge_kafka_consumer_last_heartbeat_seconds_ago != bool -1)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -651,6 +655,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -782,6 +787,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -877,6 +883,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -972,6 +979,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1067,6 +1075,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1162,6 +1171,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1258,6 +1268,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1355,6 +1366,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1452,6 +1464,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1549,6 +1562,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1646,6 +1660,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1743,6 +1758,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1851,6 +1867,7 @@ data:
           "bars": true,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1963,6 +1980,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2083,6 +2101,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -2180,6 +2199,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -2277,6 +2297,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2371,6 +2392,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2467,6 +2489,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2563,6 +2586,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -2660,6 +2684,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -2758,6 +2783,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -2855,6 +2881,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -3219,7 +3246,24 @@ data:
         "Kafka"
       ],
       "templating": {
-        "list": []
+        "list": [
+          {
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": false,
+            "label": "Cluster",
+            "multi": false,
+            "name": "OPENSHIFT_CLUSTER",
+            "options": [],
+            "query": "prometheus",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
+          }
+        ]
       },
       "time": {
         "from": "now-5m",
@@ -3250,7 +3294,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Kafka Bridge",
-      "uid": "z6qqIxmMz",
-      "version": 17
+      "title": "Strimzi Kafka Bridge"
     }

@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-connect-config
-  namespace: strimzi-monitoring
 data:
   kafka-connect: |
     {
@@ -35,6 +34,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -117,6 +117,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -194,6 +195,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -276,6 +278,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -358,6 +361,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -445,6 +449,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -532,6 +537,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -619,7 +625,8 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "JVM Thread Count",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "JVM thread count",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -702,6 +709,7 @@ data:
         {
           "cacheTimeout": null,
           "columns": [],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fontSize": "100%",
           "gridPos": {
             "h": 7,
@@ -797,6 +805,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -914,6 +923,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -1003,6 +1013,239 @@ data:
             "align": false,
             "alignLevel": null
           }
+        },
+        {
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "left",
+                "displayMode": "color-text",
+                "filterable": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Connector"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "text",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "text",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 22
+          },
+          "id": 42,
+          "options": {
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Value #A"
+              }
+            ]
+          },
+          "pluginVersion": "8.1.2",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "count by (status, connector) (kafka_connect_connector_status{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "format": "table",
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "title": "Connector Status",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "Time",
+                    "connector",
+                    "status"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Time": 2,
+                  "connector": 0,
+                  "status": 1
+                },
+                "renameByName": {
+                  "Time": "Update Time",
+                  "connector": "Connector",
+                  "status": "Status"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 22
+          },
+          "id": 41,
+          "options": {
+            "showHeader": true
+          },
+          "pluginVersion": "8.1.2",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "count by (connector, task, status) (kafka_connect_connector_task_status{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "format": "table",
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "title": "Connector Task Status",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "Time",
+                    "connector",
+                    "status",
+                    "task"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Time": 3,
+                  "connector": 0,
+                  "status": 2,
+                  "task": 1
+                },
+                "renameByName": {
+                  "Time": "Update Time",
+                  "connector": "Connector",
+                  "status": "Status",
+                  "task": "Task"
+                }
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
       "refresh": "5s",
@@ -1016,8 +1259,25 @@ data:
       "templating": {
         "list": [
           {
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": false,
+            "label": "Cluster",
+            "multi": false,
+            "name": "OPENSHIFT_CLUSTER",
+            "options": [],
+            "query": "prometheus",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
+          },
+          {
             "allValue": null,
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
@@ -1037,6 +1297,7 @@ data:
           {
             "allValue": null,
             "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster Name",
@@ -1085,7 +1346,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Kafka Connect",
-      "uid": "39fb097dc2c5ebf8a7717cf78fc2f8f7",
-      "version": 2
+      "title": "Strimzi Kafka Connect"
     }

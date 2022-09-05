@@ -8,6 +8,7 @@ metadata:
     app: strimzi
     namespace: strimzi-monitoring
   annotations:
+    # Exclude from ArgoCD sync
     argocd.argoproj.io/compare-options: IgnoreExtraneous
     argocd.argoproj.io/sync-options: Prune=false
     argocd.argoproj.io/hook: Skip
@@ -18,6 +19,11 @@ metadata:
   name: grafana-cluster-monitoring-binding
   labels:
     app: strimzi
+  annotations:
+    # Exclude from ArgoCD sync
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/hook: Skip
 subjects:
   - kind: ServiceAccount
     name: grafana-serviceaccount
