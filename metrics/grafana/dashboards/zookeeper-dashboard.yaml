@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-zookeeper-config
-  namespace: strimzi-monitoring
 data:
   zookeeper: |
     {
@@ -26,7 +25,7 @@ data:
       "graphTooltip": 0,
       "id": null,
       "iteration": 1600637492559,
-      "links": [ ],
+      "links": [],
       "panels": [
         {
           "collapsed": false,
@@ -37,8 +36,8 @@ data:
             "y": 0
           },
           "id": 26,
-          "panels": [ ],
-          "title": "Zookeeper",
+          "panels": [],
+          "title": "ZooKeeper",
           "type": "row"
         },
         {
@@ -46,11 +45,12 @@ data:
           "colorBackground": false,
           "colorValue": true,
           "colors": [
-              "#d44a3a",
-              "rgba(237, 129, 40, 0.89)",
-              "#299c46"
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
           ],
-          "description": "Quorum Size of Zookeeper ensemble",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Quorum size of ZooKeeper ensemble",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -67,7 +67,7 @@ data:
           },
           "id": 52,
           "interval": null,
-          "links": [ ],
+          "links": [],
           "mappingType": 1,
           "mappingTypes": [
             {
@@ -126,11 +126,12 @@ data:
           "colorBackground": false,
           "colorValue": true,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
-          "description": "Number of Alive Connections",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Number of active connections",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -147,7 +148,7 @@ data:
           },
           "id": 54,
           "interval": null,
-          "links": [ ],
+          "links": [],
           "mappingType": 1,
           "mappingTypes": [
             {
@@ -189,7 +190,7 @@ data:
             }
           ],
           "thresholds": "60,120",
-          "title": "Alive Connections",
+          "title": "Active Connections",
           "type": "singlestat",
           "valueFontSize": "200%",
           "valueMaps": [
@@ -202,10 +203,11 @@ data:
           "valueName": "current"
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Number of queued requests in the server. This goes up when the server receives more requests than it can process",
           "fill": 1,
           "gridPos": {
@@ -226,13 +228,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -246,7 +248,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Outstanding Requests",
@@ -261,7 +263,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -291,10 +293,11 @@ data:
           "colorBackground": false,
           "colorValue": true,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -311,7 +314,7 @@ data:
           },
           "id": 64,
           "interval": null,
-          "links": [ ],
+          "links": [],
           "mappingType": 1,
           "mappingTypes": [
             {
@@ -370,11 +373,12 @@ data:
           "colorBackground": false,
           "colorValue": true,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
-          "description": "Number of Watchers",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Number of watchers",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -391,7 +395,7 @@ data:
           },
           "id": 66,
           "interval": null,
-          "links": [ ],
+          "links": [],
           "mappingType": 1,
           "mappingTypes": [
             {
@@ -433,7 +437,7 @@ data:
             }
           ],
           "thresholds": "100,200",
-          "title": "Number of Watchers",
+          "title": "Number of watchers",
           "type": "singlestat",
           "valueFontSize": "200%",
           "valueMaps": [
@@ -446,11 +450,12 @@ data:
           "valueName": "current"
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "ZooKeeper Pods Memory Usage",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "ZooKeeper pods memory usage",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -470,13 +475,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -489,7 +494,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Memory Usage",
@@ -504,7 +509,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -530,11 +535,12 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Aggregated ZooKeeper Pods CPU Usage",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Aggregated ZooKeeper pods CPU usage",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -554,13 +560,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -573,7 +579,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "CPU Usage",
@@ -588,7 +594,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -614,11 +620,12 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "Kafka Broker Pods Disk Usage",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "Kafka broker pods disk usage",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -638,13 +645,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -657,7 +664,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Available Disk Space",
@@ -672,7 +679,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -698,10 +705,11 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Open File Descriptors",
           "fill": 1,
           "gridPos": {
@@ -722,14 +730,14 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -743,7 +751,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Open File Descriptors",
@@ -758,7 +766,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -784,10 +792,11 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -807,13 +816,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -826,7 +835,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "JVM Memory Used",
@@ -841,7 +850,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -867,10 +876,11 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -890,13 +900,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -909,7 +919,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "JVM GC Time",
@@ -924,7 +934,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -950,10 +960,11 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -973,13 +984,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -992,7 +1003,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "JVM GC Count",
@@ -1007,7 +1018,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -1033,11 +1044,12 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "JVM Thread Count",
+          "datasource": "${OPENSHIFT_CLUSTER}",
+          "description": "JVM thread count",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -1057,14 +1069,14 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -1077,10 +1089,10 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "JVM Thread Count",
+          "title": "JVM thread count",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -1092,7 +1104,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -1118,10 +1130,11 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Amount of time (in ms) it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
@@ -1142,13 +1155,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -1161,7 +1174,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Request Latency - Minimum",
@@ -1176,7 +1189,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -1202,10 +1215,11 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Amount of time (in ms) it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
@@ -1226,13 +1240,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -1245,7 +1259,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Request Latency - Average",
@@ -1260,7 +1274,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -1286,10 +1300,11 @@ data:
           }
         },
         {
-          "aliasColors": { },
+          "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "Amount of time (in ms) it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
@@ -1310,13 +1325,13 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [ ],
+          "links": [],
           "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [ ],
+          "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -1329,7 +1344,7 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Request Latency - Maximum",
@@ -1344,7 +1359,7 @@ data:
             "mode": "time",
             "name": null,
             "show": true,
-            "values": [ ]
+            "values": []
           },
           "yaxes": [
             {
@@ -1374,65 +1389,84 @@ data:
       "schemaVersion": 21,
       "style": "dark",
       "tags": [
-          "Strimzi",
-          "Kafka",
-          "Zookeeper"
+        "Strimzi",
+        "Kafka",
+        "Zookeeper"
       ],
       "templating": {
         "list": [
           {
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": false,
+            "label": "Cluster",
+            "multi": false,
+            "name": "OPENSHIFT_CLUSTER",
+            "options": [],
+            "query": "prometheus",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
+          },
+          {
             "allValue": null,
-            "current": { },
+            "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
             "multi": false,
             "name": "kubernetes_namespace",
-            "options": [ ],
+            "options": [],
             "query": "query_result(zookeeper_inmemorydatatree_nodecount)",
             "refresh": 1,
             "regex": "/.*namespace=\"([^\"]*).*/",
             "sort": 0,
             "tagValuesQuery": "",
-            "tags": [ ],
+            "tags": [],
             "tagsQuery": "",
             "type": "query",
             "useTags": false
           },
           {
             "allValue": null,
-            "current": { },
+            "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster Name",
             "multi": false,
             "name": "strimzi_cluster_name",
-            "options": [ ],
+            "options": [],
             "query": "query_result(zookeeper_inmemorydatatree_nodecount{namespace=\"$kubernetes_namespace\"})",
             "refresh": 1,
             "regex": "/.*strimzi_io_cluster=\"([^\"]*).*/",
             "sort": 0,
             "tagValuesQuery": "",
-            "tags": [ ],
+            "tags": [],
             "tagsQuery": "",
             "type": "query",
             "useTags": false
           },
           {
             "allValue": ".*",
-            "current": { },
+            "current": {},
+            "datasource": "${OPENSHIFT_CLUSTER}",
             "hide": 0,
             "includeAll": true,
             "label": "Node",
             "multi": false,
             "name": "zk_node",
-            "options": [ ],
+            "options": [],
             "query": "query_result(zookeeper_inmemorydatatree_nodecount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
             "refresh": 1,
-            "regex": "/.*statefulset_kubernetes_io_pod_name=\"$strimzi_cluster_name-([^\"]*).*/",
+            "regex": "/.*pod_name=\"$strimzi_cluster_name-([^\"]*).*/",
             "sort": 0,
             "tagValuesQuery": "",
-            "tags": [ ],
+            "tags": [],
             "tagsQuery": "",
             "type": "query",
             "useTags": false
@@ -1445,31 +1479,29 @@ data:
       },
       "timepicker": {
         "refresh_intervals": [
-            "5s",
-            "10s",
-            "30s",
-            "1m",
-            "5m",
-            "15m",
-            "30m",
-            "1h",
-            "2h",
-            "1d"
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
         ],
         "time_options": [
-            "5m",
-            "15m",
-            "1h",
-            "6h",
-            "12h",
-            "24h",
-            "2d",
-            "7d",
-            "30d"
+          "5m",
+          "15m",
+          "1h",
+          "6h",
+          "12h",
+          "24h",
+          "2d",
+          "7d",
+          "30d"
         ]
       },
       "timezone": "",
-      "title": "Strimzi ZooKeeper",
-      "uid": "fc85de600d62d9841e9de00083b24b72",
-      "version": 2
+      "title": "Strimzi ZooKeeper"
     }

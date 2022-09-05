@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-canary-config
-  namespace: strimzi-monitoring
 data:
   canary: |
     {
@@ -22,15 +21,15 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
-      "id": null,
+      "id": 9,
       "links": [],
       "panels": [
         {
           "bgColor": null,
-          "datasource": null,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
-            "defaults": {},
-            "overrides": []
+            "defaults": { },
+            "overrides": [ ]
           },
           "gridPos": {
             "h": 6,
@@ -75,10 +74,10 @@ data:
         },
         {
           "bgColor": null,
-          "datasource": null,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "fieldConfig": {
-            "defaults": {},
-            "overrides": []
+            "defaults": { },
+            "overrides": [ ]
           },
           "gridPos": {
             "h": 7,
@@ -122,96 +121,7 @@ data:
           "type": "snuids-trafficlights-panel"
         },
         {
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-RdYlGr"
-              },
-              "mappings": [
-                {
-                  "from": "6",
-                  "id": 1,
-                  "text": "OK",
-                  "to": "1000",
-                  "type": 2,
-                  "value": "6"
-                },
-                {
-                  "from": "",
-                  "id": 2,
-                  "text": "WARNING",
-                  "to": "",
-                  "type": 1,
-                  "value": "5"
-                },
-                {
-                  "from": "-10",
-                  "id": 3,
-                  "text": "Unhealthy",
-                  "to": "4",
-                  "type": 2,
-                  "value": "6"
-                }
-              ],
-              "noValue": "Failed",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 3
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 4
-                  },
-                  {
-                    "color": "green",
-                    "value": 6
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 16,
-            "x": 0,
-            "y": 0
-          },
-          "id": 58,
-          "options": {
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": true,
-            "text": {}
-          },
-          "pluginVersion": "7.5.11",
-          "targets": [
-            {
-              "exemplar": true,
-              "expr": "rate(strimzi_canary_records_consumed_total[5m]) * 60",
-              "format": "time_series",
-              "interval": "",
-              "legendFormat": "{{clientid}}-{{partition}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Clients status",
-          "type": "gauge"
-        },
-        {
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -231,6 +141,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -351,6 +262,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "decimals": 1,
           "description": "",
           "fieldConfig": {
@@ -472,6 +384,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -592,6 +505,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "decimals": 1,
           "description": "",
           "fieldConfig": {
@@ -706,6 +620,7 @@ data:
         },
         {
           "collapsed": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -722,6 +637,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -821,6 +737,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -920,6 +837,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1019,6 +937,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": "${OPENSHIFT_CLUSTER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1153,7 +1072,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Canary",
-      "uid": "qUDbEsqGz",
-      "version": 2
+      "title": "Strimzi Canary"
     }

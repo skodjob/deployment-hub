@@ -6,6 +6,11 @@ metadata:
   namespace: strimzi-monitoring
   labels:
     app: grafana
+  annotations:
+    # Exclude from ArgoCD sync
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/hook: Skip
 spec:
   targetNamespaces:
     - strimzi-monitoring
@@ -15,6 +20,11 @@ kind: Subscription
 metadata:
   name: grafana-operator
   namespace: strimzi-monitoring
+  annotations:
+    # Exclude from ArgoCD sync
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/hook: Skip
 spec:
   channel: v4
   installPlanApproval: Automatic
