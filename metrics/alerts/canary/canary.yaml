@@ -47,7 +47,7 @@ spec:
             description: 'canary in namespace {{ $labels.namespace }} is reporting that the sarama client has failed evaluation on startup'
         - alert: CanaryProduceConsumeLatency
           expr: >
-            histogram_quantile(0.98, rate(strimzi_canary_records_consumed_latency_bucket[10m])) > 500 unless
+            histogram_quantile(0.98, rate(strimzi_canary_records_consumed_latency_bucket[10m])) > 1000 unless
             on (namespace) (max_over_time(kafka_external_connections_unavailable[10m]))
           for: 20m
           labels:
@@ -59,7 +59,7 @@ spec:
           # Note: Message latency is tested once every 5 seconds and 1 sample over that time will be affected by MGDSTRM-6146
         - alert: CanaryConnectionEstablishmentLatency
           expr: >
-            histogram_quantile(0.80,rate(strimzi_canary_connection_latency_bucket[10m])) > 500 unless
+            histogram_quantile(0.80,rate(strimzi_canary_connection_latency_bucket[10m])) > 1000 unless
             on (namespace,brokerid) (max_over_time(kafka_external_connections_unavailable[10m]))
           # Connection establishment is tested once every two minutes
           for: 5m
