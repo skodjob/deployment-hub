@@ -342,7 +342,7 @@ spec:
             description: 'There are only {{ $value }} percent available at {{ $labels.persistentvolumeclaim }} PVC'
         - alert: UnderReplicatedPartitions
           expr: kafka_server_replicamanager_underreplicatedpartitions > 0
-          for: 10s
+          for: 2m
           labels:
             severity: warning
             app: tealc
@@ -369,7 +369,7 @@ spec:
             description: 'One or more partitions have no leader'
         - alert: UnderMinIsrPartitionCount
           expr: kafka_server_replicamanager_underminisrpartitioncount > 0
-          for: 10s
+          for: 2m
           labels:
             severity: warning
             app: tealc
@@ -378,7 +378,7 @@ spec:
             description: 'There are {{ $value }} partitions under the min ISR on {{ $labels.kubernetes_pod_name }}'
         - alert: OfflineLogDirectoryCount
           expr: kafka_log_logmanager_offlinelogdirectorycount > 0
-          for: 10s
+          for: 20s
           labels:
             severity: warning
             app: tealc
