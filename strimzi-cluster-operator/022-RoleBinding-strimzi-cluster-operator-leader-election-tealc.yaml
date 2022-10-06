@@ -1,13 +1,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: strimzi-cluster-operator-leader-election
+  name: strimzi-cluster-operator-leader-election-tealc
   labels:
     app: strimzi
 subjects:
   - kind: ServiceAccount
     name: strimzi-cluster-operator
-    namespace: myproject
+    namespace: strimzi-operator
 roleRef:
   kind: ClusterRole
   name: strimzi-cluster-operator-leader-election
