@@ -8,7 +8,7 @@ metadata:
     clients: used
 spec:
   kafka:
-    version: 3.1.0
+    version: 3.2.3
     replicas: 5
     listeners:
       - name: plain
@@ -45,6 +45,13 @@ spec:
       superUsers:
         - CN=superuser
         - superuser
+    resources:
+      requests:
+        memory: 5Gi
+        cpu: "2"
+      limits:
+        memory: 5Gi
+        cpu: "2"
     metricsConfig:
       type: jmxPrometheusExporter
       valueFrom:
