@@ -15,10 +15,18 @@ spec:
       labels:
         app: stargate-twitter-parser
     spec:
+      serviceAccountName: twitter-app-parser
       containers:
         - name: stargate-twitter-parser
           image: quay.io/tealc/twitter-message-parser@sha256:bba3a1299eb93a4f2dab81153c8dcc3a3833a084edfd78eb736d1718497618f9
           imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: [ "ALL" ]
           env:
             - name: QUARKUS_KAFKA_STREAMS_TOPICS
               value: "stargate-twitter-search,stargate-telegram"
@@ -96,10 +104,18 @@ spec:
       labels:
         app: kafka-twitter-parser
     spec:
+      serviceAccountName: twitter-app-parser
       containers:
         - name: kafka-twitter-parser
           image: quay.io/tealc/twitter-message-parser@sha256:bba3a1299eb93a4f2dab81153c8dcc3a3833a084edfd78eb736d1718497618f9
           imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: [ "ALL" ]
           env:
             - name: QUARKUS_KAFKA_STREAMS_TOPICS
               value: "kafka-twitter-search,kafka-telegram"
@@ -177,10 +193,18 @@ spec:
       labels:
         app: strimzi-twitter-parser
     spec:
+      serviceAccountName: twitter-app-parser
       containers:
         - name: strimzi-twitter-parser
           image: quay.io/tealc/twitter-message-parser@sha256:bba3a1299eb93a4f2dab81153c8dcc3a3833a084edfd78eb736d1718497618f9
           imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: [ "ALL" ]
           env:
             - name: QUARKUS_KAFKA_STREAMS_TOPICS
               value: "strimzi-twitter-search,strimzi-telegram"
@@ -258,10 +282,18 @@ spec:
       labels:
         app: devconf-twitter-parser
     spec:
+      serviceAccountName: twitter-app-parser
       containers:
         - name: devconf-twitter-parser
           image: quay.io/tealc/twitter-message-parser@sha256:bba3a1299eb93a4f2dab81153c8dcc3a3833a084edfd78eb736d1718497618f9
           imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: ["ALL"]
           env:
             - name: QUARKUS_KAFKA_STREAMS_TOPICS
               value: "devconf-twitter-search,devconf-telegram"
