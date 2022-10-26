@@ -20,13 +20,6 @@ spec:
         - name: stargate-twitter-parser
           image: quay.io/tealc/twitter-message-parser@sha256:90de23b5d07e0d55fd8ab8c92393ffee63b9c52b0ff5cc648deab25e32cc6883
           imagePullPolicy: Always
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop: ["ALL"]
           env:
             - name: QUARKUS_KAFKA_STREAMS_TOPICS
               value: "stargate-twitter-search,stargate-telegram"
@@ -109,13 +102,6 @@ spec:
         - name: kafka-twitter-parser
           image: quay.io/tealc/twitter-message-parser@sha256:90de23b5d07e0d55fd8ab8c92393ffee63b9c52b0ff5cc648deab25e32cc6883
           imagePullPolicy: Always
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop: ["ALL"]
           env:
             - name: QUARKUS_KAFKA_STREAMS_TOPICS
               value: "kafka-twitter-search,kafka-telegram"
@@ -198,13 +184,6 @@ spec:
         - name: strimzi-twitter-parser
           image: quay.io/tealc/twitter-message-parser@sha256:90de23b5d07e0d55fd8ab8c92393ffee63b9c52b0ff5cc648deab25e32cc6883
           imagePullPolicy: Always
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop: ["ALL"]
           env:
             - name: QUARKUS_KAFKA_STREAMS_TOPICS
               value: "strimzi-twitter-search,strimzi-telegram"
@@ -287,13 +266,6 @@ spec:
         - name: devconf-twitter-parser
           image: quay.io/tealc/twitter-message-parser@sha256:90de23b5d07e0d55fd8ab8c92393ffee63b9c52b0ff5cc648deab25e32cc6883
           imagePullPolicy: Always
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop: ["ALL"]
           env:
             - name: QUARKUS_KAFKA_STREAMS_TOPICS
               value: "devconf-twitter-search,devconf-telegram"
