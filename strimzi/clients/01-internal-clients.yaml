@@ -20,6 +20,13 @@ spec:
         - name: kafka-internal-producer
           image: quay.io/strimzi-test-clients/test-client-kafka-producer@sha256:3d3213c47008c780857d9a79d94309a9755aeda80a281d7f6f1f8839a6cf9014
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
           env:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
@@ -32,7 +39,7 @@ spec:
             - name: TOPIC
               value: kafka-anubis-internal-data
             - name: DELAY_MS
-              value: "10"
+              value: "5"
             - name: LOG_LEVEL
               value: "INFO"
             - name: MESSAGE_COUNT
@@ -74,6 +81,13 @@ spec:
         - name: kafka-internal-streams
           image: quay.io/strimzi-test-clients/test-client-kafka-streams@sha256:349a368470d4510964ccb44a18bc2d57016dba3b642f963933dccf95a8eed185
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
           env:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
@@ -123,6 +137,13 @@ spec:
         - name: kafka-internal-consumer
           image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
           env:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}

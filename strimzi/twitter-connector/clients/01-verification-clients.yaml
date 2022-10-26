@@ -19,6 +19,13 @@ spec:
         - name: twitter-stargate-consumer
           image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 200Mi
+              cpu: 250m
           env:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
@@ -57,6 +64,13 @@ spec:
         - name: twitter-kafka-consumer
           image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 200Mi
+              cpu: 250m
           env:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
@@ -95,6 +109,13 @@ spec:
         - name: twitter-strimzi-consumer
           image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 200Mi
+              cpu: 250m
           env:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
