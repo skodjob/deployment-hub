@@ -17,22 +17,11 @@ spec:
           type: topic
           name: __strimzi_canary
           patternType: prefix
-        operation: Write
-      - resource:
-          type: topic
-          name: __strimzi_canary
-          patternType: prefix
-        operation: Create
-      - resource:
-          type: topic
-          name: __strimzi_canary
-          patternType: prefix
-        operation: Describe
-      - resource:
-          type: topic
-          name: __strimzi_canary
-          patternType: prefix
-        operation: Read
+        operation:
+          - Write
+          - Create
+          - Describe
+          - Read
       - resource:
           type: group
           name: strimzi-canary-client
