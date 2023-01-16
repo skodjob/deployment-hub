@@ -18,7 +18,7 @@ spec:
       serviceAccountName: strimzi-drain-cleaner
       containers:
         - name: strimzi-drain-cleaner
-          image: quay.io/strimzi/drain-cleaner@sha256:23f094b2eb33584b86ba89d62a6e5e87f85fc0fae06fa7396a07ddaefe5c1d1c
+          image: quay.io/strimzi/drain-cleaner@sha256:281c557de943c1b87d775a45b6cab9129bf9e53d4f8037abbbf42587b1f1af2f
           ports:
             - containerPort: 8080
               name: http
@@ -29,6 +29,16 @@ spec:
               value: "true"
             - name: STRIMZI_DRAIN_ZOOKEEPER
               value: "true"
+            - name: STRIMZI_CERTIFICATE_WATCH_ENABLED
+              value: "true"
+            - name: STRIMZI_CERTIFICATE_WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: STRIMZI_CERTIFICATE_WATCH_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           args:
             - /opt/strimzi/bin/drain_cleaner_run.sh
           volumeMounts:
