@@ -53,12 +53,18 @@ spec:
           replication.factor: 3
           offset-syncs.topic.replication.factor: 3
           sync.topic.acls.enabled: "false"
+        autoRestart:
+          enabled: true
       heartbeatConnector:
         config:
           heartbeats.topic.replication.factor: 3
+        autoRestart:
+          enabled: true
       checkpointConnector:
         config:
           checkpoints.topic.replication.factor: 3
+        autoRestart:
+          enabled: true
       topicsPattern: ".*"
       groupsPattern: ".*"
   logging:
