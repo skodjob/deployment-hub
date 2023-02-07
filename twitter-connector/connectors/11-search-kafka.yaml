@@ -7,7 +7,9 @@ metadata:
     strimzi.io/cluster: hathor
 spec:
   class: CamelTwittersearchSourceConnector
-  tasksMax: 1
+  tasksMax: 5
+  autoRestart:
+    enabled: true
   config:
     topics: kafka-twitter-search
     # searchs fos Apache Kafka mentions
