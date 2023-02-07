@@ -7,7 +7,9 @@ metadata:
     strimzi.io/cluster: hathor
 spec:
   class: CamelTwittersearchSourceConnector
-  tasksMax: 1
+  tasksMax: 5
+  autoRestart:
+    enabled: false
   config:
     topics: devconf-twitter-search
     camel.source.path.keywords: "#devconf OR #redhat OR #devconf22 OR #devconf2022 OR #DevConf_CZ OR \"devconf.cz\" OR \"devconf_cz\""

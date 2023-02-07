@@ -7,7 +7,9 @@ metadata:
     strimzi.io/cluster: hathor
 spec:
   class: CamelTwittersearchSourceConnector
-  tasksMax: 1
+  tasksMax: 5
+  autoRestart:
+    enabled: false
   config:
     topics: strimzi-twitter-search
     # Searchs for mentions of the Strimzi project

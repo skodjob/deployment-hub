@@ -7,7 +7,9 @@ metadata:
     strimzi.io/cluster: hathor
 spec:
   class: CamelTwittersearchSourceConnector
-  tasksMax: 1
+  tasksMax: 5
+  autoRestart:
+    enabled: false
   config:
     topics: stargate-twitter-search
     camel.source.path.keywords: "#tealc OR \"Star Gate\" OR #Stargate OR #SG1"
