@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
-  name: imhotep-connect
+  name: imhotep
   labels:
     app: imhotep
   annotations:
@@ -27,7 +27,7 @@ spec:
   authentication:
     type: tls
     certificateAndKey:
-      secretName: hathor
+      secretName: imhotep
       certificate: user.crt
       key: user.key
   metricsConfig:
@@ -42,7 +42,7 @@ spec:
       image: quay.io/tealc/debezium-connect-postgresql:latest
       pushSecret: quay-pull-secret
     plugins:
-      - name: imhotep-connector
+      - name: imhotep-postgres
         artifacts:
           - type: tgz
             url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.1.2.Final/debezium-connector-postgres-2.1.2.Final-plugin.tar.gz
