@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: imhotep-connect-role
+  labels:
+    app: imhotep
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["imhotep-secret"]
+    verbs: ["get"]
