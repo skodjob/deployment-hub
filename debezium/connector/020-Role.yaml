@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: imhotep-connect-role
+  namespace: strimzi-kafka
+  labels:
+    app: imhotep
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["imhotep-secret"]
+    verbs: ["get"]

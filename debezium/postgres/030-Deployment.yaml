@@ -1,0 +1,73 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: imhotep-postgresql
+  namespace: debezium-postgresql
+  labels:
+    app: imhotep-postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imhotep-postgresql
+      deployment: imhotep-postgresql
+  template:
+    metadata:
+      labels:
+        app: imhotep-postgresql
+        deployment: imhotep-postgresql
+    spec:
+      containers:
+        - resources: {}
+          name: imhotep-postgresql
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: imhotep-secret
+                  key: password
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: imhotep-secret
+                  key: database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: imhotep-secret
+                  key: username
+            - name: PGDATA
+              value: /var/lib/postgresql/data/debezium/
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresdb
+          imagePullPolicy: Always
+          livenessProbe:
+            initialDelaySeconds: 30
+            tcpSocket:
+              port: 5432
+            timeoutSeconds: 1
+          readinessProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-i"
+                - "-c"
+                - "PGPASSWORD=${POSTGRES_PASSWORD} /usr/bin/psql -w -U ${POSTGRES_USER} -d ${POSTGRES_DATABASE} -c 'SELECT 1'"
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          terminationMessagePolicy: File
+          terminationMessagePath: /dev/termination-log
+          image: quay.io/tealc/debezium-postgres@sha256:9fcfe24aae91dba50b75e5b710c2201a5b382680691e9d80a34f46cd5feb1c57
+      restartPolicy: Always
+      volumes:
+        - name: imhotep-postgresdb
+          persistentVolumeClaim:
+            claimName: imhotep-postgres-pv-claim
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+  strategy:
+    type: Recreate

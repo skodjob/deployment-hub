@@ -1,0 +1,24 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: imhotep-connector
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis-kafka
+    app: imhotep
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    tasks.max: 1
+    database.hostname: postgresql.debezium-postgresql.svc.cluster.local
+    database.port: 5432
+    database.user: ${secrets:debezium-test/imhotep-secret:username}
+    database.password: ${secrets:debezium-test/imhotep-secret:password}
+    database.dbname: ${secrets:debezium-test/imhotep-secret:database}
+    topic.prefix: postgres
+    slot.name: debezium
+    table.include.list: public.crypto
+    plugin.name: pgoutput
+    schema.history.internal.kafka.bootstrap.servers: anubis-kafka-bootstrap:9092
+    schema.history.internal.kafka.topic: schema-changes.inventory
