@@ -9,7 +9,7 @@ metadata:
 spec:
   version: 3.3.2
   replicas: 1
-  bootstrapServers: anubis-kafka-bootstrap:9092
+  bootstrapServers: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
   config:
     config.providers: secrets
     config.providers.secrets.class: io.strimzi.kafka.KubernetesSecretConfigProvider
@@ -20,6 +20,22 @@ spec:
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
+  tls:
+    trustedCertificates:
+      - secretName: anubis-cluster-ca-cert
+        certificate: ca.crt
+  authentication:
+    type: tls
+    certificateAndKey:
+      secretName: hathor
+      certificate: user.crt
+      key: user.key
+  metricsConfig:
+    type: jmxPrometheusExporter
+    valueFrom:
+      configMapKeyRef:
+        name: hathor-connect-metrics
+        key: hathor-connect-metrics.yaml
   build:
     output:
       type: docker
