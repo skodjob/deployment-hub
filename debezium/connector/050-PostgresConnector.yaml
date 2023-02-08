@@ -7,9 +7,9 @@ metadata:
     app: imhotep
 spec:
   class: io.debezium.connector.postgresql.PostgresConnector
-  tasksMax: 1
+  autoRestart:
+    enabled: true
   config:
-    tasks.max: 1
     database.hostname: postgresql.debezium-postgresql.svc.cluster.local
     database.port: 5432
     database.user: ${secrets:debezium-test/imhotep-secret:username}
