@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -10,7 +9,6 @@ metadata:
   labels:
     app: kronos
   name: kronos
-  namespace: debezium-postgresql
 spec:
   replicas: 1
   selector:
@@ -60,43 +58,3 @@ spec:
             successThreshold: 1
             timeoutSeconds: 10
       serviceAccountName: kronos-sa
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app: kronos
-  name: kronos-sa
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: kronos-view
-roleRef:
-  kind: ClusterRole
-  apiGroup: rbac.authorization.k8s.io
-  name: view
-subjects:
-  - kind: ServiceAccount
-    name: kronos-sa
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/path: /q/metrics
-    prometheus.io/port: "8080"
-    prometheus.io/scheme: http
-  labels:
-    app: kronos
-  name: kronos-svc
-spec:
-  ports:
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: 8080
-  selector:
-    app: kronos
-  type: ClusterIP
