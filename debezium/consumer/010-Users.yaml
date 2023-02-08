@@ -1,0 +1,21 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: her-ur
+  labels:
+    strimzi.io/cluster: anubis
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      # Source topics
+      - resource:
+          type: topic
+          name: postgres.public.crypto
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
