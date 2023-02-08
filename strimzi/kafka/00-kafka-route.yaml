@@ -32,27 +32,20 @@ spec:
       transaction.state.log.replication.factor: 5
       transaction.state.log.min.isr: 3
       default.replication.factor: 3
-      log.message.format.version: "3.2"
-      inter.broker.protocol.version: "3.2"
-      # Quotas plugin
+      log.message.format.version: "3.3"
+      inter.broker.protocol.version: "3.3"
+      min.insync.replicas: 3
+      # Quota plugin
       client.quota.callback.class: io.strimzi.kafka.quotas.StaticQuotaCallback
-      client.quota.callback.static.produce: 100000                                    # 100 KB/s
-      client.quota.callback.static.fetch: 300000                                      # 300 KB/s
-      client.quota.callback.static.storage.soft: 400000000000                          # 40GB
-      client.quota.callback.static.storage.hard: 499000000000                          # 49.9GB
-      client.quota.callback.static.storage.check-interval: 30                          # Check storage every 5 seconds
-      client.quota.callback.static.excluded.principal.name:.list: superuser, superuser-anubis
+      client.quota.callback.static.produce: 1000000                                         # 1 MB/s
+      client.quota.callback.static.fetch: 1000000                                           # 1 MB/s
+      client.quota.callback.static.storage.soft: 90000000000                                # 90GB
+      client.quota.callback.static.storage.hard: 99000000000                                # 99GB
+      client.quota.callback.static.storage.check-interval: 30
+      client.quota.callback.static.excluded.principal.name.list: superuser,superuser-anubis  # Optional list of principals not to be subjected to the quota
     storage:
-      volumes:
-        - type: persistent-claim
-          size: 50Gi
-          id: 1
-          class: standard-csi
-        - type: persistent-claim
-          size: 50Gi
-          id: 2
-          class: standard-csi
-      type: jbod
+      type: persistent-claim
+      size: 100Gi
     authorization:
       type: simple
       superUsers:
@@ -105,7 +98,7 @@ spec:
     replicas: 3
     storage:
       type: persistent-claim
-      size: 20Gi
+      size: 10Gi
       class: standard-csi
     metricsConfig:
       type: jmxPrometheusExporter
