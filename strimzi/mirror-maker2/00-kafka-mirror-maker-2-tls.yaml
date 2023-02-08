@@ -3,7 +3,7 @@ kind: KafkaMirrorMaker2
 metadata:
   name: replicator-carter
 spec:
-  version: 3.2.0
+  version: 3.3.2
   replicas: 3
   resources:
     requests:
@@ -50,7 +50,7 @@ spec:
       targetCluster: "heimdall"
       sourceConnector:
         config:
-          replication.factor: 3
+          replication.factor: 5
           offset-syncs.topic.replication.factor: 3
           sync.topic.acls.enabled: "false"
         autoRestart:
