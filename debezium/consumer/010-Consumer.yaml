@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: imhotep-consumer
-  name: imhotep-consumer
+    app: kafka-internal-consumer
+  name: kafka-internal-consumer
   namespace: strimzi-clients
 spec:
   replicas: 30
   selector:
     matchLabels:
-      app: imhotep-consumer
+      app: kafka-internal-consumer
   template:
     metadata:
       labels:
-        app: imhotep-consumer
+        app: kafka-internal-consumer
     spec:
       containers:
-        - name: imhotep-consumer
+        - name: kafka-internal-consumer
           image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
           imagePullPolicy: Always
           resources:
