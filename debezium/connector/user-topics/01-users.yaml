@@ -14,96 +14,67 @@ spec:
       - resource:
           type: group
           name: imhotep-cluster
-        operation: Read
+        operations:
+          - Create
+          - Describe
+          - Read
+          - AlterConfigs
+          - DescribeConfigs
       - resource:
           type: topic
           name: imhotep-cluster-offsets
-        operation: Read
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+          - DescribeConfigs
       - resource:
           type: topic
           name: imhotep-cluster-offsets
-        operation: Describe
-      - resource:
-          type: topic
-          name: imhotep-cluster-offsets
-        operation: Write
-      - resource:
-          type: topic
-          name: imhotep-cluster-offsets
-        operation: Describe
-      - resource:
-          type: topic
-          name: imhotep-cluster-offsets
-        operation: Create
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+          - DescribeConfigs
       - resource:
           type: topic
           name: imhotep-cluster-configs
-        operation: Read
-      - resource:
-          type: topic
-          name: imhotep-cluster-configs
-        operation: Describe
-      - resource:
-          type: topic
-          name: imhotep-cluster-configs
-        operation: Write
-      - resource:
-          type: topic
-          name: imhotep-cluster-configs
-        operation: Describe
-      - resource:
-          type: topic
-          name: imhotep-cluster-configs
-        operation: Create
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+          - DescribeConfigs
       - resource:
           type: topic
           name: imhotep-cluster-status
-        operation: Read
-      - resource:
-          type: topic
-          name: imhotep-cluster-status
-        operation: Describe
-      - resource:
-          type: topic
-          name: imhotep-cluster-status
-        operation: Write
-      - resource:
-          type: topic
-          name: imhotep-cluster-status
-        operation: Describe
-      - resource:
-          type: topic
-          name: imhotep-cluster-status
-        operation: Create
-      - resource:
-          type: topic
-          name: imhotep-cluster-status
-        operation: DescribeConfigs
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+          - DescribeConfigs
       # ???
       - resource:
           type: cluster
-        operation: Describe
-      - resource:
-          type: cluster
-        operation: DescribeConfigs
-      - resource:
-          type: cluster
-        operation: Alter
+        operations:
+          - Describe
+          - Alter
+          - DescribeConfigs
       # Connector topics
       - resource:
           type: group
           name: connect-
           patternType: prefix
-        operation: Read
+        operations: 
+          - Read
       - resource:
           type: topic
           name: postgres.public.crypto
-        operation: Write
-      - resource:
-          type: topic
-          name: postgres.public.crypto
-        operation: Read
-      - resource:
-          type: topic
-          name: postgres.public.crypto
-        operation: Describe
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
