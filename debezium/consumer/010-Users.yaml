@@ -2,6 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
   name: imhotep-consumer
+  namespace: strimzi-kafka
   labels:
     strimzi.io/cluster: anubis
 spec:
@@ -10,7 +11,6 @@ spec:
   authorization:
     type: simple
     acls:
-      # Source topics
       - resource:
           type: topic
           name: postgres.public.crypto
