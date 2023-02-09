@@ -12,9 +12,9 @@ spec:
   config:
     database.hostname: postgresql.debezium-postgresql.svc.cluster.local
     database.port: 5432
-    database.user: ${secrets:debezium-test/imhotep-secret:username}
-    database.password: ${secrets:debezium-test/imhotep-secret:password}
-    database.dbname: ${secrets:debezium-test/imhotep-secret:database}
+    database.user: ${secrets:strimzi-kafka/imhotep-secret:username}
+    database.password: ${secrets:strimzi-kafka/imhotep-secret:password}
+    database.dbname: ${secrets:strimzi-kafka/imhotep-secret:database}
     topic.prefix: postgres
     slot.name: debezium
     table.include.list: public.crypto
