@@ -28,3 +28,27 @@ roleRef:
   kind: Role
   name: imhotep-client-role
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: imhotep-internal-client-role
+  namespace: debezium-postgresql
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: imhotep-client-internal-role-binding
+  namespace: debezium-postgresql
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: debezium-postgresql
+roleRef:
+  kind: Role
+  name: imhotep-internal-client-role
+  apiGroup: rbac.authorization.k8s.io
