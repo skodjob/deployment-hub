@@ -12,3 +12,17 @@ spec:
     retention.ms: 2629800000
     segment.bytes: 107374182
     min.insync.replicas: 3
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: mysql.crypto
+  labels:
+    strimzi.io/cluster: anubis
+spec:
+  partitions: 80
+  replicas: 5
+  config:
+    retention.ms: 2629800000
+    segment.bytes: 107374182
+    min.insync.replicas: 3
