@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: imhotep-consumer
-  namespace: debezium-postgresql
+  namespace: debezium-consumers
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -23,7 +23,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: debezium-postgresql
+    namespace: debezium-consumers
 roleRef:
   kind: Role
   name: imhotep-client-role
@@ -33,7 +33,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: imhotep-internal-client-role
-  namespace: debezium-postgresql
+  namespace: strimzi-kafka
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
@@ -43,11 +43,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: imhotep-client-internal-role-binding
-  namespace: debezium-postgresql
+  namespace: strimzi-kafka
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: debezium-postgresql
+    namespace: debezium-consumers
 roleRef:
   kind: Role
   name: imhotep-internal-client-role
