@@ -1,0 +1,77 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: imhotep-mysql
+  labels:
+    app: imhotep-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imhotep-mysql
+      deployment: imhotep-mysql
+  template:
+    metadata:
+      labels:
+        app: imhotep-mysql
+        deployment: imhotep-mysql
+    spec:
+      containers:
+        - resources: {}
+          name: mysql
+          env:
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: imhotep-mysql-secret
+                  key: password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: imhotep-mysql-secret
+                  key: root
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: imhotep-mysql-secret
+                  key: username
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: imhotep-mysql-secret
+                  key: database
+      ports:
+        - containerPort: 3306
+          protocol: TCP
+        - containerPort: 33060
+          protocol: TCP
+      volumeMounts:
+        - name: imhotep-mysql-volume
+          mountPath: /var/lib/mysql
+      livenessProbe:
+        initialDelaySeconds: 30
+        tcpSocket:
+          port: 3306
+        timeoutSeconds: 1
+      readinessProbe:
+        exec:
+          command:
+            - "/bin/sh"
+            - "-i"
+            - "-c"
+            - "MYSQL_PWD=\"$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'"
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+      terminationMessagePolicy: File
+      terminationMessagePath: /dev/termination-log
+      image: quay.io/tealc/debezium-mysql@sha256:6a530f76c5d7a50360f17332f402f3d6cda960ea7a8550e89a5dc5880c507a51
+      imagePullPolicy: Always
+      restartPolicy: Always
+      volumes:
+        - name: imhotep-mysql-volume
+          persistentVolumeClaim:
+            claimName: imhotep-mysql-pv-claim
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+  strategy:
+    type: Recreate

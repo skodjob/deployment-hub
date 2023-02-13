@@ -1,5 +1,4 @@
 ---
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -16,4 +15,17 @@ rules:
   - apiGroups: [""]
     resources: ["secrets"]
     resourceNames: ["imhotep-secret"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: imhotep-mysql-role
+  namespace: debezium-mysql
+  labels:
+    app: imhotep
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["imhotep-mysql-secret"]
     verbs: ["get"]
