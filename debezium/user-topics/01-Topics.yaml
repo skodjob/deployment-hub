@@ -30,13 +30,12 @@ spec:
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: mysql-schemahistory
+  name: mysql
   labels:
     strimzi.io/cluster: anubis
 spec:
-  partitions: 80
+  partitions: 1
   replicas: 5
   config:
     retention.ms: 2629800000
     segment.bytes: 107374182
-    min.insync.replicas: 3
