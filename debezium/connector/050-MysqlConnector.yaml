@@ -26,3 +26,9 @@ spec:
     schema.history.internal.consumer.ssl.keystore.key: ${secrets:strimzi-kafka/imhotep-consumer:user.key}
     schema.history.internal.consumer.ssl.truststore.type: PEM
     schema.history.internal.consumer.ssl.truststore.certificates: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+    schema.history.internal.producer.security.protocol: SSL
+    schema.history.internal.producer.ssl.keystore.type: PEM
+    schema.history.internal.producer.ssl.keystore.certificate.chain: ${secrets:strimzi-kafka/imhotep-consumer:user.crt}
+    schema.history.internal.producer.ssl.keystore.key: ${secrets:strimzi-kafka/imhotep-consumer:user.key}
+    schema.history.internal.producer.ssl.truststore.type: PEM
+    schema.history.internal.producer.ssl.truststore.certificates: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
