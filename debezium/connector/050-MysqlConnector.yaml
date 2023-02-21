@@ -18,5 +18,11 @@ spec:
     database.server.id: 223344
     topic.prefix: mysql
     table.include.list: crypto
-    schema.history.internal.kafka.bootstrap.servers: anubis-kafka-bootstrap:9092
+    schema.history.internal.kafka.bootstrap.servers: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
     schema.history.internal.kafka.topic: schema-changes.crypto
+    schema.history.internal.consumer.security.protocol: SSL
+    schema.history.internal.consumer.ssl.keystore.type: PEM
+    schema.history.internal.consumer.ssl.keystore.certificate.chain: ${secrets:strimzi-kafka/imhotep-consumer:user.crt}
+    schema.history.internal.consumer.ssl.keystore.key: ${secrets:strimzi-kafka/imhotep-consumer:user.key}
+    schema.history.internal.consumer.ssl.truststore.type: PEM
+    schema.history.internal.consumer.ssl.truststore.certificates: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
