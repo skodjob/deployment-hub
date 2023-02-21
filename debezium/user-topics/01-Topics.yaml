@@ -43,7 +43,20 @@ spec:
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: mysql-schema-changes
+  name: schema-changes.crypto
+  labels:
+    strimzi.io/cluster: anubis
+spec:
+  partitions: 1
+  replicas: 5
+  config:
+    retention.ms: 2629800000
+    segment.bytes: 107374182
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: mysql-schemahistory
   labels:
     strimzi.io/cluster: anubis
 spec:
