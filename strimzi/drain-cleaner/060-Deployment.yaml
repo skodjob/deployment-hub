@@ -18,7 +18,7 @@ spec:
       serviceAccountName: strimzi-drain-cleaner
       containers:
         - name: strimzi-drain-cleaner
-          image: quay.io/strimzi/drain-cleaner@sha256:672952c8e5933ffce89e313a9d89c75b2fad333067b6c85d581d6271f4b4b817
+          image: quay.io/strimzi/drain-cleaner@sha256:5084ddfa3f1f3c538fab900c2649bea9e9dda76de9d8aa30b2467fda40e8bfd5
           ports:
             - containerPort: 8080
               name: http
@@ -45,6 +45,8 @@ spec:
             - name: webhook-certificates
               mountPath: "/etc/webhook-certificates"
               readOnly: true
+            - name: tmp-dir
+              mountPath: "/tmp"
           livenessProbe:
             httpGet:
               path: /health
@@ -61,5 +63,7 @@ spec:
         - name: webhook-certificates
           secret:
             secretName: strimzi-drain-cleaner
+        - name: tmp-dir
+          emptyDir: {}
   strategy:
     type: RollingUpdate
