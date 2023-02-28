@@ -1,23 +1,23 @@
-apiVersion: kafka.strimzi.io/v1beta2
-kind: KafkaConnector
-metadata:
-  name: imhotep-postgres
-  labels:
-    strimzi.io/cluster: imhotep
-    app: imhotep
-spec:
-  class: io.debezium.connector.postgresql.PostgresConnector
-  autoRestart:
-    enabled: true
-  config:
-    database.hostname: imhotep-postgresql.debezium-postgresql.svc.cluster.local
-    database.port: 5432
-    database.user: ${secrets:strimzi-kafka/imhotep-secret:username}
-    database.password: ${secrets:strimzi-kafka/imhotep-secret:password}
-    database.dbname: ${secrets:strimzi-kafka/imhotep-secret:database}
-    topic.prefix: postgres
-    slot.name: debezium
-    table.include.list: public.crypto
-    plugin.name: pgoutput
-    schema.history.internal.kafka.bootstrap.servers: anubis-kafka-bootstrap:9092
-    schema.history.internal.kafka.topic: schema-changes.crypto
+# apiVersion: kafka.strimzi.io/v1beta2
+# kind: KafkaConnector
+# metadata:
+#   name: imhotep-postgres
+#   labels:
+#     strimzi.io/cluster: imhotep
+#     app: imhotep
+# spec:
+#   class: io.debezium.connector.postgresql.PostgresConnector
+#   autoRestart:
+#     enabled: true
+#   config:
+#     database.hostname: imhotep-postgresql.debezium-postgresql.svc.cluster.local
+#     database.port: 5432
+#     database.user: ${secrets:strimzi-kafka/imhotep-secret:username}
+#     database.password: ${secrets:strimzi-kafka/imhotep-secret:password}
+#     database.dbname: ${secrets:strimzi-kafka/imhotep-secret:database}
+#     topic.prefix: postgres
+#     slot.name: debezium
+#     table.include.list: public.crypto
+#     plugin.name: pgoutput
+#     schema.history.internal.kafka.bootstrap.servers: anubis-kafka-bootstrap:9092
+#     schema.history.internal.kafka.topic: schema-changes.crypto
