@@ -1,0 +1,40 @@
+---
+apiVersion: apps.3scale.net/v1alpha1
+kind: APIManager
+  name: 3scale-aws
+spec:
+  apicast:
+    managementAPI: status
+    openSSLVerify: false
+    productionSpec:
+      replicas: 1
+    registryURL: http://apicast-staging:8090/policies
+    responseCodes: true
+    stagingSpec:
+      replicas: 1
+      customPolicies: []
+  appLabel: 3scale-api-management
+  backend:
+    cronSpec: {}
+    listenerSpec:
+      replicas: 1
+    workerSpec: {}
+  imageStreamTagImportInsecure: false
+  resourceRequirementsEnabled: true
+  system:
+    appSpec: {}
+    fileStorage:
+      simpleStorageService:
+        configurationSecretRef:
+          name: aws-secret
+    sidekiqSpec: {}
+    sphinxSpec: {}
+  tenantName: 3scale
+  zync:
+    appSpec: {}
+    queSpec: {}
+
+  monitoring:
+    enabled: true
+
+  wildcardDomain: threescale.apps.worker-02.strimzi.app-services-dev.net
