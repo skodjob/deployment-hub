@@ -1,0 +1,21 @@
+apiVersion: mongodb.com/v1
+kind: MongoDB
+metadata:
+  name: sharded-mongo
+spec:
+  configServerCount: 1
+  credentials: mongodb-ops-manager-admin-key
+  members: 3
+  mongodsPerShardCount: 2
+  mongosCount: 1
+  opsManager:
+    configMapRef:
+      name: sharded-mongo-config
+  persistent: true
+  shardCount: 2
+  type: ShardedCluster
+  version: 5.0.14-ent
+  security:
+    authentication:
+      enabled : true
+      modes: ["SCRAM"]

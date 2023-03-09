@@ -1,0 +1,22 @@
+apiVersion: mongodb.com/v1
+kind: MongoDBUser
+metadata:
+  name: shard-user
+spec:
+  passwordSecretKeyRef:
+    name: mongo-user-secret
+    # Match to metadata.name of the User Secret
+    key: password
+  username: shardUser
+  db: "admin" #
+  mongodbResourceRef:
+    name: sharded-mongo
+  roles:
+    - db: "admin"
+      name: "clusterAdmin"
+    - db: "admin"
+      name: "userAdminAnyDatabase"
+    - db: "admin"
+      name: "readWrite"
+    - db: "admin"
+      name: "userAdminAnyDatabase"
