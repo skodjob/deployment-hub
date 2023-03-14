@@ -1,0 +1,20 @@
+apiVersion: mongodb.com/v1
+kind: MongoDB
+metadata:
+  name: mongo-replica
+spec:
+  configServerCount: 1
+  credentials: mongodb-ops-manager-admin-key
+  members: 7
+  mongosCount: 1
+  opsManager:
+    configMapRef:
+      name: sharded-mongo-config
+  persistent: true
+  shardCount: 2
+  type: ReplicaSet
+  version: 5.0.14-ent
+  security:
+    authentication:
+      enabled: true
+      modes: ["SCRAM"]
