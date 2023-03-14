@@ -1,0 +1,12 @@
+apiVersion: mongodb.com/v1
+kind: MongoDBOpsManager
+metadata:
+  name: ops-manager
+spec:
+  version: "6.0.0"
+  adminCredentials: ops-manager-admin-secret
+  externalConnectivity:
+    type: NodePort
+  applicationDatabase:
+    members: 3
+    version: "5.0.14-ent"

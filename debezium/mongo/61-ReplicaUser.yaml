@@ -1,0 +1,28 @@
+apiVersion: mongodb.com/v1
+kind: MongoDBUser
+metadata:
+  name: replica-user
+spec:
+  passwordSecretKeyRef:
+    name: mongo-user-secret
+    # Match to metadata.name of the User Secret
+    key: password
+  username: replicaUser
+  db: "admin" #
+  mongodbResourceRef:
+    name: mongo-replica
+  roles:
+    - db: admin
+      name: clusterAdmin
+    - db: admin
+      name: userAdminAnyDatabase
+    - db: admin
+      name: readWrite
+    - db: admin
+      name: userAdminAnyDatabase
+    - db: admin
+      name: dbAdmin
+    - db: admin
+      name: readAnyDatabase
+    - db: local
+      name: read
