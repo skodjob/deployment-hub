@@ -1,17 +1,16 @@
----
-# TODO - check JVM usage - it doesn't receive any data from the datasource
 apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDashboard
 metadata:
   labels:
-    app: strimzi
+    app: tealc
     monitoring-key: tealc
-  name: strimzi-kafka-bridge-update
+    project: tealc
+  name: argo-monitoring-update
 spec:
   datasources:
     - datasourceName: tealc-thanos
       inputName: DS_THANOS
-  customFolderName: "strimzi"
+  customFolderName: "tealc"
   json: |
     {
       "annotations": {
@@ -30,140 +29,45 @@ spec:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
-      "id": null,
+      "id": 2,
+      "iteration": 1636016175611,
       "links": [],
       "panels": [
         {
+          "collapsed": false,
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
             "y": 0
           },
-          "id": 40,
+          "id": 68,
+          "panels": [],
           "title": "Overview",
           "type": "row"
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
           "datasource": "${DS_THANOS}",
-          "description": "",
           "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": null
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
+            "defaults": {},
             "overrides": []
-          },
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
           },
           "gridPos": {
             "h": 4,
-            "w": 4,
+            "w": 2,
             "x": 0,
             "y": 1
           },
-          "id": 19,
-          "interval": null,
+          "id": 26,
           "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
           "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            }
+            "content": "![argoimage](https://avatars1.githubusercontent.com/u/30269780?s=110&v=4)",
+            "mode": "markdown"
           },
-          "pluginVersion": "7.0.3",
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "sum(strimzi_bridge_http_server_active_connections{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"})",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": "",
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "HTTP connections",
-          "type": "singlestat",
-          "valueFontSize": "200%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "pluginVersion": "7.5.11",
+          "transparent": true,
+          "type": "text"
         },
         {
           "cacheTimeout": null,
@@ -175,30 +79,11 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
-          "description": "",
           "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": null
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
+            "defaults": {},
             "overrides": []
           },
-          "format": "none",
+          "format": "dtdurations",
           "gauge": {
             "maxValue": 100,
             "minValue": 0,
@@ -208,11 +93,11 @@ spec:
           },
           "gridPos": {
             "h": 4,
-            "w": 4,
-            "x": 4,
+            "w": 3,
+            "x": 2,
             "y": 1
           },
-          "id": 20,
+          "id": 32,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -229,20 +114,6 @@ spec:
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            }
-          },
-          "pluginVersion": "7.0.3",
           "postfix": "",
           "postfixFontSize": "50%",
           "prefix": "",
@@ -263,20 +134,16 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_bridge_http_server_active_requests{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"})",
+              "expr": "time() - max(process_start_time_seconds{job=~\"tealc.*-server-metrics\",namespace=~\"$namespace\"})",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
+              "refId": "A" 
             }
           ],
           "thresholds": "",
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "HTTP requests being processed",
+          "title": "Uptime",
           "type": "singlestat",
-          "valueFontSize": "200%",
+          "valueFontSize": "70%",
           "valueMaps": [
             {
               "op": "=",
@@ -296,28 +163,8 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
-          "description": "",
           "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": null
-              },
-              "mappings": [],
-              "noValue": "0",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
+            "defaults": {},
             "overrides": []
           },
           "format": "none",
@@ -330,11 +177,100 @@ spec:
           },
           "gridPos": {
             "h": 4,
-            "w": 4,
+            "w": 3,
+            "x": 5,
+            "y": 1
+          },
+          "id": 94,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "count(count by (server) (argocd_cluster_info{namespace=~\"$namespace\"}))",
+              "format": "time_series",
+              "instant": false,
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Clusters",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "0",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
             "x": 8,
             "y": 1
           },
-          "id": 43,
+          "id": 75,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -351,20 +287,6 @@ spec:
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            }
-          },
-          "pluginVersion": "7.0.3",
           "postfix": "",
           "postfixFontSize": "50%",
           "prefix": "",
@@ -376,34 +298,34 @@ spec:
               "to": "null"
             }
           ],
+          "repeat": null,
+          "repeatDirection": "h",
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
             "lineColor": "rgb(31, 120, 193)",
-            "show": false
+            "show": true
           },
           "tableColumn": "",
           "targets": [
             {
-              "expr": "count(strimzi_bridge_kafka_producer_count{clusterName=~\"OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(argocd_app_info{namespace=~\"$namespace\",dest_server=~\"$cluster\",health_status=~\"$health_status\",sync_status=~\"$sync_status\"})",
               "format": "time_series",
-              "instant": true,
-              "interval": "",
+              "instant": false,
               "intervalFactor": 1,
-              "legendFormat": "",
               "refId": "A"
             }
           ],
           "thresholds": "",
           "timeFrom": null,
           "timeShift": null,
-          "title": "KafkaProducer instances",
+          "title": "Applications",
           "type": "singlestat",
-          "valueFontSize": "200%",
+          "valueFontSize": "80%",
           "valueMaps": [
             {
               "op": "=",
-              "text": "0",
+              "text": "N/A",
               "value": "null"
             }
           ],
@@ -419,28 +341,8 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
-          "description": "",
           "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": null
-              },
-              "mappings": [],
-              "noValue": "0",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
+            "defaults": {},
             "overrides": []
           },
           "format": "none",
@@ -453,11 +355,11 @@ spec:
           },
           "gridPos": {
             "h": 4,
-            "w": 4,
-            "x": 12,
+            "w": 3,
+            "x": 11,
             "y": 1
           },
-          "id": 44,
+          "id": 107,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -474,20 +376,6 @@ spec:
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            }
-          },
-          "pluginVersion": "7.0.3",
           "postfix": "",
           "postfixFontSize": "50%",
           "prefix": "",
@@ -503,26 +391,24 @@ spec:
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
             "lineColor": "rgb(31, 120, 193)",
-            "show": false
+            "show": true
           },
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_bridge_kafka_producer_connection_count{clusterName=~\"OPENSHIFT_CLUSTER\"})",
+              "expr": "count(count by (repo) (argocd_app_info{namespace=~\"$namespace\"}))",
               "format": "time_series",
-              "instant": true,
-              "interval": "",
+              "instant": false,
               "intervalFactor": 1,
-              "legendFormat": "",
               "refId": "A"
             }
           ],
           "thresholds": "",
           "timeFrom": null,
           "timeShift": null,
-          "title": "KafkaProducers connections",
+          "title": "Repositories",
           "type": "singlestat",
-          "valueFontSize": "200%",
+          "valueFontSize": "80%",
           "valueMaps": [
             {
               "op": "=",
@@ -534,22 +420,23 @@ spec:
         },
         {
           "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
           "datasource": "${DS_THANOS}",
-          "description": "",
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "align": null
+              "color": {
+                "mode": "thresholds"
               },
-              "mappings": [],
-              "noValue": "0",
+              "mappings": [
+                {
+                  "id": 0,
+                  "op": "=",
+                  "text": "0",
+                  "type": 1,
+                  "value": "null"
+                }
+              ],
+              "max": 100,
+              "min": 0,
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -562,275 +449,229 @@ spec:
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "none"
             },
             "overrides": []
           },
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
           "gridPos": {
             "h": 4,
-            "w": 4,
-            "x": 16,
+            "w": 3,
+            "x": 14,
             "y": 1
           },
-          "id": 26,
-          "interval": null,
+          "id": 100,
           "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
           "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "lastNotNull"
               ],
               "fields": "",
               "values": false
-            }
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "text": {}
           },
-          "pluginVersion": "7.0.3",
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
+          "pluginVersion": "7.5.11",
+          "repeatDirection": "h",
           "targets": [
             {
-              "expr": "sum(strimzi_bridge_kafka_consumer_last_heartbeat_seconds_ago{clusterName=~\"OPENSHIFT_CLUSTER\"} != bool -1)",
+              "expr": "sum(argocd_app_info{namespace=~\"$namespace\",dest_server=~\"$cluster\"})",
               "format": "time_series",
               "instant": true,
-              "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
               "refId": "A"
             }
           ],
-          "thresholds": "",
           "timeFrom": null,
           "timeShift": null,
-          "title": "KafkaConsumer instances",
-          "type": "singlestat",
-          "valueFontSize": "200%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "0",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "title": "Operations",
+          "type": "gauge"
         },
         {
+          "aliasColors": {},
+          "bars": false,
           "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_THANOS}",
-          "description": "",
+          "decimals": null,
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "align": null
-              },
-              "mappings": [],
-              "noValue": "0",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
+              "links": []
             },
             "overrides": []
           },
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
+          "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 4,
-            "w": 4,
-            "x": 20,
+            "w": 7,
+            "x": 17,
             "y": 1
           },
-          "id": 42,
-          "interval": null,
+          "hiddenSeries": false,
+          "id": 28,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
           "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
           "nullPointMode": "connected",
-          "nullText": null,
           "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            }
+            "alertThreshold": true
           },
-          "pluginVersion": "7.0.3",
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(strimzi_bridge_kafka_consumer_connection_count{clusterName=~\"OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(argocd_app_info{namespace=~\"$namespace\",dest_server=~\"$cluster\",health_status=~\"$health_status\",sync_status=~\"$sync_status\"}) by (namespace)",
               "format": "time_series",
-              "instant": true,
-              "interval": "",
+              "instant": false,
               "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{namespace}}",
               "refId": "A"
             }
           ],
-          "thresholds": "",
+          "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
-          "title": "KafkaConsumers connections",
-          "type": "singlestat",
-          "valueFontSize": "200%",
-          "valueMaps": [
+          "title": "Applications",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
             {
-              "op": "=",
-              "text": "0",
-              "value": "null"
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
           ],
-          "valueName": "current"
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
         },
         {
           "collapsed": false,
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
             "y": 5
           },
-          "id": 38,
+          "id": 77,
           "panels": [],
-          "title": "Kafka",
+          "title": "Application Status",
           "type": "row"
         },
         {
-          "aliasColors": {},
+          "aliasColors": {
+            "Degraded": "semi-dark-red",
+            "Healthy": "green",
+            "Missing": "semi-dark-purple",
+            "Progressing": "semi-dark-blue",
+            "Suspended": "semi-dark-orange",
+            "Unknown": "rgb(255, 255, 255)"
+          },
           "bars": false,
+          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
-          "description": "",
+          "decimals": null,
           "fieldConfig": {
             "defaults": {
-              "custom": {}
+              "links": []
             },
             "overrides": []
           },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 8,
+            "h": 6,
             "w": 12,
             "x": 0,
             "y": 6
           },
           "hiddenSeries": false,
-          "id": 22,
+          "id": 105,
+          "interval": "",
           "legend": {
+            "alignAsTable": true,
             "avg": false,
-            "current": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
+            "rightSide": true,
             "show": true,
+            "sideWidth": null,
+            "sort": "current",
+            "sortDesc": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null as zero",
           "options": {
-            "dataLinks": []
+            "alertThreshold": true
           },
+          "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.5.11",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -840,20 +681,22 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_kafka_producer_record_send_total{topic != \"\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (clientId, topic)",
+              "expr": "sum(argocd_app_info{namespace=~\"$namespace\",dest_server=~\"$cluster\",health_status=~\"$health_status\",sync_status=~\"$sync_status\",health_status!=\"\"}) by (health_status)",
               "format": "time_series",
+              "instant": false,
               "intervalFactor": 1,
-              "refId": "B"
+              "legendFormat": "{{health_status}}",
+              "refId": "A"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Producer rate",
+          "title": "Health Status",
           "tooltip": {
             "shared": true,
-            "sort": 0,
+            "sort": 2,
             "value_type": "individual"
           },
           "type": "graph",
@@ -867,8 +710,8 @@ spec:
           "yaxes": [
             {
               "format": "short",
-              "label": "records/sec",
-              "logBase": 1,
+              "label": null,
+              "logBase": 2,
               "max": null,
               "min": null,
               "show": true
@@ -888,45 +731,65 @@ spec:
           }
         },
         {
-          "aliasColors": {},
+          "aliasColors": {
+            "Degraded": "semi-dark-red",
+            "Healthy": "green",
+            "Missing": "semi-dark-purple",
+            "OutOfSync": "semi-dark-yellow",
+            "Progressing": "semi-dark-blue",
+            "Suspended": "semi-dark-orange",
+            "Synced": "semi-dark-green",
+            "Unknown": "rgb(255, 255, 255)"
+          },
           "bars": false,
+          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
-          "description": "",
+          "decimals": null,
           "fieldConfig": {
             "defaults": {
-              "custom": {}
+              "links": []
             },
             "overrides": []
           },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 8,
+            "h": 6,
             "w": 12,
             "x": 12,
             "y": 6
           },
           "hiddenSeries": false,
-          "id": 24,
+          "id": 106,
+          "interval": "",
           "legend": {
+            "alignAsTable": true,
             "avg": false,
-            "current": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
+            "rightSide": true,
             "show": true,
+            "sideWidth": null,
+            "sort": "current",
+            "sortDesc": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null as zero",
           "options": {
-            "dataLinks": []
+            "alertThreshold": true
           },
+          "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.5.11",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -936,105 +799,11 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_kafka_producer_byte_total{topic != \"\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (clientId, topic)",
+              "expr": "sum(argocd_app_info{namespace=~\"$namespace\",dest_server=~\"$cluster\",health_status=~\"$health_status\",sync_status=~\"$sync_status\",health_status!=\"\"}) by (sync_status)",
               "format": "time_series",
+              "instant": false,
               "intervalFactor": 1,
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Producer rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "bytes/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 14
-          },
-          "hiddenSeries": false,
-          "id": 45,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(strimzi_bridge_kafka_producer_request_latency_avg{type = \"producer-metrics\", clusterName=~\"OPENSHIFT_CLUSTER\"}) by (clientId)",
-              "format": "time_series",
-              "intervalFactor": 1,
+              "legendFormat": "{{sync_status}}",
               "refId": "A"
             }
           ],
@@ -1042,10 +811,10 @@ spec:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Average producer request latency",
+          "title": "Sync Status",
           "tooltip": {
             "shared": true,
-            "sort": 0,
+            "sort": 2,
             "value_type": "individual"
           },
           "type": "graph",
@@ -1059,8 +828,8 @@ spec:
           "yaxes": [
             {
               "format": "short",
-              "label": "ms",
-              "logBase": 1,
+              "label": null,
+              "logBase": 2,
               "max": null,
               "min": null,
               "show": true
@@ -1080,866 +849,81 @@ spec:
           }
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
+          "collapsed": false,
           "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 14
-          },
-          "hiddenSeries": false,
-          "id": 25,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_kafka_consumer_bytes_consumed_total{topic != \"\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (clientId, topic)",
-              "format": "time_series",
-              "intervalFactor": 1,
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Consumer rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "bytes/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 22
-          },
-          "hiddenSeries": false,
-          "id": 23,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_kafka_consumer_records_consumed_total{topic != \"\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (clientId, topic)",
-              "format": "time_series",
-              "hide": false,
-              "intervalFactor": 1,
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Consumer rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "records/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 22
-          },
-          "hiddenSeries": false,
-          "id": 28,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(strimzi_bridge_kafka_consumer_assigned_partitions{clusterName=~\"OPENSHIFT_CLUSTER\"}) by (clientId)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Consumer Assigned Partitions",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "partitions",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 30
-          },
-          "hiddenSeries": false,
-          "id": 46,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(strimzi_bridge_kafka_consumer_poll_idle_ratio_avg{clusterName=~\"OPENSHIFT_CLUSTER\"}) by (clientId)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Average consumer idle poll",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 30
-          },
-          "hiddenSeries": false,
-          "id": 41,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_kafka_consumer_commit_total{clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (clientId)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Consumer commit rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "commits/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 38
-          },
-          "hiddenSeries": false,
-          "id": 47,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(strimzi_bridge_kafka_consumer_commit_latency_avg{clusterName=~\"OPENSHIFT_CLUSTER\"}) by (clientId)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Consumer commits latency",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "ms",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 38
-          },
-          "hiddenSeries": false,
-          "id": 48,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(strimzi_bridge_kafka_consumer_fetch_rate{clusterName=~\"OPENSHIFT_CLUSTER\"}) by (clientId)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Consumer fetch rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "requests/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 46
-          },
-          "hiddenSeries": false,
-          "id": 49,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(strimzi_bridge_kafka_consumer_fetch_latency_avg{clusterName=~\"OPENSHIFT_CLUSTER\"}) by (clientId)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Average consumer fetch latency",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "ms",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 54
+            "y": 12
           },
-          "id": 36,
-          "title": "HTTP",
+          "id": 104,
+          "panels": [],
+          "title": "Sync Stats",
           "type": "row"
         },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
-          "description": "",
+          "decimals": null,
           "fieldConfig": {
             "defaults": {
-              "custom": {},
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
+              "links": []
             },
             "overrides": []
           },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 8,
-            "w": 12,
+            "h": 6,
+            "w": 24,
             "x": 0,
-            "y": 55
+            "y": 13
           },
           "hiddenSeries": false,
-          "id": 15,
+          "id": 56,
+          "interval": "",
           "legend": {
+            "alignAsTable": true,
             "avg": false,
-            "current": false,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
             "max": false,
             "min": false,
+            "rightSide": true,
             "show": true,
-            "total": false,
-            "values": false
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
           "options": {
-            "dataLinks": []
+            "alertThreshold": true
           },
+          "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "7.0.3",
-          "pointradius": 2,
+          "pluginVersion": "7.5.11",
+          "pointradius": 1,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "stack": false,
+          "stack": true,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (method)",
+              "expr": "sum(round(increase(argocd_app_sync_total{namespace=~\"$namespace\",dest_server=~\"$cluster\"}[$interval]))) by ($grouping)",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{$grouping}}",
               "refId": "A"
             }
           ],
@@ -1947,10 +931,10 @@ spec:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Requests rate by HTTP method",
+          "title": "Sync Activity",
           "tooltip": {
             "shared": true,
-            "sort": 0,
+            "sort": 2,
             "value_type": "individual"
           },
           "type": "graph",
@@ -1963,620 +947,16 @@ spec:
           },
           "yaxes": [
             {
+              "decimals": 0,
               "format": "short",
-              "label": "requests/sec",
+              "label": "",
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 55
-          },
-          "hiddenSeries": false,
-          "id": 17,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "Requests",
-              "refId": "A"
-            },
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^2..$\", container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "2XX",
-              "refId": "B"
-            },
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^4..$\", container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "4XX",
-              "refId": "C"
-            },
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^5..$\", container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "5XX",
-              "refId": "D"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "HTTP Requests and Response rate by codes",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "requests/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 63
-          },
-          "hiddenSeries": false,
-          "id": 13,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_bytes_written_total{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (container)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "HTTP send rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "bytes/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 63
-          },
-          "hiddenSeries": false,
-          "id": 12,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_bytes_read_total{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (container)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "HTTP receive rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "bytes/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 71
-          },
-          "hiddenSeries": false,
-          "id": 2,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/topics/[^/]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
-              "format": "time_series",
-              "intervalFactor": 1,
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Send messages rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "requests/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 71
-          },
-          "hiddenSeries": false,
-          "id": 3,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/topics/.+/partitions/[0-9]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Send messages To Partition rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "requests/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 0,
-            "y": 79
-          },
-          "hiddenSeries": false,
-          "id": 4,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/consumers/[^/]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Consumer instance creation rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "requests/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
+              "decimals": -12,
               "format": "short",
               "label": "",
               "logBase": 1,
@@ -2596,251 +976,61 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
-          "description": "",
+          "decimals": null,
           "fieldConfig": {
             "defaults": {
-              "custom": {}
+              "links": []
             },
             "overrides": []
           },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 8,
-            "y": 79
-          },
-          "hiddenSeries": false,
-          "id": 7,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/consumers/.+/instances/.+/subscription\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Subscribe to topics rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "requests/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 16,
-            "y": 79
-          },
-          "hiddenSeries": false,
-          "id": 9,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"DELETE\",path=~\"/consumers/.+/instances/.+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
-              "format": "time_series",
-              "instant": false,
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Consumer instance deletion rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "requests/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
+            "h": 5,
+            "w": 24,
             "x": 0,
-            "y": 87
+            "y": 19
           },
           "hiddenSeries": false,
-          "id": 8,
+          "id": 73,
           "legend": {
+            "alignAsTable": true,
             "avg": false,
             "current": false,
+            "hideEmpty": true,
+            "hideZero": false,
             "max": false,
             "min": false,
+            "rightSide": true,
             "show": true,
-            "total": false,
-            "values": false
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "null as zero",
+          "nullPointMode": "null",
           "options": {
-            "dataLinks": []
+            "alertThreshold": true
           },
+          "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.5.11",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "stack": false,
+          "stack": true,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"GET\",path=~\"/consumers/.+/instances/.+/records\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
+              "expr": "sum(round(increase(argocd_app_sync_total{namespace=~\"$namespace\",phase=~\"Error|Failed\",dest_server=~\"$cluster\"}[$interval]))) by ($grouping, phase)",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{phase}}: {{$grouping}}",
               "refId": "A"
             }
           ],
@@ -2848,10 +1038,10 @@ spec:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Poll for messages rate",
+          "title": "Sync Failures",
           "tooltip": {
             "shared": true,
-            "sort": 0,
+            "sort": 2,
             "value_type": "individual"
           },
           "type": "graph",
@@ -2864,16 +1054,17 @@ spec:
           },
           "yaxes": [
             {
-              "format": "short",
-              "label": "requests/sec",
+              "decimals": 0,
+              "format": "none",
+              "label": "",
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
               "format": "short",
-              "label": null,
+              "label": "",
               "logBase": 1,
               "max": null,
               "min": null,
@@ -2886,112 +1077,17 @@ spec:
           }
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
+          "collapsed": false,
           "datasource": "${DS_THANOS}",
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 87
-          },
-          "hiddenSeries": false,
-          "id": 10,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/consumers/.+/instances/.+/offsets\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Commit offsets rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "requests/sec",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 95
+            "y": 24
           },
-          "id": 34,
-          "title": "JVM",
+          "id": 64,
+          "panels": [],
+          "title": "Controller Stats",
           "type": "row"
         },
         {
@@ -3000,14 +1096,1856 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 25
+          },
+          "hiddenSeries": false,
+          "id": 58,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(argocd_app_reconcile_count{namespace=~\"$namespace\",dest_server=~\"$cluster\"}[$interval])) by ($grouping)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{$grouping}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Reconciliation Activity",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "cards": {
+            "cardPadding": null,
+            "cardRound": null
+          },
+          "color": {
+            "cardColor": "#b4ff00",
+            "colorScale": "sqrt",
+            "colorScheme": "interpolateSpectral",
+            "exponent": 0.5,
+            "min": null,
+            "mode": "spectrum"
+          },
+          "dataFormat": "tsbuckets",
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 31
+          },
+          "heatmap": {},
+          "hideZeroBuckets": false,
+          "highlightCards": true,
+          "id": 60,
+          "legend": {
+            "show": true
+          },
+          "links": [],
+          "reverseYBuckets": false,
+          "targets": [
+            {
+              "expr": "sum(increase(argocd_app_reconcile_bucket{namespace=~\"$namespace\"}[$interval])) by (le)",
+              "format": "heatmap",
+              "instant": false,
+              "intervalFactor": 10,
+              "legendFormat": "{{le}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Reconciliation Performance",
+          "tooltip": {
+            "show": true,
+            "showHistogram": true
+          },
+          "tooltipDecimals": 0,
+          "type": "heatmap",
+          "xAxis": {
+            "show": true
+          },
+          "xBucketNumber": null,
+          "xBucketSize": null,
+          "yAxis": {
+            "decimals": null,
+            "format": "short",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true,
+            "splitFactor": null
+          },
+          "yBucketBound": "auto",
+          "yBucketNumber": null,
+          "yBucketSize": null
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 38
+          },
+          "hiddenSeries": false,
+          "id": 80,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": null,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(argocd_app_k8s_request_total{namespace=~\"$namespace\",server=~\"$cluster\"}[$interval])) by (verb, resource_kind)",
+              "format": "time_series",
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "{{verb}} {{resource_kind}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "K8s API Activity",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 0,
+            "y": 44
+          },
+          "hiddenSeries": false,
+          "id": 96,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(workqueue_depth{namespace=~\"$namespace\",name=~\"app_.*\"}) by (name)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{name}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Workqueue Depth",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "decimals": null,
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 12,
+            "y": 44
+          },
+          "hiddenSeries": false,
+          "id": 98,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(argocd_kubectl_exec_pending{namespace=~\"$namespace\"}) by (command)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{command}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Pending kubectl run",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "collapsed": false,
+          "datasource": "${DS_THANOS}",
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 51
+          },
+          "id": 102,
+          "panels": [],
+          "title": "Controller Telemetry",
+          "type": "row"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 52
+          },
+          "hiddenSeries": false,
+          "id": 34,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "go_memstats_heap_alloc_bytes{job=~\"tealc.*-metrics\",namespace=~\"$namespace\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Memory Usage",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 59
+          },
+          "hiddenSeries": false,
+          "id": 108,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "irate(process_cpu_seconds_total{job=~\"tealc.*-metrics\",namespace=~\"$namespace\"}[20m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "CPU Usage",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 1,
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 66
+          },
+          "hiddenSeries": false,
+          "id": 62,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "go_goroutines{job=~\"tealc.*-metrics\",namespace=~\"$namespace\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Goroutines",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "collapsed": false,
+          "datasource": "${DS_THANOS}",
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 73
+          },
+          "id": 88,
+          "panels": [],
+          "title": "Cluster Stats",
+          "type": "row"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 74
+          },
+          "hiddenSeries": false,
+          "id": 90,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(argocd_cluster_api_resource_objects{namespace=~\"$namespace\",server=~\"$cluster\"}) by (server)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{server}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Resource Objects Count",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 81
+          },
+          "hiddenSeries": false,
+          "id": 92,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "  sum(argocd_cluster_api_resources{namespace=~\"$namespace\",server=~\"$cluster\"}) by (server)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{server}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "API Resources Count",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 87
+          },
+          "hiddenSeries": false,
+          "id": 86,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(argocd_cluster_events_total{namespace=~\"$namespace\",server=~\"$cluster\"}[$interval])) by (server)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{server}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Cluster Events Count",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "collapsed": true,
+          "datasource": "${DS_THANOS}",
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 94
+          },
+          "id": 70,
+          "panels": [
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "${DS_THANOS}",
+              "fill": 1,
+              "fillGradient": 0,
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 7
+              },
+              "hiddenSeries": false,
+              "id": 82,
+              "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": false,
+                "total": false,
+                "values": false
+              },
+              "lines": true,
+              "linewidth": 1,
+              "links": [],
+              "nullPointMode": "null",
+              "options": {
+                "dataLinks": []
+              },
+              "percentage": false,
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(increase(argocd_git_request_total{request_type=\"ls-remote\", namespace=~\"$namespace\"}[10m])) by (namespace)",
+                  "format": "time_series",
+                  "intervalFactor": 1,
+                  "legendFormat": "{{namespace}}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Git Requests (ls-remote)",
+              "tooltip": {
+                "shared": true,
+                "sort": 2,
+                "value_type": "individual"
+              },
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "${DS_THANOS}",
+              "fill": 1,
+              "fillGradient": 0,
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 7
+              },
+              "hiddenSeries": false,
+              "id": 84,
+              "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": false,
+                "total": false,
+                "values": false
+              },
+              "lines": true,
+              "linewidth": 1,
+              "links": [],
+              "nullPointMode": "null",
+              "options": {
+                "dataLinks": []
+              },
+              "percentage": false,
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(increase(argocd_git_request_total{request_type=\"fetch\", namespace=~\"$namespace\"}[10m])) by (namespace)",
+                  "format": "time_series",
+                  "intervalFactor": 1,
+                  "legendFormat": "{{namespace}}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Git Requests (checkout)",
+              "tooltip": {
+                "shared": true,
+                "sort": 2,
+                "value_type": "individual"
+              },
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": "",
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "cards": {
+                "cardPadding": null,
+                "cardRound": null
+              },
+              "color": {
+                "cardColor": "#b4ff00",
+                "colorScale": "sqrt",
+                "colorScheme": "interpolateSpectral",
+                "exponent": 0.5,
+                "mode": "spectrum"
+              },
+              "dataFormat": "tsbuckets",
+              "datasource": "${DS_THANOS}",
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 15
+              },
+              "heatmap": {},
+              "hideZeroBuckets": false,
+              "highlightCards": true,
+              "id": 114,
+              "legend": {
+                "show": false
+              },
+              "options": {},
+              "reverseYBuckets": false,
+              "targets": [
+                {
+                  "expr": "sum(increase(argocd_git_request_duration_seconds_bucket{request_type=\"fetch\", namespace=~\"$namespace\"}[$interval])) by (le)",
+                  "format": "heatmap",
+                  "intervalFactor": 10,
+                  "legendFormat": "{{le}}",
+                  "refId": "A"
+                }
+              ],
+              "timeFrom": null,
+              "timeShift": null,
+              "title": "Git Fetch Performance",
+              "tooltip": {
+                "show": true,
+                "showHistogram": false
+              },
+              "type": "heatmap",
+              "xAxis": {
+                "show": true
+              },
+              "xBucketNumber": null,
+              "xBucketSize": null,
+              "yAxis": {
+                "decimals": null,
+                "format": "short",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true,
+                "splitFactor": null
+              },
+              "yBucketBound": "auto",
+              "yBucketNumber": null,
+              "yBucketSize": null
+            },
+            {
+              "cards": {
+                "cardPadding": null,
+                "cardRound": null
+              },
+              "color": {
+                "cardColor": "#b4ff00",
+                "colorScale": "sqrt",
+                "colorScheme": "interpolateSpectral",
+                "exponent": 0.5,
+                "mode": "spectrum"
+              },
+              "dataFormat": "tsbuckets",
+              "datasource": "${DS_THANOS}",
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 15
+              },
+              "heatmap": {},
+              "hideZeroBuckets": false,
+              "highlightCards": true,
+              "id": 116,
+              "legend": {
+                "show": false
+              },
+              "options": {},
+              "reverseYBuckets": false,
+              "targets": [
+                {
+                  "expr": "sum(increase(argocd_git_request_duration_seconds_bucket{request_type=\"ls-remote\", namespace=~\"$namespace\"}[$interval])) by (le)",
+                  "format": "heatmap",
+                  "intervalFactor": 10,
+                  "legendFormat": "{{le}}",
+                  "refId": "A"
+                }
+              ],
+              "timeFrom": null,
+              "timeShift": null,
+              "title": "Git Ls-Remote Performance",
+              "tooltip": {
+                "show": true,
+                "showHistogram": false
+              },
+              "type": "heatmap",
+              "xAxis": {
+                "show": true
+              },
+              "xBucketNumber": null,
+              "xBucketSize": null,
+              "yAxis": {
+                "decimals": null,
+                "format": "short",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true,
+                "splitFactor": null
+              },
+              "yBucketBound": "auto",
+              "yBucketNumber": null,
+              "yBucketSize": null
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "${DS_THANOS}",
+              "fill": 1,
+              "fillGradient": 0,
+              "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 23
+              },
+              "hiddenSeries": false,
+              "id": 71,
+              "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": false,
+                "total": false,
+                "values": false
+              },
+              "lines": true,
+              "linewidth": 1,
+              "links": [],
+              "nullPointMode": "connected",
+              "options": {
+                "dataLinks": []
+              },
+              "paceLength": 10,
+              "percentage": false,
+              "pointradius": 5,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "go_memstats_heap_alloc_bytes{job=~\"tealc.*-repo-server\",namespace=~\"$namespace\"}",
+                  "format": "time_series",
+                  "intervalFactor": 1,
+                  "legendFormat": "{{pod}}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Memory Used",
+              "tooltip": {
+                "shared": true,
+                "sort": 2,
+                "value_type": "individual"
+              },
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "bytes",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "${DS_THANOS}",
+              "fill": 1,
+              "fillGradient": 0,
+              "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 31
+              },
+              "hiddenSeries": false,
+              "id": 72,
+              "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": false,
+                "total": false,
+                "values": false
+              },
+              "lines": true,
+              "linewidth": 1,
+              "links": [],
+              "nullPointMode": "null",
+              "options": {
+                "dataLinks": []
+              },
+              "paceLength": 10,
+              "percentage": false,
+              "pointradius": 5,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "go_goroutines{job=~\"tealc.*-repo-server\",namespace=~\"$namespace\"}",
+                  "format": "time_series",
+                  "intervalFactor": 1,
+                  "legendFormat": "{{pod}}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Goroutines",
+              "tooltip": {
+                "shared": true,
+                "sort": 2,
+                "value_type": "individual"
+              },
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "title": "Repo Server Stats",
+          "type": "row"
+        },
+        {
+          "collapsed": false,
+          "datasource": "${DS_THANOS}",
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 95
+          },
+          "id": 66,
+          "panels": [],
+          "title": "Server Stats",
+          "type": "row"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
-            "w": 8,
+            "w": 24,
             "x": 0,
             "y": 96
           },
-          "id": 30,
+          "hiddenSeries": false,
+          "id": 61,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "go_memstats_heap_alloc_bytes{job=~\"tealc.*-server-metrics\",namespace=~\"$namespace\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Memory Used",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 104
+          },
+          "hiddenSeries": false,
+          "id": 36,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "go_goroutines{job=~\"tealc.*-server-metrics\",namespace=~\"$namespace\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Goroutines",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 113
+          },
+          "hiddenSeries": false,
+          "id": 38,
           "legend": {
             "avg": false,
             "current": false,
@@ -3020,10 +2958,14 @@ spec:
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "null as zero",
-          "options": {},
+          "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
           "percentage": false,
-          "pointradius": 2,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -3032,9 +2974,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_memory_used_bytes{container=~\"^.+-bridge\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "go_gc_duration_seconds{job=~\"tealc.*-server-metrics\", quantile=\"1\", namespace=~\"$namespace\"}",
               "format": "time_series",
-              "intervalFactor": 1,
+              "intervalFactor": 2,
+              "legendFormat": "{{pod}}",
               "refId": "A"
             }
           ],
@@ -3042,7 +2985,332 @@ spec:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "JVM Memory Used",
+          "title": "GC Time Quantiles",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 24,
+            "x": 0,
+            "y": 122
+          },
+          "id": 54,
+          "links": [],
+          "options": {
+            "content": "#### gRPC Services:",
+            "mode": "markdown"
+          },
+          "pluginVersion": "7.5.11",
+          "transparent": true,
+          "type": "text"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "decimals": null,
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 124
+          },
+          "hiddenSeries": false,
+          "id": 40,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(grpc_server_handled_total{job=~\"tealc.*-server-metrics\",grpc_service=\"application.ApplicationService\",namespace=~\"$namespace\"}[$interval])) by (grpc_code, grpc_method)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{grpc_code}},{{grpc_method}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "ApplicationService Requests",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 124
+          },
+          "hiddenSeries": false,
+          "id": 42,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(grpc_server_handled_total{job=~\"tealc.*-server-metrics\",grpc_service=\"cluster.ClusterService\",namespace=~\"$namespace\"}[$interval])) by (grpc_code, grpc_method)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{grpc_code}},{{grpc_method}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "ClusterService Requests",
+          "tooltip": {
+            "shared": false,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 133
+          },
+          "hiddenSeries": false,
+          "id": 44,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(grpc_server_handled_total{job=~\"tealc.*-server-metrics\",grpc_service=\"project.ProjectService\",namespace=~\"$namespace\"}[$interval])) by (grpc_code, grpc_method)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{grpc_code}},{{grpc_method}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "ProjectService Requests",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -3085,30 +3353,43 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
-          "fill": 1,
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 8,
-            "y": 96
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
           },
-          "id": 31,
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 133
+          },
+          "hiddenSeries": false,
+          "id": 46,
           "legend": {
-            "avg": false,
-            "current": false,
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
             "max": false,
             "min": false,
             "show": true,
-            "total": false,
-            "values": false
+            "total": true,
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null as zero",
-          "options": {},
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
           "percentage": false,
-          "pointradius": 2,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -3117,17 +3398,26 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_pause_seconds_sum{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(increase(grpc_server_handled_total{job=~\"tealc.*-server-metrics\",grpc_service=\"repository.RepositoryService\",namespace=~\"$namespace\"}[$interval])) by (grpc_code, grpc_method)",
               "format": "time_series",
               "intervalFactor": 1,
+              "legendFormat": "{{grpc_code}},{{grpc_method}}",
               "refId": "A"
             }
           ],
-          "thresholds": [],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "yaxis": "left"
+            }
+          ],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "JVM GC Time",
+          "title": "RepositoryService Requests",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -3170,30 +3460,43 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
-          "fill": 1,
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 16,
-            "y": 96
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
           },
-          "id": 32,
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 142
+          },
+          "hiddenSeries": false,
+          "id": 48,
           "legend": {
-            "avg": false,
-            "current": false,
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
             "max": false,
             "min": false,
             "show": true,
-            "total": false,
-            "values": false
+            "total": true,
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null as zero",
-          "options": {},
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
           "percentage": false,
-          "pointradius": 2,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -3202,9 +3505,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_pause_seconds_count{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(increase(grpc_server_handled_total{job=~\"tealc.*-server-metrics\",grpc_service=\"session.SessionService\",namespace=~\"$namespace\"}[$interval])) by (grpc_code, grpc_method)",
               "format": "time_series",
               "intervalFactor": 1,
+              "legendFormat": "{{grpc_code}},{{grpc_method}}",
               "refId": "A"
             }
           ],
@@ -3212,7 +3516,7 @@ spec:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "JVM GC Count",
+          "title": "SessionService Requests",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -3248,41 +3552,679 @@ spec:
             "align": false,
             "alignLevel": null
           }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 142
+          },
+          "hiddenSeries": false,
+          "id": 49,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(grpc_server_handled_total{job=~\"tealc.*-server-metrics\",grpc_service=\"version.VersionService\",namespace=~\"$namespace\"}[$interval])) by (grpc_code, grpc_method)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{grpc_code}},{{grpc_method}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "VersionService Requests",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 151
+          },
+          "hiddenSeries": false,
+          "id": 50,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(grpc_server_handled_total{job=~\"tealc.*-server-metrics\",grpc_service=\"account.AccountService\",namespace=~\"$namespace\"}[$interval])) by (grpc_code, grpc_method)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{grpc_code}},{{grpc_method}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "AccountService Requests",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 151
+          },
+          "hiddenSeries": false,
+          "id": 99,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.11",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(increase(grpc_server_handled_total{job=~\"tealc.*-server-metrics\",grpc_service=\"settings.SettingsService\",namespace=~\"$namespace\"}[$interval])) by (grpc_code, grpc_method)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{grpc_code}},{{grpc_method}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "SettingsService Requests",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "collapsed": true,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 160
+          },
+          "id": 110,
+          "panels": [
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": null,
+              "fill": 1,
+              "fillGradient": 0,
+              "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 9
+              },
+              "hiddenSeries": false,
+              "id": 112,
+              "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+              },
+              "lines": true,
+              "linewidth": 1,
+              "nullPointMode": "null",
+              "options": {
+                "dataLinks": []
+              },
+              "percentage": false,
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(increase(argocd_redis_request_total{namespace=~\"$namespace\"}[$interval])) by (failed)",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Requests by result",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "title": "Redis Stats",
+          "type": "row"
         }
       ],
-      "refresh": "5s",
-      "schemaVersion": 18,
+      "refresh": "30s",
+      "schemaVersion": 27,
       "style": "dark",
-      "tags": [
-        "Strimzi",
-        "Kafka"
-      ],
+      "tags": [],
       "templating": {
         "list": [
           {
+            "allValue": ".*",
+            "current": {
+              "selected": false,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": "${DS_THANOS}",
+            "definition": "label_values(kube_pod_info, namespace)",
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "label": null,
+            "multi": false,
+            "name": "namespace",
+            "options": [],
+            "query": {
+              "query": "label_values(kube_pod_info, namespace)",
+              "refId": "Prometheus-namespace-Variable-Query"
+            },
+            "refresh": 1,
+            "regex": ".*argocd.*",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "auto": true,
+            "auto_count": 30,
+            "auto_min": "20m",
+            "current": {
+              "selected": false,
+              "text": "auto",
+              "value": "$__auto_interval_interval"
+            },
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "label": null,
+            "name": "interval",
+            "options": [
+              {
+                "selected": true,
+                "text": "auto",
+                "value": "$__auto_interval_interval"
+              },
+              {
+                "selected": false,
+                "text": "20m",
+                "value": "20m"
+              },
+              {
+                "selected": false,
+                "text": "5m",
+                "value": "5m"
+              },
+              {
+                "selected": false,
+                "text": "10m",
+                "value": "10m"
+              },
+              {
+                "selected": false,
+                "text": "30m",
+                "value": "30m"
+              },
+              {
+                "selected": false,
+                "text": "1h",
+                "value": "1h"
+              },
+              {
+                "selected": false,
+                "text": "2h",
+                "value": "2h"
+              },
+              {
+                "selected": false,
+                "text": "4h",
+                "value": "4h"
+              },
+              {
+                "selected": false,
+                "text": "8h",
+                "value": "8h"
+              }
+            ],
+            "query": "20m,5m,10m,30m,1h,2h,4h,8h",
+            "refresh": 2,
+            "skipUrlSync": false,
+            "type": "interval"
+          },
+          {
+            "allValue": "",
+            "current": {
+              "selected": true,
+              "text": "namespace",
+              "value": "namespace"
+            },
             "description": null,
             "error": null,
             "hide": 0,
             "includeAll": false,
-            "label": "Cluster",
+            "label": null,
             "multi": false,
-            "name": "OPENSHIFT_CLUSTER",
-            "options": [],
-            "query": "prometheus",
-            "queryValue": "",
-            "refresh": 1,
-            "regex": "worker.*",
+            "name": "grouping",
+            "options": [
+              {
+                "selected": true,
+                "text": "namespace",
+                "value": "namespace"
+              },
+              {
+                "selected": false,
+                "text": "name",
+                "value": "name"
+              },
+              {
+                "selected": false,
+                "text": "project",
+                "value": "project"
+              }
+            ],
+            "query": "namespace,name,project",
             "skipUrlSync": false,
-            "type": "datasource"
+            "type": "custom"
+          },
+          {
+            "allValue": ".*",
+            "current": {
+              "selected": false,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": "${DS_THANOS}",
+            "definition": "label_values(argocd_cluster_info, server)",
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "label": null,
+            "multi": false,
+            "name": "cluster",
+            "options": [],
+            "query": {
+              "query": "label_values(argocd_cluster_info, server)",
+              "refId": "Prometheus-cluster-Variable-Query"
+            },
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "allValue": ".*",
+            "current": {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "label": null,
+            "multi": false,
+            "name": "health_status",
+            "options": [
+              {
+                "selected": true,
+                "text": "All",
+                "value": "$__all"
+              },
+              {
+                "selected": false,
+                "text": "Healthy",
+                "value": "Healthy"
+              },
+              {
+                "selected": false,
+                "text": "Progressing",
+                "value": "Progressing"
+              },
+              {
+                "selected": false,
+                "text": "Suspended",
+                "value": "Suspended"
+              },
+              {
+                "selected": false,
+                "text": "Missing",
+                "value": "Missing"
+              },
+              {
+                "selected": false,
+                "text": "Degraded",
+                "value": "Degraded"
+              },
+              {
+                "selected": false,
+                "text": "Unknown",
+                "value": "Unknown"
+              }
+            ],
+            "query": "Healthy,Progressing,Suspended,Missing,Degraded,Unknown",
+            "skipUrlSync": false,
+            "type": "custom"
+          },
+          {
+            "allValue": ".*",
+            "current": {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "label": null,
+            "multi": false,
+            "name": "sync_status",
+            "options": [
+              {
+                "selected": true,
+                "text": "All",
+                "value": "$__all"
+              },
+              {
+                "selected": false,
+                "text": "Synced",
+                "value": "Synced"
+              },
+              {
+                "selected": false,
+                "text": "OutOfSync",
+                "value": "OutOfSync"
+              },
+              {
+                "selected": false,
+                "text": "Unknown",
+                "value": "Unknown"
+              }
+            ],
+            "query": "Synced,OutOfSync,Unknown",
+            "skipUrlSync": false,
+            "type": "custom"
           }
         ]
       },
       "time": {
-        "from": "now-5m",
+        "from": "now-30m",
         "to": "now"
       },
       "timepicker": {
         "refresh_intervals": [
+          "5s",
           "10s",
           "30s",
           "1m",
@@ -3306,5 +4248,7 @@ spec:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Kafka Bridge - update"
+      "title": "ArgoCD - update",
+      "version": 2
     }
+

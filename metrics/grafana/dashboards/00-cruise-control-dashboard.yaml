@@ -1,9 +1,18 @@
-apiVersion: v1
-kind: ConfigMap
+---
+# TODO - check CPU and Memory usage - it doesn't receive any data from the datasource
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
 metadata:
-  name: grafana-dashboard-cruise-control-config
-data:
-  cruise-control: |
+  labels:
+    app: strimzi
+    monitoring-key: tealc
+  name: strimzi-cruise-control-update
+spec:
+  datasources:
+    - datasourceName: tealc-thanos
+      inputName: DS_THANOS
+  customFolderName: "strimzi"
+  json: |
     {
       "annotations": {
         "list": [
@@ -34,7 +43,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "The number of snapshot windows that are monitored",
           "format": "none",
           "gauge": {
@@ -90,7 +99,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "kafka_cruisecontrol_loadmonitor_total_monitored_windows_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}",
+              "expr": "kafka_cruisecontrol_loadmonitor_total_monitored_windows_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "format": "time_series",
               "instant": true,
               "hide": false,
@@ -121,7 +130,7 @@ data:
             "#e5ac0e",
             "#bf1b00"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Number of time windows considered to be valid because of enough samples for computing a proposal.",
           "format": "none",
           "gauge": {
@@ -175,7 +184,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "kafka_cruisecontrol_loadmonitor_valid_windows_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}",
+              "expr": "kafka_cruisecontrol_loadmonitor_valid_windows_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "format": "time_series",
               "instant": true,
               "hide": false,
@@ -205,7 +214,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Number of ongoing executions running for proposals or rebalance",
           "format": "none",
           "gauge": {
@@ -259,7 +268,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "kafka_cruisecontrol_executor_ongoing_execution_non_kafka_assigner_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}",
+              "expr": "kafka_cruisecontrol_executor_ongoing_execution_non_kafka_assigner_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "format": "time_series",
               "instant": true,
               "hide": false,
@@ -289,7 +298,7 @@ data:
             "#FF780A",
             "#299c46"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "The current balancedness score of the Kafka cluster as calculated by the anomaly detector (every 5 minutes by default)",
           "format": "none",
           "gauge": {
@@ -343,7 +352,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "kafka_cruisecontrol_anomalydetector_balancedness_score_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}",
+              "expr": "kafka_cruisecontrol_anomalydetector_balancedness_score_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "format": "time_series",
               "instant": true,
               "hide": false,
@@ -373,7 +382,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Monitored Partition Percentage",
           "format": "percentunit",
           "gauge": {
@@ -427,7 +436,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "kafka_cruisecontrol_loadmonitor_monitored_partitions_percentage_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}",
+              "expr": "kafka_cruisecontrol_loadmonitor_monitored_partitions_percentage_value{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "format": "time_series",
               "instant": true,
               "hide": false,
@@ -464,7 +473,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Goal Violation Rate",
           "fill": 1,
           "fillGradient": 0,
@@ -506,7 +515,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_cruisecontrol_anomalydetector_goal_violation_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}[1m]))",
+              "expr": "sum(irate(kafka_cruisecontrol_anomalydetector_goal_violation_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -563,7 +572,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Disk read failures reported by Kafka",
           "fill": 1,
           "fillGradient": 0,
@@ -605,7 +614,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_cruisecontrol_anomalydetector_disk_failure_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}[1m]))",
+              "expr": "sum(irate(kafka_cruisecontrol_anomalydetector_disk_failure_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -662,7 +671,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Partition Samples Fetcher Failure Rate",
           "fill": 1,
           "fillGradient": 0,
@@ -704,7 +713,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_cruisecontrol_metricfetchermanager_partition_samples_fetcher_failure_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}[1m]))",
+              "expr": "sum(irate(kafka_cruisecontrol_metricfetchermanager_partition_samples_fetcher_failure_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -761,7 +770,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Training Samples Fetcher Failure Rate",
           "fill": 1,
           "fillGradient": 0,
@@ -803,7 +812,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_cruisecontrol_metricfetchermanager_training_samples_fetcher_failure_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}[1m]))",
+              "expr": "sum(irate(kafka_cruisecontrol_metricfetchermanager_training_samples_fetcher_failure_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -860,7 +869,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Proposal Computation Time",
           "fill": 1,
           "fillGradient": 0,
@@ -902,7 +911,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "kafka_cruisecontrol_goaloptimizer_proposal_computation_timer_max{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}",
+              "expr": "kafka_cruisecontrol_goaloptimizer_proposal_computation_timer_max{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -912,17 +921,17 @@ data:
               "refId": "A"
             },
             {
-              "expr": "kafka_cruisecontrol_goaloptimizer_proposal_computation_timer_mean{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}",
+              "expr": "kafka_cruisecontrol_goaloptimizer_proposal_computation_timer_mean{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "legendFormat": "mean",
               "refId": "B"
             },
             {
-              "expr": "kafka_cruisecontrol_goaloptimizer_proposal_computation_timer_99thpercentile{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}",
+              "expr": "kafka_cruisecontrol_goaloptimizer_proposal_computation_timer_99thpercentile{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "legendFormat": "99th",
               "refId": "C"
             },
             {
-              "expr": "kafka_cruisecontrol_goaloptimizer_proposal_computation_timer_999thpercentile{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}",
+              "expr": "kafka_cruisecontrol_goaloptimizer_proposal_computation_timer_999thpercentile{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "legendFormat": "99.90th",
               "refId": "D"
             }
@@ -976,7 +985,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Cluster Model Creation Time",
           "fill": 1,
           "fillGradient": 0,
@@ -1018,7 +1027,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "kafka_cruisecontrol_loadmonitor_cluster_model_creation_timer_max{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}",
+              "expr": "kafka_cruisecontrol_loadmonitor_cluster_model_creation_timer_max{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -1028,17 +1037,17 @@ data:
               "refId": "A"
             },
             {
-              "expr": "kafka_cruisecontrol_loadmonitor_cluster_model_creation_timer_mean{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}",
+              "expr": "kafka_cruisecontrol_loadmonitor_cluster_model_creation_timer_mean{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "legendFormat": "mean",
               "refId": "B"
             },
             {
-              "expr": "kafka_cruisecontrol_loadmonitor_cluster_model_creation_timer_99thpercentile{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}",
+              "expr": "kafka_cruisecontrol_loadmonitor_cluster_model_creation_timer_99thpercentile{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "legendFormat": "99th",
               "refId": "C"
             },
             {
-              "expr": "kafka_cruisecontrol_loadmonitor_cluster_model_creation_timer_999thpercentile{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}",
+              "expr": "kafka_cruisecontrol_loadmonitor_cluster_model_creation_timer_999thpercentile{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
               "legendFormat": "99.90th",
               "refId": "D"
             }
@@ -1103,7 +1112,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Rebalance Request Rate",
           "fill": 1,
           "fillGradient": 0,
@@ -1145,7 +1154,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_cruisecontrol_kafkacruisecontrolservlet_rebalance_request_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}[1m]))",
+              "expr": "sum(irate(kafka_cruisecontrol_kafkacruisecontrolservlet_rebalance_request_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -1202,7 +1211,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "User Tasks Request Rate",
           "fill": 1,
           "fillGradient": 0,
@@ -1240,7 +1249,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_cruisecontrol_kafkacruisecontrolservlet_user_tasks_request_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}[1m]))",
+              "expr": "sum(irate(kafka_cruisecontrol_kafkacruisecontrolservlet_user_tasks_request_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "User Tasks Request Rate",
@@ -1293,7 +1302,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Proposal Request Rate",
           "fill": 1,
           "fillGradient": 0,
@@ -1335,7 +1344,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_cruisecontrol_kafkacruisecontrolservlet_proposals_request_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}[1m]))",
+              "expr": "sum(irate(kafka_cruisecontrol_kafkacruisecontrolservlet_proposals_request_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -1392,7 +1401,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1430,7 +1439,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_cruisecontrol_kafkacruisecontrolservlet_state_request_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\"}[1m]))",
+              "expr": "sum(irate(kafka_cruisecontrol_kafkacruisecontrolservlet_state_request_rate_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "State Request Rate",
@@ -1496,7 +1505,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1533,7 +1542,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_memory_bytes_used{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\",strimzi_io_name=\"$strimzi_cluster_name-cruise-control\"}) by (kubernetes_pod_name)",
+              "expr": "sum(jvm_memory_bytes_used{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\",strimzi_io_name=\"$strimzi_cluster_name-cruise-control\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (kubernetes_pod_name)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{kubernetes_pod_name}}",
@@ -1586,7 +1595,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1623,7 +1632,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_collection_seconds_sum{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\",strimzi_io_name=\"$strimzi_cluster_name-cruise-control\"}[5m])) by (kubernetes_pod_name)",
+              "expr": "sum(rate(jvm_gc_collection_seconds_sum{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\",strimzi_io_name=\"$strimzi_cluster_name-cruise-control\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (kubernetes_pod_name)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{kubernetes_pod_name}}",
@@ -1676,7 +1685,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1713,7 +1722,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_collection_seconds_count{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\",strimzi_io_name=\"$strimzi_cluster_name-cruise-control\"}[5m])) by (kubernetes_pod_name)",
+              "expr": "sum(rate(jvm_gc_collection_seconds_count{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-cruise-control-.*\",strimzi_io_name=\"$strimzi_cluster_name-cruise-control\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (kubernetes_pod_name)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{kubernetes_pod_name}}",
@@ -1766,7 +1775,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Kafka broker pods memory usage",
           "fill": 1,
           "fillGradient": 0,
@@ -1804,7 +1813,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(container_memory_usage_bytes{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-cruise-control-.*\",container=\"cruise-control\"}) by (pod)",
+              "expr": "sum(container_memory_usage_bytes{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-cruise-control-.*\",container=\"cruise-control\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -1858,7 +1867,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Aggregated Kafka broker pods CPU usage",
           "fill": 1,
           "fillGradient": 0,
@@ -1896,7 +1905,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-cruise-control-.*\",container=\"cruise-control\"}[5m])) by (pod)",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-cruise-control-.*\",container=\"cruise-control\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -1967,22 +1976,22 @@ data:
             "query": "prometheus",
             "queryValue": "",
             "refresh": 1,
-            "regex": "",
+            "regex": "worker.*",
             "skipUrlSync": false,
             "type": "datasource"
           },
           {
             "allValue": null,
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
-            "definition": "query_result(kafka_cruisecontrol_loadmonitor_valid_windows_value)",
+            "datasource": "${DS_THANOS}",
+            "definition": "query_result(kafka_cruisecontrol_loadmonitor_valid_windows_value{clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
             "multi": false,
             "name": "kubernetes_namespace",
             "options": [],
-            "query": "query_result(kafka_cruisecontrol_loadmonitor_valid_windows_value)",
+            "query": "query_result(kafka_cruisecontrol_loadmonitor_valid_windows_value{clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*namespace=\"([^\"]*).*/",
             "skipUrlSync": false,
@@ -1996,15 +2005,15 @@ data:
           {
             "allValue": null,
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
-            "definition": "query_result(kafka_cruisecontrol_loadmonitor_valid_windows_value{namespace=\"$kubernetes_namespace\"})",
+            "datasource": "${DS_THANOS}",
+            "definition": "query_result(kafka_cruisecontrol_loadmonitor_valid_windows_value{namespace=\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster Name",
             "multi": false,
             "name": "strimzi_cluster_name",
             "options": [],
-            "query": "query_result(kafka_cruisecontrol_loadmonitor_valid_windows_value{namespace=\"$kubernetes_namespace\"})",
+            "query": "query_result(kafka_cruisecontrol_loadmonitor_valid_windows_value{namespace=\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*strimzi_io_cluster=\"([^\"]*).*/",
             "skipUrlSync": false,
@@ -2047,5 +2056,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Cruise Control"
+      "title": "Strimzi Cruise Control - update"
     }

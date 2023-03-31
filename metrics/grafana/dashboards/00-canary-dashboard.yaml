@@ -1,9 +1,17 @@
-apiVersion: v1
-kind: ConfigMap
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
 metadata:
-  name: grafana-dashboard-canary-config
-data:
-  canary: |
+  labels:
+    app: strimzi
+    monitoring-key: tealc
+  name: strimzi-canary-update
+spec:
+  datasources:
+    - datasourceName: tealc-thanos
+      inputName: DS_THANOS
+  customFolderName: "strimzi"
+  json: |
     {
       "annotations": {
         "list": [
@@ -25,103 +33,7 @@ data:
       "links": [],
       "panels": [
         {
-          "bgColor": null,
-          "datasource": "${OPENSHIFT_CLUSTER}",
-          "fieldConfig": {
-            "defaults": { },
-            "overrides": [ ]
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 16,
-            "x": 0,
-            "y": 0
-          },
-          "id": 58,
-          "pluginVersion": "7.5.11",
-          "targets": [
-            {
-              "exemplar": true,
-              "expr": "(rate(strimzi_canary_records_produced_total[1m]) * 60)",
-              "format": "time_series",
-              "interval": "",
-              "legendFormat": "{{clientid}}-{{partition}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Producer status",
-          "trafficLightSettings": {
-            "digits": 1,
-            "fontColor": "rgb(255, 255, 255)",
-            "fontSize": "20px",
-            "greenThreshold": 6,
-            "invertScale": false,
-            "lightsPerLine": 5,
-            "linkTargetBlank": false,
-            "linkTooltip": "",
-            "linkUrl": "",
-            "max": 100,
-            "redThreshold": 4,
-            "renderLink": false,
-            "showTrend": false,
-            "showValue": true,
-            "sortLights": false,
-            "spreadControls": false,
-            "units": "",
-            "width": 45
-          },
-          "type": "snuids-trafficlights-panel"
-        },
-        {
-          "bgColor": null,
-          "datasource": "${OPENSHIFT_CLUSTER}",
-          "fieldConfig": {
-            "defaults": { },
-            "overrides": [ ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 16,
-            "x": 0,
-            "y": 6
-          },
-          "id": 59,
-          "pluginVersion": "7.5.11",
-          "targets": [
-            {
-              "exemplar": true,
-              "expr": "(rate(strimzi_canary_records_consumed_total[1m]) * 60)",
-              "format": "time_series",
-              "interval": "",
-              "legendFormat": "{{clientid}}-{{partition}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Consumer status",
-          "trafficLightSettings": {
-            "digits": 1,
-            "fontColor": "rgb(255, 255, 255)",
-            "fontSize": "20px",
-            "greenThreshold": 6,
-            "invertScale": false,
-            "lightsPerLine": 5,
-            "linkTargetBlank": false,
-            "linkTooltip": "",
-            "linkUrl": "",
-            "max": 100,
-            "redThreshold": 4,
-            "renderLink": false,
-            "showTrend": false,
-            "showValue": true,
-            "sortLights": false,
-            "spreadControls": false,
-            "units": "",
-            "width": 45
-          },
-          "type": "snuids-trafficlights-panel"
-        },
-        {
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -141,7 +53,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -230,7 +142,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_canary_records_consumed_total)",
+              "expr": "sum(strimzi_canary_records_consumed_total{clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -262,7 +174,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "decimals": 1,
           "description": "",
           "fieldConfig": {
@@ -352,7 +264,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(rate(strimzi_canary_records_consumed_total[5m])*60)",
+              "expr": "sum(rate(strimzi_canary_records_consumed_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])*60)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -384,7 +296,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -473,7 +385,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_canary_records_produced_total)",
+              "expr": "sum(strimzi_canary_records_produced_total{clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -505,7 +417,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "decimals": 1,
           "description": "",
           "fieldConfig": {
@@ -595,7 +507,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(rate(strimzi_canary_records_produced_total[5m])*60)",
+              "expr": "sum(rate(strimzi_canary_records_produced_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])*60)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -620,7 +532,7 @@ data:
         },
         {
           "collapsed": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -637,7 +549,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -683,7 +595,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(strimzi_canary_records_produced_latency_sum{clientid=\"strimzi-canary-client\"}[5m])/rate(strimzi_canary_records_produced_latency_count{clientid=\"strimzi-canary-client\"}[5m])",
+              "expr": "rate(strimzi_canary_records_produced_latency_sum{clientid=\"strimzi-canary-client\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])/rate(strimzi_canary_records_produced_latency_count{clientid=\"strimzi-canary-client\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -737,7 +649,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -783,7 +695,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(strimzi_canary_records_consumed_latency_sum{clientid=\"strimzi-canary-client\"}[5m])/rate(strimzi_canary_records_consumed_latency_count{clientid=\"strimzi-canary-client\"}[5m])",
+              "expr": "rate(strimzi_canary_records_consumed_latency_sum{clientid=\"strimzi-canary-client\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])/rate(strimzi_canary_records_consumed_latency_count{clientid=\"strimzi-canary-client\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -837,7 +749,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -883,7 +795,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(strimzi_canary_records_consumed_latency_bucket{le=\"400\"}[5m])/rate(strimzi_canary_records_consumed_latency_bucket[5m])*100",
+              "expr": "rate(strimzi_canary_records_consumed_latency_bucket{le=\"400\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])/rate(strimzi_canary_records_consumed_latency_bucket{clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])*100",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -937,7 +849,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -983,7 +895,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(strimzi_canary_records_produced_latency_bucket{le=\"400\"}[5m])/rate(strimzi_canary_records_produced_latency_bucket[5m])*100",
+              "expr": "rate(strimzi_canary_records_produced_latency_bucket{le=\"400\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])/rate(strimzi_canary_records_produced_latency_bucket{clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])*100",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -1054,7 +966,7 @@ data:
             "query": "prometheus",
             "queryValue": "",
             "refresh": 1,
-            "regex": "",
+            "regex": "worker.*",
             "skipUrlSync": false,
             "type": "datasource"
           }
@@ -1089,5 +1001,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Canary"
+      "title": "Strimzi Canary - update"
     }

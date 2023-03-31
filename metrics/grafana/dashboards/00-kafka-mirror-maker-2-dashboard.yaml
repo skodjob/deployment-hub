@@ -1,9 +1,17 @@
-apiVersion: v1
-kind: ConfigMap
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
 metadata:
-  name: grafana-dashboard-kafka-mirror-maker-2-config
-data:
-  kafka-mirror-maker-2: |
+  labels:
+    app: strimzi
+    monitoring-key: tealc
+  name: strimzi-kafka-mirror-maker-2-update
+spec:
+  datasources:
+    - datasourceName: tealc-thanos
+      inputName: DS_THANOS
+  customFolderName: "strimzi"
+  json: |
     {
       "annotations": {
         "list": [
@@ -34,7 +42,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -88,7 +96,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_connect_worker_connector_count{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_connector_count{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
@@ -117,7 +125,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -170,7 +178,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_rate{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_rate{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
@@ -195,7 +203,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -228,7 +236,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}[1m]))",
+              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -283,7 +291,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -316,7 +324,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(kafka_producer_outgoing_byte_total{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}[1m]))",
+              "expr": "sum(rate(kafka_producer_outgoing_byte_total{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -368,7 +376,7 @@ data:
         },
         {
           "cacheTimeout": null,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -420,7 +428,7 @@ data:
             "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
-                "mean"
+                "lastNotNull"
               ],
               "fields": "",
               "values": false
@@ -431,7 +439,7 @@ data:
           "pluginVersion": "7.1.1",
           "targets": [
             {
-              "expr": "sum(kafka_connect_worker_task_count{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_task_count{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
@@ -450,7 +458,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -548,7 +556,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_byte_rate{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_byte_rate{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -575,7 +583,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
 
           "fill": 1,
           "gridPos": {
@@ -609,7 +617,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_mirror_maker_cluster_name-mirrormaker2-.+\",container=\"$strimzi_mirror_maker_cluster_name-mirrormaker2\"}[5m])) by (pod)",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_mirror_maker_cluster_name-mirrormaker2-.+\",container=\"$strimzi_mirror_maker_cluster_name-mirrormaker2\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -664,7 +672,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -698,7 +706,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_memory_bytes_used{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (pod)",
+              "expr": "sum(jvm_memory_bytes_used{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -753,7 +761,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -786,7 +794,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_collection_seconds_sum{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}[5m])) by (pod)",
+              "expr": "sum(rate(jvm_gc_collection_seconds_sum{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -841,7 +849,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -884,7 +892,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_connect_source_task_source_record_active_count{connector=~\"\\\".*SourceConnector\\\"\"})",
+              "expr": "sum(kafka_connect_source_task_source_record_active_count{connector=~\"\\\".*SourceConnector\\\"\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "{{connector}}",
               "refId": "A"
@@ -936,7 +944,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -979,7 +987,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_producer_buffer_available_bytes{clientid=~\"\\\".*SourceConnector-[0-9]+\\\"\"})",
+              "expr": "sum(kafka_producer_buffer_available_bytes{clientid=~\"\\\".*SourceConnector-[0-9]+\\\"\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "{{clientid}}",
               "refId": "A"
@@ -1031,7 +1039,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -1074,7 +1082,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_connect_connector_task_offset_commit_avg_time_ms{connector=~\"\\\".*SourceConnector\\\"\", task=~\"[0-9]+\"})/count(kafka_connect_connector_task_offset_commit_avg_time_ms{connector=~\"\\\".*SourceConnector\\\"\", task=~\"[0-9]+\"})",
+              "expr": "sum(kafka_connect_connector_task_offset_commit_avg_time_ms{connector=~\"\\\".*SourceConnector\\\"\", task=~\"[0-9]+\"})/count(kafka_connect_connector_task_offset_commit_avg_time_ms{connector=~\"\\\".*SourceConnector\\\"\", task=~\"[0-9]+\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "{{connector}}-{{task}}",
               "refId": "A"
@@ -1122,7 +1130,7 @@ data:
           }
         },
         {
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1255,7 +1263,7 @@ data:
           "targets": [
             {
               "exemplar": false,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (partition, topic)",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "instant": true,
               "interval": "",
@@ -1264,7 +1272,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (partition, topic)",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1274,7 +1282,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (partition, topic)",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1284,7 +1292,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (partition, topic)",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1337,7 +1345,7 @@ data:
           "type": "table"
         },
         {
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1470,7 +1478,7 @@ data:
           "targets": [
             {
               "exemplar": false,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (partition, topic)",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "instant": true,
               "interval": "",
@@ -1479,7 +1487,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (partition, topic)",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1489,7 +1497,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (partition, topic)",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1499,7 +1507,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (partition, topic)",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1552,7 +1560,7 @@ data:
           "type": "table"
         },
         {
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1697,7 +1705,7 @@ data:
           "targets": [
             {
               "exemplar": false,
-              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (source, target)",
+              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
               "format": "table",
               "instant": true,
               "interval": "",
@@ -1706,7 +1714,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (source, target)",
+              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1716,7 +1724,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (source, target)",
+              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1726,7 +1734,7 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}) by (source, target)",
+              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1785,7 +1793,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
 
           "fill": 1,
           "fillGradient": 0,
@@ -1824,7 +1832,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(kafka_consumer_fetch_manager_records_lag{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\",clientid!~\"consumer-mirrormaker2-.*\"}) by (topic, partition)",
+              "expr": "sum(kafka_consumer_fetch_manager_records_lag{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\",clientid!~\"consumer-mirrormaker2-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (topic, partition)",
               "interval": "",
               "legendFormat": "{{topic}} (partition: {{partition}})",
               "refId": "A"
@@ -1872,7 +1880,7 @@ data:
           }
         },
         {
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1912,7 +1920,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(kafka_consumer_fetch_manager_records_lag{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\",clientid!~\"consumer-mirrormaker2-.*\"}) by (partition, topic)",
+              "expr": "sum(kafka_consumer_fetch_manager_records_lag{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\",clientid!~\"consumer-mirrormaker2-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
               "instant": true,
               "interval": "",
@@ -1965,7 +1973,7 @@ data:
             "query": "prometheus",
             "queryValue": "",
             "refresh": 1,
-            "regex": "",
+            "regex": "worker.*",
             "skipUrlSync": false,
             "type": "datasource"
           },
@@ -1975,14 +1983,14 @@ data:
               "text": "",
               "value": ""
             },
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
             "multi": false,
             "name": "kubernetes_namespace",
             "options": [],
-            "query": "query_result(kafka_connect_worker_connector_count{strimzi_io_kind=\"KafkaMirrorMaker2\"})",
+            "query": "query_result(kafka_connect_worker_connector_count{strimzi_io_kind=\"KafkaMirrorMaker2\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*namespace=\"([^\"]*).*/",
             "sort": 0,
@@ -1998,14 +2006,14 @@ data:
               "text": "my-mirror-maker-2-cluster",
               "value": "my-mirror-maker-2-cluster"
             },
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster Name",
             "multi": false,
             "name": "strimzi_mirror_maker_cluster_name",
             "options": [],
-            "query": "query_result(kafka_connect_worker_connector_count{namespace=\"$kubernetes_namespace\", strimzi_io_kind=\"KafkaMirrorMaker2\"})",
+            "query": "query_result(kafka_connect_worker_connector_count{namespace=\"$kubernetes_namespace\", strimzi_io_kind=\"KafkaMirrorMaker2\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*strimzi_io_cluster=\"([^\"]*).*/",
             "sort": 0,
@@ -2047,5 +2055,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Kafka Mirror Maker 2"
+      "title": "Strimzi Kafka Mirror Maker 2 - update"
     }
