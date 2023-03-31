@@ -1,9 +1,16 @@
-apiVersion: v1
-kind: ConfigMap
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
 metadata:
-  name: grafana-dashboard-debezium-config
-data:
-  debezium: |
+  labels:
+    app: strimzi
+    monitoring-key: tealc
+  name: debezium-update
+spec:
+  datasources:
+    - datasourceName: tealc-thanos
+      inputName: DS_THANOS
+  customFolderName: "debezium"
+  json: |
     {
         "annotations": {
             "list": [
@@ -30,7 +37,7 @@ data:
                 "bars": false,
                 "dashLength": 10,
                 "dashes": false,
-                "datasource": "${OPENSHIFT_CLUSTER}",
+                "datasource": "${DS_THANOS}",
                 "fieldConfig": {
                     "defaults": {},
                     "overrides": []
@@ -72,7 +79,7 @@ data:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "kafka_connect_metrics_response_rate{strimzi_io_cluster=\"imhotep\"}",
+                        "expr": "kafka_connect_metrics_response_rate{strimzi_io_cluster=\"imhotep\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "interval": "",
                         "legendFormat": "",
                         "queryType": "randomWalk",
@@ -127,7 +134,7 @@ data:
                 "bars": false,
                 "dashLength": 10,
                 "dashes": false,
-                "datasource": "${OPENSHIFT_CLUSTER}",
+                "datasource": "${DS_THANOS}",
                 "fieldConfig": {
                     "defaults": {},
                     "overrides": []
@@ -169,7 +176,7 @@ data:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_binlogposition{plugin=\"$connector_type\",name=\"$connector_name\"}",
+                        "expr": "debezium_metrics_binlogposition{plugin=\"$connector_type\",name=\"$connector_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "interval": "",
                         "legendFormat": "",
                         "queryType": "randomWalk",
@@ -233,7 +240,7 @@ data:
             },
             {
                 "cacheTimeout": null,
-                "datasource": "${OPENSHIFT_CLUSTER}",
+                "datasource": "${DS_THANOS}",
                 "fieldConfig": {
                     "defaults": {
                         "color": {
@@ -298,7 +305,7 @@ data:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "topk(1, debezium_metrics_millisecondssincelastevent{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\"})",
+                        "expr": "topk(1, debezium_metrics_millisecondssincelastevent{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
                         "format": "time_series",
                         "instant": true,
                         "interval": "",
@@ -315,7 +322,7 @@ data:
                 "bars": false,
                 "dashLength": 10,
                 "dashes": false,
-                "datasource": "${OPENSHIFT_CLUSTER}",
+                "datasource": "${DS_THANOS}",
                 "fieldConfig": {
                     "defaults": {},
                     "overrides": []
@@ -358,7 +365,7 @@ data:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\"}",
+                        "expr": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 1,
@@ -367,7 +374,7 @@ data:
                     },
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_numberofskippedevents{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\"}",
+                        "expr": "debezium_metrics_numberofskippedevents{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 1,
@@ -418,7 +425,7 @@ data:
             },
             {
                 "cacheTimeout": null,
-                "datasource": "${OPENSHIFT_CLUSTER}",
+                "datasource": "${DS_THANOS}",
                 "fieldConfig": {
                     "defaults": {
                         "color": {
@@ -491,7 +498,7 @@ data:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_connected{plugin=\"$connector_type\", name=\"$connector_name\"}",
+                        "expr": "debezium_metrics_connected{plugin=\"$connector_type\", name=\"$connector_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 1,
@@ -508,7 +515,7 @@ data:
                 "bars": false,
                 "dashLength": 10,
                 "dashes": false,
-                "datasource": "${OPENSHIFT_CLUSTER}",
+                "datasource": "${DS_THANOS}",
                 "fieldConfig": {
                     "defaults": {},
                     "overrides": []
@@ -552,7 +559,7 @@ data:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_queueremainingcapacity{plugin=\"$connector_type\", name=\"$connector_name\"}",
+                        "expr": "debezium_metrics_queueremainingcapacity{plugin=\"$connector_type\", name=\"$connector_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "format": "time_series",
                         "hide": false,
                         "instant": false,
@@ -619,7 +626,7 @@ data:
                 "panels": [
                     {
                         "cacheTimeout": null,
-                        "datasource": "${OPENSHIFT_CLUSTER}",
+                        "datasource": "${DS_THANOS}",
                         "fieldConfig": {
                             "defaults": {
                                 "color": {
@@ -680,7 +687,7 @@ data:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_totaltablecount{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\"}",
+                                "expr": "debezium_metrics_totaltablecount{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "instant": true,
                                 "interval": "",
@@ -755,7 +762,7 @@ data:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_remainingtablecount{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\"}",
+                                "expr": "debezium_metrics_remainingtablecount{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "instant": true,
                                 "interval": "",
@@ -769,7 +776,7 @@ data:
                     },
                     {
                         "cacheTimeout": null,
-                        "datasource": "${OPENSHIFT_CLUSTER}",
+                        "datasource": "${DS_THANOS}",
                         "fieldConfig": {
                             "defaults": {
                                 "color": {
@@ -844,7 +851,7 @@ data:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_snapshotrunning{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\"}",
+                                "expr": "debezium_metrics_snapshotrunning{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "interval": "",
                                 "intervalFactor": 1,
@@ -857,7 +864,7 @@ data:
                     },
                     {
                         "cacheTimeout": null,
-                        "datasource": "${OPENSHIFT_CLUSTER}",
+                        "datasource": "${DS_THANOS}",
                         "fieldConfig": {
                             "defaults": {
                                 "color": {
@@ -932,7 +939,7 @@ data:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_snapshotcompleted{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\"}",
+                                "expr": "debezium_metrics_snapshotcompleted{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "instant": true,
                                 "interval": "",
@@ -946,7 +953,7 @@ data:
                     },
                     {
                         "cacheTimeout": null,
-                        "datasource": "${OPENSHIFT_CLUSTER}",
+                        "datasource": "${DS_THANOS}",
                         "fieldConfig": {
                             "defaults": {
                                 "color": {
@@ -1021,7 +1028,7 @@ data:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_snapshotaborted{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\"}",
+                                "expr": "debezium_metrics_snapshotaborted{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "interval": "",
                                 "intervalFactor": 1,
@@ -1037,7 +1044,7 @@ data:
                         "bars": false,
                         "dashLength": 10,
                         "dashes": false,
-                        "datasource": "${OPENSHIFT_CLUSTER}",
+                        "datasource": "${DS_THANOS}",
                         "fieldConfig": {
                             "defaults": {},
                             "overrides": []
@@ -1080,7 +1087,7 @@ data:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\"}",
+                                "expr": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "interval": "",
                                 "intervalFactor": 1,
@@ -1089,7 +1096,7 @@ data:
                             },
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_numberofskippedevents{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\"}",
+                                "expr": "debezium_metrics_numberofskippedevents{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "hide": true,
                                 "interval": "",
@@ -1162,7 +1169,7 @@ data:
                 "bars": false,
                 "dashLength": 10,
                 "dashes": false,
-                "datasource": "${OPENSHIFT_CLUSTER}",
+                "datasource": "${DS_THANOS}",
                 "fieldConfig": {
                     "defaults": {},
                     "overrides": []
@@ -1204,14 +1211,14 @@ data:
                 "steppedLine": false,
                 "targets": [
                     {
-                        "expr": "kafka_connect_metrics_incoming_byte_rate",
+                        "expr": "kafka_connect_metrics_incoming_byte_rate{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "format": "time_series",
                         "intervalFactor": 1,
                         "legendFormat": "Incoming({{client}})",
                         "refId": "A"
                     },
                     {
-                        "expr": "kafka_connect_metrics_outgoing_byte_rate",
+                        "expr": "kafka_connect_metrics_outgoing_byte_rate{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "format": "time_series",
                         "intervalFactor": 1,
                         "legendFormat": "Outgoing({{client}})",
@@ -1275,7 +1282,7 @@ data:
                         "bars": false,
                         "dashLength": 10,
                         "dashes": false,
-                        "datasource": "${OPENSHIFT_CLUSTER}",
+                        "datasource": "${DS_THANOS}",
                         "fieldConfig": {
                             "defaults": {},
                             "overrides": []
@@ -1317,14 +1324,14 @@ data:
                         "steppedLine": false,
                         "targets": [
                             {
-                                "expr": "jvm_memory_bytes_used{area='heap'}",
+                                "expr": "jvm_memory_bytes_used{area='heap', clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Used",
                                 "refId": "A"
                             },
                             {
-                                "expr": "jvm_memory_bytes_max{area='heap'}",
+                                "expr": "jvm_memory_bytes_max{area='heap', clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "hide": false,
                                 "interval": "",
@@ -1379,7 +1386,7 @@ data:
                         "bars": false,
                         "dashLength": 10,
                         "dashes": false,
-                        "datasource": "${OPENSHIFT_CLUSTER}",
+                        "datasource": "${DS_THANOS}",
                         "fieldConfig": {
                             "defaults": {},
                             "overrides": []
@@ -1421,21 +1428,21 @@ data:
                         "steppedLine": false,
                         "targets": [
                             {
-                                "expr": "jvm_threads_current",
+                                "expr": "jvm_threads_current{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Running",
                                 "refId": "A"
                             },
                             {
-                                "expr": "jvm_threads_peak",
+                                "expr": "jvm_threads_peak{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Maximum",
                                 "refId": "B"
                             },
                             {
-                                "expr": "jvm_threads_started_total",
+                                "expr": "jvm_threads_started_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Started in total",
@@ -1511,7 +1518,7 @@ data:
                     "query": "prometheus",
                     "queryValue": "",
                     "refresh": 1,
-                    "regex": "",
+                    "regex": "worker.*",
                     "skipUrlSync": false,
                     "type": "datasource"
                 },
@@ -1522,7 +1529,7 @@ data:
                         "text": "mysql",
                         "value": "mysql"
                     },
-                    "datasource": "${OPENSHIFT_CLUSTER}",
+                    "datasource": "${DS_THANOS}",
                     "definition": "",
                     "description": null,
                     "error": null,
@@ -1563,7 +1570,7 @@ data:
                             "value": "db2"
                         }
                     ],
-                    "query": "debezium_metrics_totalnumberofeventsseen",
+                    "query": "debezium_metrics_totalnumberofeventsseen{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                     "refresh": 0,
                     "regex": "/.*plugin=\"([^\"]+)\".*/",
                     "skipUrlSync": false,
@@ -1581,7 +1588,7 @@ data:
                         "text": "mysql",
                         "value": "mysql"
                     },
-                    "datasource": "${OPENSHIFT_CLUSTER}",
+                    "datasource": "${DS_THANOS}",
                     "definition": "",
                     "description": null,
                     "error": null,
@@ -1598,7 +1605,7 @@ data:
                         }
                     ],
                     "query": {
-                        "query": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\"}",
+                        "query": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "refId": "worker-01-connector_name-Variable-Query"
                     },
                     "refresh": 0,
@@ -1643,7 +1650,6 @@ data:
             ]
         },
         "timezone": "",
-        "title": "Debezium connectors",
-        "uid": "7HrWpmEiz",
+        "title": "Debezium connectors - update",
         "version": 18
     }

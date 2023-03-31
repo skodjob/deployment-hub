@@ -1,9 +1,17 @@
-apiVersion: v1
-kind: ConfigMap
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
 metadata:
-  name: grafana-dashboard-kafka-exporter-config
-data:
-  kafka-exporter: |
+  labels:
+    app: strimzi
+    monitoring-key: tealc
+  name: strimzi-kafka-exporter-update
+spec:
+  datasources:
+    - datasourceName: tealc-thanos
+      inputName: DS_THANOS
+  customFolderName: "strimzi"
+  json: |
     {
       "_comment": "Based on https://grafana.com/grafana/dashboards/7589",
       "annotations": {
@@ -35,7 +43,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -87,7 +95,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "count(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
+              "expr": "count(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -117,7 +125,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -169,7 +177,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
+              "expr": "sum(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -199,7 +207,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -251,7 +259,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_replicas{topic=~\"$topic\", namespace=\"$kubernetes_namespace\"})",
+              "expr": "sum(kafka_topic_partition_replicas{topic=~\"$topic\", namespace=\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -281,7 +289,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -333,7 +341,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_in_sync_replica{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
+              "expr": "sum(kafka_topic_partition_in_sync_replica{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -363,7 +371,7 @@ data:
             "#F2495C",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -415,7 +423,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_under_replicated_partition{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
+              "expr": "sum(kafka_topic_partition_under_replicated_partition{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -445,7 +453,7 @@ data:
             "#F2495C",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Number of partitions which are at their minimum in sync replica count (| ISR | == | min.insync.replicas |)",
           "format": "none",
           "gauge": {
@@ -498,7 +506,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_cluster_partition_atminisr{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
+              "expr": "sum(kafka_cluster_partition_atminisr{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -528,7 +536,7 @@ data:
             "#F2495C",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Number of partitions which are under their minimum in sync replica count (| ISR | < | min.insync.replicas |)",
           "format": "none",
           "gauge": {
@@ -581,7 +589,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_cluster_partition_underminisr{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
+              "expr": "sum(kafka_cluster_partition_underminisr{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -611,7 +619,7 @@ data:
             "#F2495C",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -663,7 +671,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_leader_is_preferred{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"} < bool 1)",
+              "expr": "sum(kafka_topic_partition_leader_is_preferred{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"} < bool 1)",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -689,7 +697,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 0,
           "gridPos": {
             "h": 10,
@@ -727,7 +735,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(kafka_topic_partition_current_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}[1m])) by (topic)",
+              "expr": "sum(rate(kafka_topic_partition_current_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (topic)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{topic}}",
@@ -780,7 +788,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 0,
           "gridPos": {
             "h": 10,
@@ -818,7 +826,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(delta(kafka_consumergroup_current_offset{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}[1m])/60) by (consumergroup, topic)",
+              "expr": "sum(delta(kafka_consumergroup_current_offset{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])/60) by (consumergroup, topic)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{consumergroup}} (topic: {{topic}})",
@@ -871,7 +879,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 0,
           "gridPos": {
             "h": 10,
@@ -908,7 +916,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_consumergroup_lag{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (consumergroup, topic) ",
+              "expr": "sum(kafka_consumergroup_lag{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (consumergroup, topic) ",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -960,6 +968,7 @@ data:
         },
         {
           "columns": [],
+          "datasource": "${DS_THANOS}",
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1017,7 +1026,7 @@ data:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_consumergroup_current_offset{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (consumergroup,partition,topic)",
+              "expr": "sum(kafka_consumergroup_current_offset{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (consumergroup,partition,topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1033,6 +1042,7 @@ data:
         },
         {
           "columns": [],
+          "datasource": "${DS_THANOS}",
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1090,7 +1100,7 @@ data:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_consumergroup_lag{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (consumergroup,partition,topic)",
+              "expr": "sum(kafka_consumergroup_lag{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (consumergroup,partition,topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1106,6 +1116,7 @@ data:
         },
         {
           "columns": [],
+          "datasource": "${DS_THANOS}",
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1163,7 +1174,7 @@ data:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (topic)",
+              "expr": "sum(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1179,6 +1190,7 @@ data:
         },
         {
           "columns": [],
+          "datasource": "${DS_THANOS}",
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1236,7 +1248,7 @@ data:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_current_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (partition,topic)",
+              "expr": "sum(kafka_topic_partition_current_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition,topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1252,6 +1264,7 @@ data:
         },
         {
           "columns": [],
+          "datasource": "${DS_THANOS}",
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1309,7 +1322,7 @@ data:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_oldest_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (partition,topic)",
+              "expr": "sum(kafka_topic_partition_oldest_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition,topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1346,14 +1359,14 @@ data:
             "query": "prometheus",
             "queryValue": "",
             "refresh": 1,
-            "regex": "",
+            "regex": "worker.*",
             "skipUrlSync": false,
             "type": "datasource"
           },
           {
             "allValue": null,
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "definition": "",
             "hide": 0,
             "includeAll": false,
@@ -1375,7 +1388,7 @@ data:
           {
             "allValue": null,
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "definition": "",
             "hide": 0,
             "includeAll": false,
@@ -1383,7 +1396,7 @@ data:
             "multi": false,
             "name": "strimzi_cluster_name",
             "options": [],
-            "query": "query_result(kafka_exporter_build_info{namespace=\"$kubernetes_namespace\"})",
+            "query": "query_result(kafka_exporter_build_info{namespace=\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*strimzi_io_cluster=\"([^\"]*).*/",
             "skipUrlSync": false,
@@ -1402,15 +1415,15 @@ data:
                 "$__all"
               ]
             },
-            "datasource": "${OPENSHIFT_CLUSTER}",
-            "definition": "label_values(kafka_consumergroup_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}, consumergroup)",
+            "datasource": "${DS_THANOS}",
+            "definition": "label_values(kafka_consumergroup_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}, consumergroup)",
             "hide": 0,
             "includeAll": true,
             "label": "Consumer Group",
             "multi": true,
             "name": "consumergroup",
             "options": [],
-            "query": "label_values(kafka_consumergroup_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}, consumergroup)",
+            "query": "label_values(kafka_consumergroup_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}, consumergroup)",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
@@ -1429,15 +1442,15 @@ data:
                 "$__all"
               ]
             },
-            "datasource": "${OPENSHIFT_CLUSTER}",
-            "definition": "label_values(kafka_topic_partition_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}, topic)",
+            "datasource": "${DS_THANOS}",
+            "definition": "label_values(kafka_topic_partition_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}, topic)",
             "hide": 0,
             "includeAll": true,
             "label": "Topic",
             "multi": true,
             "name": "topic",
             "options": [],
-            "query": "label_values(kafka_topic_partition_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}, topic)",
+            "query": "label_values(kafka_topic_partition_current_offset{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}, topic)",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
@@ -1480,5 +1493,5 @@ data:
         ]
       },
       "timezone": "browser",
-      "title": "Strimzi Kafka Exporter"
+      "title": "Strimzi Kafka Exporter - update"
     }

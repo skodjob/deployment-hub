@@ -1,9 +1,17 @@
-apiVersion: v1
-kind: ConfigMap
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
 metadata:
-  name: grafana-dashboard-zookeeper-config
-data:
-  zookeeper: |
+  labels:
+    app: strimzi
+    monitoring-key: tealc
+  name: strimzi-zookeeper-update
+spec:
+  datasources:
+    - datasourceName: tealc-thanos
+      inputName: DS_THANOS
+  customFolderName: "strimzi"
+  json: |
     {
       "annotations": {
         "list": [
@@ -49,7 +57,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Quorum size of ZooKeeper ensemble",
           "format": "none",
           "gauge": {
@@ -102,7 +110,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "max(zookeeper_quorumsize{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\"})",
+              "expr": "max(zookeeper_quorumsize{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -130,7 +138,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Number of active connections",
           "format": "none",
           "gauge": {
@@ -183,7 +191,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(zookeeper_numaliveconnections{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\"})",
+              "expr": "sum(zookeeper_numaliveconnections{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -207,7 +215,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Number of queued requests in the server. This goes up when the server receives more requests than it can process",
           "fill": 1,
           "gridPos": {
@@ -240,7 +248,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(zookeeper_outstandingrequests{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\"}) by (pod)",
+              "expr": "sum(zookeeper_outstandingrequests{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -297,7 +305,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -349,7 +357,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "avg(zookeeper_inmemorydatatree_nodecount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\"})",
+              "expr": "avg(zookeeper_inmemorydatatree_nodecount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -377,7 +385,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Number of watchers",
           "format": "none",
           "gauge": {
@@ -430,7 +438,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(zookeeper_inmemorydatatree_watchcount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\"})",
+              "expr": "sum(zookeeper_inmemorydatatree_watchcount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",strimzi_io_kind=\"Kafka\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -454,7 +462,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "ZooKeeper pods memory usage",
           "fill": 1,
           "gridPos": {
@@ -487,7 +495,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(container_memory_usage_bytes{namespace=\"$kubernetes_namespace\",container=\"zookeeper\",pod=~\"$strimzi_cluster_name-$zk_node\"}) by (pod)",
+              "expr": "sum(container_memory_usage_bytes{namespace=\"$kubernetes_namespace\",container=\"zookeeper\",pod=~\"$strimzi_cluster_name-$zk_node\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -539,7 +547,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Aggregated ZooKeeper pods CPU usage",
           "fill": 1,
           "gridPos": {
@@ -572,7 +580,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",container=\"zookeeper\",pod=~\"$strimzi_cluster_name-$zk_node\"}[5m])) by (pod)",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",container=\"zookeeper\",pod=~\"$strimzi_cluster_name-$zk_node\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -624,7 +632,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Kafka broker pods disk usage",
           "fill": 1,
           "gridPos": {
@@ -657,7 +665,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kubelet_volume_stats_available_bytes{namespace=\"$kubernetes_namespace\",persistentvolumeclaim=~\"data(-[0-9]+)?-$strimzi_cluster_name-zookeeper-[0-9]+\"}) by (persistentvolumeclaim)",
+              "expr": "sum(kubelet_volume_stats_available_bytes{namespace=\"$kubernetes_namespace\",persistentvolumeclaim=~\"data(-[0-9]+)?-$strimzi_cluster_name-zookeeper-[0-9]+\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (persistentvolumeclaim)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{persistentvolumeclaim}}",
@@ -709,7 +717,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Open File Descriptors",
           "fill": 1,
           "gridPos": {
@@ -743,7 +751,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(process_open_fds{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-zookeeper-[0-9+]\",container=\"zookeeper\"}) by (pod)",
+              "expr": "sum(process_open_fds{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-zookeeper-[0-9+]\",container=\"zookeeper\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -796,7 +804,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -828,7 +836,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_memory_bytes_used{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\",strimzi_io_name=\"$strimzi_cluster_name-zookeeper\"}) by (pod)",
+              "expr": "sum(jvm_memory_bytes_used{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\",strimzi_io_name=\"$strimzi_cluster_name-zookeeper\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -880,7 +888,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -912,7 +920,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_collection_seconds_sum{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\",strimzi_io_name=\"$strimzi_cluster_name-zookeeper\"}[5m])) by (pod)",
+              "expr": "sum(rate(jvm_gc_collection_seconds_sum{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\",strimzi_io_name=\"$strimzi_cluster_name-zookeeper\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -964,7 +972,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -996,7 +1004,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_collection_seconds_count{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\",strimzi_io_name=\"$strimzi_cluster_name-zookeeper\"}[5m])) by (pod)",
+              "expr": "sum(rate(jvm_gc_collection_seconds_count{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\",strimzi_io_name=\"$strimzi_cluster_name-zookeeper\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -1048,7 +1056,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "JVM thread count",
           "fill": 1,
           "gridPos": {
@@ -1082,7 +1090,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_threads_current{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-zookeeper-[0-9+]\",strimzi_io_name=\"$strimzi_cluster_name-zookeeper\"}) by (pod)",
+              "expr": "sum(jvm_threads_current{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-zookeeper-[0-9+]\",strimzi_io_name=\"$strimzi_cluster_name-zookeeper\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -1134,7 +1142,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Amount of time (in ms) it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
@@ -1167,7 +1175,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(zookeeper_minrequestlatency{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\"}) by (pod)",
+              "expr": "sum(zookeeper_minrequestlatency{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -1219,7 +1227,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Amount of time (in ms) it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
@@ -1252,7 +1260,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(zookeeper_avgrequestlatency{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\"}) by (pod)",
+              "expr": "sum(zookeeper_avgrequestlatency{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -1304,7 +1312,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "Amount of time (in ms) it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
@@ -1337,7 +1345,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(zookeeper_maxrequestlatency{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\"}) by (pod)",
+              "expr": "sum(zookeeper_maxrequestlatency{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$zk_node\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -1407,14 +1415,14 @@ data:
             "query": "prometheus",
             "queryValue": "",
             "refresh": 1,
-            "regex": "",
+            "regex": "worker.*",
             "skipUrlSync": false,
             "type": "datasource"
           },
           {
             "allValue": null,
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
@@ -1434,14 +1442,14 @@ data:
           {
             "allValue": null,
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster Name",
             "multi": false,
             "name": "strimzi_cluster_name",
             "options": [],
-            "query": "query_result(zookeeper_inmemorydatatree_nodecount{namespace=\"$kubernetes_namespace\"})",
+            "query": "query_result(zookeeper_inmemorydatatree_nodecount{namespace=\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*strimzi_io_cluster=\"([^\"]*).*/",
             "sort": 0,
@@ -1454,14 +1462,14 @@ data:
           {
             "allValue": ".*",
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "hide": 0,
             "includeAll": true,
             "label": "Node",
             "multi": false,
             "name": "zk_node",
             "options": [],
-            "query": "query_result(zookeeper_inmemorydatatree_nodecount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
+            "query": "query_result(zookeeper_inmemorydatatree_nodecount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*pod_name=\"$strimzi_cluster_name-([^\"]*).*/",
             "sort": 0,
@@ -1503,5 +1511,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi ZooKeeper"
+      "title": "Strimzi ZooKeeper - update"
     }

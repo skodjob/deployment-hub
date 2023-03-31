@@ -1,9 +1,17 @@
-apiVersion: v1
-kind: ConfigMap
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
 metadata:
-  name: grafana-dashboard-connect-config
-data:
-  kafka-connect: |
+  labels:
+    app: strimzi
+    monitoring-key: tealc
+  name: strimzi-kafka-connect-update
+spec:
+  datasources:
+    - datasourceName: tealc-thanos
+      inputName: DS_THANOS
+  customFolderName: "strimzi"
+  json: |
     {
       "annotations": {
         "list": [
@@ -34,7 +42,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -88,7 +96,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_connect_worker_connector_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_connector_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
@@ -117,7 +125,7 @@ data:
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -170,7 +178,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_connect_worker_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
@@ -195,7 +203,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -227,7 +235,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}[1m])) by (pod)",
+              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "interval": "",
               "legendFormat": "{{pod}}",
               "refId": "A"
@@ -278,7 +286,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -310,7 +318,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(kafka_producer_outgoing_byte_total{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}[1m])) by (pod)",
+              "expr": "sum(rate(kafka_producer_outgoing_byte_total{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "interval": "",
               "legendFormat": "{{pod}}",
               "refId": "A"
@@ -361,7 +369,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -394,7 +402,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_connect_cluster_name-connect-.+\",container=\"$strimzi_connect_cluster_name-connect\"}[5m])) by (pod)",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_connect_cluster_name-connect-.+\",container=\"$strimzi_connect_cluster_name-connect\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -449,7 +457,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -482,7 +490,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_memory_bytes_used{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}) by (pod)",
+              "expr": "sum(jvm_memory_bytes_used{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -537,7 +545,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -570,7 +578,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_collection_seconds_sum{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}[5m])) by (pod)",
+              "expr": "sum(rate(jvm_gc_collection_seconds_sum{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -625,7 +633,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "description": "JVM thread count",
           "fill": 1,
           "gridPos": {
@@ -659,7 +667,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_threads_current{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}) by (pod)",
+              "expr": "sum(jvm_threads_current{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -709,7 +717,7 @@ data:
         {
           "cacheTimeout": null,
           "columns": [],
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fontSize": "100%",
           "gridPos": {
             "h": 7,
@@ -768,28 +776,28 @@ data:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_connect_worker_connector_paused_task_count{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}) by (connector) != 0",
+              "expr": "sum(kafka_connect_worker_connector_paused_task_count{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (connector) != 0",
               "instant": true,
               "interval": "",
               "legendFormat": "[paused] {{connector}}",
               "refId": "B"
             },
             {
-              "expr": "sum(kafka_connect_worker_connector_failed_task_count{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}) by (connector) != 0",
+              "expr": "sum(kafka_connect_worker_connector_failed_task_count{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (connector) != 0",
               "instant": true,
               "interval": "",
               "legendFormat": "[failed] {{connector}}",
               "refId": "A"
             },
             {
-              "expr": "sum(kafka_connect_worker_connector_unassigned_task_count{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}) by (connector) != 0",
+              "expr": "sum(kafka_connect_worker_connector_unassigned_task_count{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (connector) != 0",
               "instant": true,
               "interval": "",
               "legendFormat": "[unassigned] {{connector}}",
               "refId": "C"
             },
             {
-              "expr": "sum(kafka_connect_worker_connector_destroyed_task_count{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}) by (connector) != 0",
+              "expr": "sum(kafka_connect_worker_connector_destroyed_task_count{namespace=\"$kubernetes_namespace\",strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (connector) != 0",
               "instant": true,
               "interval": "",
               "legendFormat": "[destroyed] {{connector}}",
@@ -805,7 +813,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -839,7 +847,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_connect_worker_connector_running_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_connector_running_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -851,25 +859,25 @@ data:
               "step": 4
             },
             {
-              "expr": "sum(kafka_connect_worker_connector_paused_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_connector_paused_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "paused",
               "refId": "B"
             },
             {
-              "expr": "sum(kafka_connect_worker_connector_failed_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_connector_failed_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "failed",
               "refId": "D"
             },
             {
-              "expr": "sum(kafka_connect_worker_connector_unassigned_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_connector_unassigned_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "unassigned",
               "refId": "C"
             },
             {
-              "expr": "sum(kafka_connect_worker_connector_destroyed_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_connect_worker_connector_destroyed_task_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "instant": false,
               "interval": "",
               "legendFormat": "destroyed",
@@ -923,7 +931,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -954,20 +962,20 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_consumer_connection_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_consumer_connection_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "hide": false,
               "interval": "",
               "legendFormat": "#consumer connections",
               "refId": "A"
             },
             {
-              "expr": "sum(kafka_producer_connection_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_producer_connection_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "#producer connections",
               "refId": "B"
             },
             {
-              "expr": "sum(kafka_admin_client_connection_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "sum(kafka_admin_client_connection_count{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "legendFormat": "#admin connections",
               "interval": "",
               "refId": "C"
@@ -1015,7 +1023,7 @@ data:
           }
         },
         {
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1106,7 +1114,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "count by (status, connector) (kafka_connect_connector_status{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "count by (status, connector) (kafka_connect_connector_status{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "table",
               "instant": true,
               "interval": "",
@@ -1149,7 +1157,7 @@ data:
           "type": "table"
         },
         {
-          "datasource": "${OPENSHIFT_CLUSTER}",
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1203,7 +1211,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "count by (connector, task, status) (kafka_connect_connector_task_status{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"})",
+              "expr": "count by (connector, task, status) (kafka_connect_connector_task_status{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "table",
               "instant": true,
               "interval": "",
@@ -1270,21 +1278,21 @@ data:
             "query": "prometheus",
             "queryValue": "",
             "refresh": 1,
-            "regex": "",
+            "regex": "worker.*",
             "skipUrlSync": false,
             "type": "datasource"
           },
           {
             "allValue": null,
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
             "multi": false,
             "name": "kubernetes_namespace",
             "options": [],
-            "query": "query_result(kafka_connect_worker_connector_count{strimzi_io_kind=~\"KafkaConnect.*\"})",
+            "query": "query_result(kafka_connect_worker_connector_count{strimzi_io_kind=~\"KafkaConnect.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*namespace=\"([^\"]*).*/",
             "sort": 0,
@@ -1297,14 +1305,14 @@ data:
           {
             "allValue": null,
             "current": {},
-            "datasource": "${OPENSHIFT_CLUSTER}",
+            "datasource": "${DS_THANOS}",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster Name",
             "multi": false,
             "name": "strimzi_connect_cluster_name",
             "options": [],
-            "query": "query_result(kafka_connect_worker_connector_count{namespace=\"$kubernetes_namespace\", strimzi_io_kind=~\"KafkaConnect.*\"})",
+            "query": "query_result(kafka_connect_worker_connector_count{namespace=\"$kubernetes_namespace\", strimzi_io_kind=~\"KafkaConnect.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*strimzi_io_cluster=\"([^\"]*).*/",
             "sort": 0,
@@ -1346,5 +1354,5 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Kafka Connect"
+      "title": "Strimzi Kafka Connect - update"
     }
