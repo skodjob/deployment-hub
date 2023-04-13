@@ -21,7 +21,7 @@ spec:
           annotations:
             summary: 'Argo Applications are down'
             description: 'There are some Argo applications which are not created!'
-        - expr: count(count by (server) (argocd_cluster_info{namespace=~".*"})) < 4
+        - expr: count(count by (server) (argocd_cluster_info{namespace=~".*"})) < 3
           alert: ArgoCdNotEnoughClusters
           for: 5m
           labels:
