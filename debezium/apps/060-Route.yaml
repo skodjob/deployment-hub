@@ -1,3 +1,4 @@
+---
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
@@ -8,5 +9,18 @@ spec:
   to:
     kind: Service
     name: kronos-svc
+  port:
+    targetPort: http
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: dmt-route
+  labels:
+    app: dmt
+spec:
+  to:
+    kind: Service
+    name: dmt-svc
   port:
     targetPort: http

@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,7 +26,7 @@ spec:
         app: kronos
     spec:
       containers:
-        - image: quay.io/tealc/debezium-crypto-app@sha256:1c0869f108881551b4ea981f791018d1bd5dbcc04d42bbdf607bf9c020b8fb8f
+        - image: quay.io/tealc/debezium-crypto-app:latest
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -58,3 +59,64 @@ spec:
             successThreshold: 1
             timeoutSeconds: 10
       serviceAccountName: kronos-sa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /q/metrics
+    prometheus.io/port: "8080"
+    prometheus.io/scheme: http
+  labels:
+    app: dmt
+  name: dmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dmt
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /q/metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scheme: http
+      labels:
+        app: dmt
+    spec:
+      containers:
+        - image: quay.io/tealc/debezium-database-manipulation-tool:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: dmt-config
+            - secretRef:
+                name: dmt-secret
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: dmt
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+      serviceAccountName: dmt-sa

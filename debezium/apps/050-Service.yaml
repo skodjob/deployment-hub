@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,7 +15,28 @@ spec:
     - name: http
       port: 80
       protocol: TCP
-      targetPort: 8080
+      targetPort: 8082
   selector:
     app: kronos
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /q/metrics
+    prometheus.io/port: "8080"
+    prometheus.io/scheme: http
+  labels:
+    app: dmt
+  name: dmt-svc
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: dmt
   type: ClusterIP
