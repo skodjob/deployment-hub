@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,14 +8,35 @@ metadata:
 data:
   application.properties: |-
     quarkus.datasource.jdbc.max-size=16
-    update.period=2s
     quarkus.kubernetes-config.enabled=true
     quarkus.kubernetes-config.config-maps=kronos-config
     quarkus.log.level=INFO
-    quarkus.datasource.jdbc.url=jdbc:postgresql://imhotep-postgresql.debezium-postgresql.svc.cluster.local:5432/${database}
-    quarkus.datasource.password=${password}
-    quarkus.datasource.username=${username}
-    quarkus.datasource."mysql".username=${username}
-    quarkus.datasource."mysql".password=${password}
-    quarkus.datasource."mysql".jdbc.url=jdbc:mysql://imhotep-mysql.debezium-mysql.svc.cluster.local:3306/${mysqlDatabase}
-    quarkus.hibernate-orm."mysql".log.sql=false
+    quarkus.rest-client."io.excellent.project.dmt.DmtJsonService".url=http://dmt-debezium-apps.svc.cluster.local:8080/
+    update.period=2s
+    quarkus.http.port=8082
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dmt-config
+  labels:
+    app: dmt
+data:
+  application.properties: |-
+    quarkus.datasource.postgresql.db-kind=postgresql
+    quarkus.datasource.postgresql.username=test
+    quarkus.datasource.postgresql.password=test
+    quarkus.datasource.postgresql.jdbc.url=jdbc:postgresql://imhotep-postgresql.debezium-postgresql.svc.cluster.local:5432/${database}
+    quarkus.datasource.postgresql.enabled=true
+    quarkus.datasource.mysql.db-kind=mysql
+    quarkus.datasource.mysql.username=test
+    quarkus.datasource.mysql.password=test
+    quarkus.datasource.mysql.jdbc.url=jdbc:mysql://imhotep-mysql.debezium-mysql.svc.cluster.local:3306/${mysqlDatabase}
+    quarkus.datasource.mysql.enabled=true
+    quarkus.mongodb.devservices.enabled=false
+    quarkus.mongodb.main.connection-string=${mongoSharedConnection}
+    quarkus.mongodb.main.enabled=true
+    mongodb.database=${database}
+    quarkus.kubernetes-config.enabled=true
+    quarkus.kubernetes-config.config-maps=dmt-config
+    quarkus.kubernetes-client.trust-certs=true
