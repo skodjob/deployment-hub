@@ -23,17 +23,17 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: kronos-secret
+                  name: postgresql-secret
                   key: password
             - name: POSTGRES_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: kronos-secret
+                  name: postgresql-secret
                   key: database
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: kronos-secret
+                  name: postgresql-secret
                   key: username
             - name: PGDATA
               value: /var/lib/postgresql/data/debezium/
