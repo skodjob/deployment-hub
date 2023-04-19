@@ -24,14 +24,10 @@ metadata:
 data:
   application.properties: |-
     quarkus.datasource.postgresql.db-kind=postgresql
-    quarkus.datasource.postgresql.username=${username}
-    quarkus.datasource.postgresql.password=${password}
-    quarkus.datasource.postgresql.jdbc.url=jdbc:postgresql://imhotep-postgresql.debezium-postgresql.svc.cluster.local:5432/${database}
+    quarkus.datasource.postgresql.jdbc.url=jdbc:postgresql://imhotep-postgresql.debezium-postgresql.svc.cluster.local:5432/${database}?user=${username}&password=${password}
     quarkus.datasource.postgresql.enabled=true
     quarkus.datasource.mysql.db-kind=mysql
-    quarkus.datasource.mysql.username=${username}
-    quarkus.datasource.mysql.password=${password}
-    quarkus.datasource.mysql.jdbc.url=jdbc:mysql://imhotep-mysql.debezium-mysql.svc.cluster.local:3306/${mysqlDatabase}
+    quarkus.datasource.mysql.jdbc.url=jdbc:mysql://${username}:${password}@imhotep-mysql.debezium-mysql.svc.cluster.local:3306/${database}
     quarkus.datasource.mysql.enabled=true
     quarkus.mongodb.devservices.enabled=false
     quarkus.mongodb.main.connection-string=${mongoSharedConnection}
