@@ -34,14 +34,14 @@ spec:
             - secretRef:
                 name: kronos-secret
           livenessProbe:
-            failureThreshold: 3
+            failureThreshold: 10
             httpGet:
               path: /q/health/live
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 5
             periodSeconds: 10
-            successThreshold: 1
+            successThreshold: 5
             timeoutSeconds: 10
           name: kronos
           ports:
@@ -49,14 +49,14 @@ spec:
               name: http
               protocol: TCP
           readinessProbe:
-            failureThreshold: 3
+            failureThreshold: 20
             httpGet:
               path: /q/health/ready
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 5
             periodSeconds: 10
-            successThreshold: 1
+            successThreshold: 5
             timeoutSeconds: 10
       serviceAccountName: kronos-sa
 ---
