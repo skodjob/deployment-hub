@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: imhotep-consumer-mongodb
+  name: imhotep-consumer-mongodb
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: imhotep-consumer-mongodb
+  template:
+    metadata:
+      labels:
+        app: imhotep-consumer-mongodb
+    spec:
+      containers:
+        - name: imhotep-consumer-mongodb
+          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/imhotep-consumer:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/imhotep-consumer:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+            - name: TOPIC
+              value: mongodb.debezium.crypto
+            - name: GROUP_ID
+              value: imhotep-consumer-group
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "100000000"
