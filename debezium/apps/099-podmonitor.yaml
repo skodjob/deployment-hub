@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: dmt-metrics
+  labels:
+    app: dmt
+spec:
+  selector:
+    matchLabels:
+      app: dmt
+  namespaceSelector:
+    matchNames:
+      - debezium-apps
+  podMetricsEndpoints:
+    - path: /q/metrics
+      port: http
