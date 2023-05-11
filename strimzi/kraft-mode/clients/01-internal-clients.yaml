@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: horus-consumer
+  name: horus-consumer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: horus-consumer
+  template:
+    metadata:
+      labels:
+        app: horus-consumer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: horus-consumer
+          image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka-kraft/horus-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka-kraft/horus-consumer:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka-kraft/horus-consumer:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: horus-kafka-bootstrap.strimzi-kafka-kraft.svc:9093
+            - name: TOPIC
+              value: anubis.stargate-twitter-search
+            - name: GROUP_ID
+              value: stargate-twitter-search-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra

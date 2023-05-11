@@ -15,9 +15,10 @@ spec:
       labels:
         app: twitter-stargate-consumer
     spec:
+      serviceAccountName: clients-sa
       containers:
         - name: twitter-stargate-consumer
-          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
           imagePullPolicy: Always
           resources:
             requests:
@@ -43,6 +44,17 @@ spec:
               value: "INFO"
             - name: MESSAGE_COUNT
               value: "1000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -60,9 +72,10 @@ spec:
       labels:
         app: twitter-kafka-consumer
     spec:
+      serviceAccountName: clients-sa
       containers:
         - name: twitter-kafka-consumer
-          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
           imagePullPolicy: Always
           resources:
             requests:
@@ -88,6 +101,17 @@ spec:
               value: "INFO"
             - name: MESSAGE_COUNT
               value: "1000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -105,9 +129,10 @@ spec:
       labels:
         app: twitter-strimzi-consumer
     spec:
+      serviceAccountName: clients-sa
       containers:
         - name: twitter-strimzi-consumer
-          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
           imagePullPolicy: Always
           resources:
             requests:
@@ -133,3 +158,14 @@ spec:
               value: "INFO"
             - name: MESSAGE_COUNT
               value: "1000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra

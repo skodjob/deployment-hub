@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: strimzi-cluster-operator
+  labels:
+    app: strimzi
+    mode: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: strimzi-cluster-operator
+      strimzi.io/kind: cluster-operator
+  template:
+    metadata:
+      labels:
+        name: strimzi-cluster-operator
+        strimzi.io/kind: cluster-operator
+        mode: zookeeper
+    spec:
+      serviceAccountName: strimzi-cluster-operator
+      volumes:
+        - name: strimzi-tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Mi
+        - name: co-config-volume
+          configMap:
+            name: strimzi-cluster-operator
+      containers:
+        - name: strimzi-cluster-operator
+          image: quay.io/strimzi/operator@sha256:d8e796e2af4079130833aff9dfca489eb5d0d7399d7f4e4ea16b097997f1d2c7
+          ports:
+            - containerPort: 8080
+              name: http
+          args:
+            - /opt/strimzi/bin/cluster_operator_run.sh
+          volumeMounts:
+            - name: strimzi-tmp
+              mountPath: /tmp
+            - name: co-config-volume
+              mountPath: /opt/strimzi/custom-config/
+          env:
+            - name: STRIMZI_NAMESPACE
+              # we want to have cluster-wide operator
+              value: "*"
+            - name: STRIMZI_FULL_RECONCILIATION_INTERVAL_MS
+              value: "120000"
+            - name: STRIMZI_OPERATION_TIMEOUT_MS
+              value: "300000"
+            - name: STRIMZI_DEFAULT_TLS_SIDECAR_ENTITY_OPERATOR_IMAGE
+              value: quay.io/strimzi/kafka@sha256:ff3d7ff4742cce33819aa1d7f61cf118cc284e3697ccd66ab6fc6d32e2c6e111
+            - name: STRIMZI_DEFAULT_KAFKA_EXPORTER_IMAGE
+              value: quay.io/strimzi/kafka@sha256:ff3d7ff4742cce33819aa1d7f61cf118cc284e3697ccd66ab6fc6d32e2c6e111
+            - name: STRIMZI_DEFAULT_CRUISE_CONTROL_IMAGE
+              value: quay.io/strimzi/kafka@sha256:ff3d7ff4742cce33819aa1d7f61cf118cc284e3697ccd66ab6fc6d32e2c6e111
+            - name: STRIMZI_KAFKA_IMAGES
+              value: |
+                3.3.1=quay.io/strimzi/kafka@sha256:258447018e9da85973ab1a6c094fc399d8d8f453206101f62e24517a5eb4c1c6
+                3.3.2=quay.io/strimzi/kafka@sha256:fb4c2cdfba292b65a3aaa1d80b0182cd8b6d95deb8e033314cb266c40e6b77a4
+                3.4.0=quay.io/strimzi/kafka@sha256:ff3d7ff4742cce33819aa1d7f61cf118cc284e3697ccd66ab6fc6d32e2c6e111
+            - name: STRIMZI_KAFKA_CONNECT_IMAGES
+              value: |
+                3.3.1=quay.io/strimzi/kafka@sha256:258447018e9da85973ab1a6c094fc399d8d8f453206101f62e24517a5eb4c1c6
+                3.3.2=quay.io/strimzi/kafka@sha256:fb4c2cdfba292b65a3aaa1d80b0182cd8b6d95deb8e033314cb266c40e6b77a4
+                3.4.0=quay.io/strimzi/kafka@sha256:ff3d7ff4742cce33819aa1d7f61cf118cc284e3697ccd66ab6fc6d32e2c6e111
+            - name: STRIMZI_KAFKA_MIRROR_MAKER_IMAGES
+              value: |
+                3.3.1=quay.io/strimzi/kafka@sha256:258447018e9da85973ab1a6c094fc399d8d8f453206101f62e24517a5eb4c1c6
+                3.3.2=quay.io/strimzi/kafka@sha256:fb4c2cdfba292b65a3aaa1d80b0182cd8b6d95deb8e033314cb266c40e6b77a4
+                3.4.0=quay.io/strimzi/kafka@sha256:ff3d7ff4742cce33819aa1d7f61cf118cc284e3697ccd66ab6fc6d32e2c6e111
+            - name: STRIMZI_KAFKA_MIRROR_MAKER_2_IMAGES
+              value: |
+                3.3.1=quay.io/strimzi/kafka@sha256:258447018e9da85973ab1a6c094fc399d8d8f453206101f62e24517a5eb4c1c6
+                3.3.2=quay.io/strimzi/kafka@sha256:fb4c2cdfba292b65a3aaa1d80b0182cd8b6d95deb8e033314cb266c40e6b77a4
+                3.4.0=quay.io/strimzi/kafka@sha256:ff3d7ff4742cce33819aa1d7f61cf118cc284e3697ccd66ab6fc6d32e2c6e111
+            - name: STRIMZI_DEFAULT_TOPIC_OPERATOR_IMAGE
+              value: quay.io/strimzi/operator@sha256:d8e796e2af4079130833aff9dfca489eb5d0d7399d7f4e4ea16b097997f1d2c7
+            - name: STRIMZI_DEFAULT_USER_OPERATOR_IMAGE
+              value: quay.io/strimzi/operator@sha256:d8e796e2af4079130833aff9dfca489eb5d0d7399d7f4e4ea16b097997f1d2c7
+            - name: STRIMZI_DEFAULT_KAFKA_INIT_IMAGE
+              value: quay.io/strimzi/operator@sha256:d8e796e2af4079130833aff9dfca489eb5d0d7399d7f4e4ea16b097997f1d2c7
+            - name: STRIMZI_DEFAULT_KAFKA_BRIDGE_IMAGE
+              value: quay.io/strimzi/kafka-bridge@sha256:134a3cd8130ad04fec95256aa5c8a119f8262776aca21df1fec69dc0b8225a9a
+            - name: STRIMZI_DEFAULT_KANIKO_EXECUTOR_IMAGE
+              value: quay.io/strimzi/kaniko-executor@sha256:39778b90c2b2afc30261e4ad5135805e1a10a2b60e2e53108fb9f80487f1208a
+            - name: STRIMZI_DEFAULT_MAVEN_BUILDER
+              value: quay.io/strimzi/maven-builder@sha256:91581c94a7d0a772e9fd664a9221ca17b9579134fb167b530e158ba3b6b77b99
+            - name: STRIMZI_OPERATOR_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: STRIMZI_FEATURE_GATES
+              value: "+StableConnectIdentities"
+            - name: STRIMZI_LEADER_ELECTION_ENABLED
+              value: "true"
+            - name: STRIMZI_LEADER_ELECTION_LEASE_NAME
+              value: "strimzi-cluster-operator"
+            - name: STRIMZI_LEADER_ELECTION_LEASE_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: STRIMZI_LEADER_ELECTION_IDENTITY
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: STRIMZI_LOG_LEVEL
+              value: "DEBUG"
+            - name: STRIMZI_CUSTOM_RESOURCE_SELECTOR
+              value: mode=zookeeper
+          livenessProbe:
+            httpGet:
+              path: /healthy
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 384Mi
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra

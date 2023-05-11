@@ -7,7 +7,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: imhotep-connect
-    namespace: strimzi-kafka
+    namespace: strimzi-connect
 roleRef:
   kind: Role
   name: imhotep-connect-role
@@ -23,7 +23,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: imhotep-connect
-    namespace: strimzi-kafka
+    namespace: strimzi-connect
 roleRef:
   kind: Role
   name: imhotep-mysql-role
@@ -33,13 +33,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: anubis-cert-role-binding
-  namespace: strimzi-kafka
+  namespace: strimzi-connect
   labels:
     app: imhotep
 subjects:
   - kind: ServiceAccount
     name: imhotep-connect
-    namespace: strimzi-kafka
+    namespace: strimzi-connect
 roleRef:
   kind: Role
   name: imhotep-cert-role
@@ -55,7 +55,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: imhotep-connect
-    namespace: strimzi-kafka
+    namespace: strimzi-connect
 roleRef:
   kind: Role
   name: imhotep-mongo-role

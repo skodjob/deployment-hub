@@ -14,148 +14,104 @@ spec:
       - resource:
           type: group
           name: connect-cluster
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: topic
           name: connect-cluster-configs
-        operation: Read
-      - resource:
-          type: topic
-          name: connect-cluster-configs
-        operation: Describe
-      - resource:
-          type: topic
-          name: connect-cluster-configs
-        operation: Write
-      - resource:
-          type: topic
-          name: connect-cluster-configs
-        operation: Describe
-      - resource:
-          type: topic
-          name: connect-cluster-configs
-        operation: Create
+        operations:
+         - Read
+         - Describe
+         - Write
+         - Create
       - resource:
           type: topic
           name: connect-cluster-status
-        operation: Read
-      - resource:
-          type: topic
-          name: connect-cluster-status
-        operation: Describe
-      - resource:
-          type: topic
-          name: connect-cluster-status
-        operation: Write
-      - resource:
-          type: topic
-          name: connect-cluster-status
-        operation: Describe
-      - resource:
-          type: topic
-          name: connect-cluster-status
-        operation: Create
+        operations:
+         - Read
+         - Describe
+         - Write
+         - Create
       - resource:
           type: topic
           name: connect-cluster-offsets
-        operation: Read
-      - resource:
-          type: topic
-          name: connect-cluster-offsets
-        operation: Describe
-      - resource:
-          type: topic
-          name: connect-cluster-offsets
-        operation: Write
-      - resource:
-          type: topic
-          name: connect-cluster-offsets
-        operation: Describe
-      - resource:
-          type: topic
-          name: connect-cluster-offsets
-        operation: Create
-      - resource:
-          type: topic
-          name: connect-cluster-offsets
-        operation: DescribeConfigs
-      # ???
+        operations:
+         - Read
+         - Describe
+         - Write
+         - Create
+         - DescribeConfigs
       - resource:
           type: cluster
-        operation: Describe
-      - resource:
-          type: cluster
-        operation: DescribeConfigs
-      - resource:
-          type: cluster
-        operation: Alter
+        operations:
+         - Describe
+         - DescribeConfigs
+         - Alter
       # Connector topics
       - resource:
           type: group
           name: connect-
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: topic
           name: stargate-twitter-search
-        operation: Write
-      - resource:
-          type: topic
-          name: stargate-twitter-search
-        operation: Read
-      - resource:
-          type: topic
-          name: stargate-twitter-search
-        operation: Describe
+        operations:
+         - Write
+         - Read
+         - Describe
       - resource:
           type: topic
           name: kafka-twitter-search
-        operation: Write
-      - resource:
-          type: topic
-          name: kafka-twitter-search
-        operation: Read
-      - resource:
-          type: topic
-          name: strimzi-twitter-search
-        operation: Write
+        operations:
+          - Write
+          - Read
+          - Describe
       - resource:
           type: topic
           name: strimzi-twitter-search
-        operation: Read
+        operations:
+          - Write
+          - Read
+          - Describe
       - resource:
           type: topic
           name: devconf-twitter-search
-        operation: Read
-      - resource:
-          type: topic
-          name: devconf-twitter-search
-        operation: Describe
-      - resource:
-          type: topic
-          name: devconf-twitter-search
-        operation: Write
+        operations:
+          - Write
+          - Read
+          - Describe
       # Topcis for telegram
       - resource:
           type: topic
           name: stargate-telegram
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: topic
           name: kafka-telegram
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: topic
           name: strimzi-telegram
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: topic
           name: devconf-telegram
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
+  template:
+    secret:
+      metadata:
+        annotations:
+          kubed.appscode.com/sync: ""
 # Message parser user
 ---
 apiVersion: kafka.strimzi.io/v1beta2
@@ -175,57 +131,74 @@ spec:
           type: topic
           name: stargate-twitter
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: topic
           name: kafka-twitter
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: topic
           name: strimzi-twitter
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: topic
           name: devconf-twitter
           patternType: prefix
-        operation: Read
+        operations:
+         - Read
       # Group used by the Kafka Streams app
       - resource:
           type: group
           name: stargate-message-parser
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: group
           name: kafka-message-parser
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: group
           name: strimzi-message-parser
-        operation: Read
+        operations:
+         - Read
       - resource:
           type: group
           name: devconf-message-parser
-        operation: Read
+        operations:
+         - Read
       # Target topic
       - resource:
           type: topic
           name: stargate-telegram
           patternType: prefix
-        operation: Write
+        operations:
+         - Write
       - resource:
           type: topic
           name: kafka-telegram
           patternType: prefix
-        operation: Write
+        operations:
+         - Write
       - resource:
           type: topic
           name: strimzi-telegram
           patternType: prefix
-        operation: Write
+        operations:
+         - Write
       - resource:
           type: topic
           name: devconf-telegram
           patternType: prefix
-        operation: Write
+        operations:
+         - Write
+  template:
+    secret:
+      metadata:
+        annotations:
+          kubed.appscode.com/sync: ""

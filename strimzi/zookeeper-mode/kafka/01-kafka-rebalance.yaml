@@ -1,0 +1,11 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaRebalance
+metadata:
+  name: anubis-rebalance
+  labels:
+    strimzi.io/cluster: anubis
+    mode: zookeeper
+  annotations:
+    strimzi.io/rebalance-auto-approval: "true"
+# no goals specified, using the default goals from the Cruise Control configuration
+spec: {}
