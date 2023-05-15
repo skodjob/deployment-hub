@@ -1,0 +1,106 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: kafka-internal-producer
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+    mode: zookeeper
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data
+        operations:
+          - Write
+          - Create
+          - Describe
+  template:
+    secret:
+      metadata:
+        annotations:
+          kubed.appscode.com/sync: ""
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: kafka-internal-streams
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+    mode: zookeeper
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: kafka-anubis-internal-data-streams
+          patternType: prefix
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: kafka-anubis-internal-data-reversed
+        operations:
+          - Describe
+          - Write
+          - Create
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data-reversed
+        operations:
+          - Describe
+          - Write
+          - Create
+  template:
+    secret:
+      metadata:
+        annotations:
+          kubed.appscode.com/sync: ""
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: kafka-internal-consumer
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+    mode: zookeeper
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: kafka-anubis-internal-data-reversed
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: kafka-anubis-internal-data-consumer
+        operations:
+          - Read
+          - Describe
+  template:
+    secret:
+      metadata:
+        annotations:
+          kubed.appscode.com/sync: ""

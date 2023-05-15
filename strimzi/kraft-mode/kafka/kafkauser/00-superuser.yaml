@@ -1,0 +1,16 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: superuser-horus
+  labels:
+    strimzi.io/cluster: horus
+    mode: kraft
+spec:
+  authentication:
+    type: tls
+  template:
+    secret:
+      metadata:
+        annotations:
+          kubed.appscode.com/sync: ""
