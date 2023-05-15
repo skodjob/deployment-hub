@@ -79,7 +79,7 @@ spec:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "kafka_connect_metrics_response_rate{strimzi_io_cluster=\"imhotep\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "expr": "kafka_connect_metrics_response_rate{strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                         "interval": "",
                         "legendFormat": "",
                         "queryType": "randomWalk",
@@ -176,7 +176,7 @@ spec:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_binlogposition{plugin=\"$connector_type\",name=\"$connector_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "expr": "debezium_metrics_binlogposition{plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                         "interval": "",
                         "legendFormat": "",
                         "queryType": "randomWalk",
@@ -305,7 +305,7 @@ spec:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "topk(1, debezium_metrics_millisecondssincelastevent{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+                        "expr": "topk(1, debezium_metrics_millisecondssincelastevent{context=~\"(binlog|streaming)\", plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"})",
                         "format": "time_series",
                         "instant": true,
                         "interval": "",
@@ -365,7 +365,7 @@ spec:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "expr": "debezium_metrics_totalnumberofeventsseen{context=~\"(binlog|streaming)\", plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 1,
@@ -374,7 +374,7 @@ spec:
                     },
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_numberofskippedevents{plugin=\"$connector_type\",name=\"$connector_name\",context=~\"(binlog|streaming)\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "expr": "debezium_metrics_numberofskippedevents{context=~\"(binlog|streaming)\", plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 1,
@@ -498,7 +498,7 @@ spec:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_connected{plugin=\"$connector_type\", name=\"$connector_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "expr": "debezium_metrics_connected{plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 1,
@@ -559,7 +559,7 @@ spec:
                 "targets": [
                     {
                         "exemplar": true,
-                        "expr": "debezium_metrics_queueremainingcapacity{plugin=\"$connector_type\", name=\"$connector_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "expr": "debezium_metrics_queueremainingcapacity{plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                         "format": "time_series",
                         "hide": false,
                         "instant": false,
@@ -687,7 +687,7 @@ spec:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_totaltablecount{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "debezium_metrics_totaltablecount{plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "instant": true,
                                 "interval": "",
@@ -762,7 +762,7 @@ spec:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_remainingtablecount{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "debezium_metrics_remainingtablecount{context=\"snapshot\", plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "instant": true,
                                 "interval": "",
@@ -939,7 +939,7 @@ spec:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_snapshotcompleted{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "debezium_metrics_snapshotcompleted{context=\"snapshot\", plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "instant": true,
                                 "interval": "",
@@ -1028,7 +1028,7 @@ spec:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_snapshotaborted{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "debezium_metrics_snapshotaborted{context=\"snapshot\",plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "interval": "",
                                 "intervalFactor": 1,
@@ -1087,7 +1087,7 @@ spec:
                         "targets": [
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "debezium_metrics_totalnumberofeventsseen{context=\"snapshot\",plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "interval": "",
                                 "intervalFactor": 1,
@@ -1096,7 +1096,7 @@ spec:
                             },
                             {
                                 "exemplar": true,
-                                "expr": "debezium_metrics_numberofskippedevents{plugin=\"$connector_type\",name=\"$connector_name\",context=\"snapshot\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "debezium_metrics_numberofskippedevents{context=\"snapshot\", plugin=\"$CONNECTOR_TYPE\",name=\"$CONNECTOR_NAME\", strimzi_io_cluster=~\"$CONNECT_CLUSTER\", clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "hide": true,
                                 "interval": "",
@@ -1211,14 +1211,14 @@ spec:
                 "steppedLine": false,
                 "targets": [
                     {
-                        "expr": "kafka_connect_metrics_incoming_byte_rate{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "expr": "kafka_connect_metrics_incoming_byte_rate{clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                         "format": "time_series",
                         "intervalFactor": 1,
                         "legendFormat": "Incoming({{client}})",
                         "refId": "A"
                     },
                     {
-                        "expr": "kafka_connect_metrics_outgoing_byte_rate{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "expr": "kafka_connect_metrics_outgoing_byte_rate{clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                         "format": "time_series",
                         "intervalFactor": 1,
                         "legendFormat": "Outgoing({{client}})",
@@ -1428,21 +1428,21 @@ spec:
                         "steppedLine": false,
                         "targets": [
                             {
-                                "expr": "jvm_threads_current{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "jvm_threads_current{clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Running",
                                 "refId": "A"
                             },
                             {
-                                "expr": "jvm_threads_peak{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "jvm_threads_peak{clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Maximum",
                                 "refId": "B"
                             },
                             {
-                                "expr": "jvm_threads_started_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                                "expr": "jvm_threads_started_total{clusterName=~\"$OPENSHIFT_CLUSTER\", namespace=~\"$NAMESPACE\", kubernetes_pod_name=~\"$POD_NAME\"}",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Started in total",
@@ -1537,7 +1537,7 @@ spec:
                     "includeAll": false,
                     "label": "Connector Type",
                     "multi": false,
-                    "name": "connector_type",
+                    "name": "CONNECTOR_TYPE",
                     "options": [
                         {
                             "selected": true,
@@ -1584,6 +1584,87 @@ spec:
                 {
                     "allValue": null,
                     "current": {
+                        "selected": true,
+                        "text": "strimzi-connect",
+                        "value": "strimzi-connect"
+                    },
+                    "datasource": "${DS_THANOS}",
+                    "definition": "",
+                    "description": null,
+                    "error": null,
+                    "hide": 0,
+                    "includeAll": true,
+                    "label": "Namespace",
+                    "multi": false,
+                    "name": "NAMESPACE",
+                    "query": "debezium_metrics_totalnumberofeventsseen{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                    "refresh": 0,
+                    "regex": "/.*namespace=\"([^\"]+)\".*/",
+                    "skipUrlSync": false,
+                    "sort": 0,
+                    "tagValuesQuery": "",
+                    "tags": [],
+                    "tagsQuery": "",
+                    "type": "query",
+                    "useTags": false
+                },
+                {
+                    "allValue": null,
+                    "current": {
+                        "selected": true,
+                        "text": "strimzi-connect",
+                        "value": "strimzi-connect"
+                    },
+                    "datasource": "${DS_THANOS}",
+                    "definition": "",
+                    "description": null,
+                    "error": null,
+                    "hide": 0,
+                    "includeAll": true,
+                    "label": "Connect cluster",
+                    "multi": false,
+                    "name": "CONNECT_CLUSTER",
+                    "query": "debezium_metrics_totalnumberofeventsseen{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                    "refresh": 0,
+                    "regex": "/.*strimzi_io_cluster=\"([^\"]+)\".*/",
+                    "skipUrlSync": false,
+                    "sort": 0,
+                    "tagValuesQuery": "",
+                    "tags": [],
+                    "tagsQuery": "",
+                    "type": "query",
+                    "useTags": false
+                },
+                {
+                    "allValue": null,
+                    "current": {
+                        "selected": true,
+                        "text": "imhotep-connect-0",
+                        "value": "imhotep-connect-0"
+                    },
+                    "datasource": "${DS_THANOS}",
+                    "definition": "",
+                    "description": null,
+                    "error": null,
+                    "hide": 0,
+                    "includeAll": true,
+                    "label": "Pod name",
+                    "multi": false,
+                    "name": "POD_NAME",
+                    "query": "debezium_metrics_totalnumberofeventsseen{clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                    "refresh": 0,
+                    "regex": "/.*kubernetes_pod_name=\"([^\"]+)\".*/",
+                    "skipUrlSync": false,
+                    "sort": 0,
+                    "tagValuesQuery": "",
+                    "tags": [],
+                    "tagsQuery": "",
+                    "type": "query",
+                    "useTags": false
+                },
+                {
+                    "allValue": null,
+                    "current": {
                         "selected": false,
                         "text": "mysql",
                         "value": "mysql"
@@ -1596,7 +1677,7 @@ spec:
                     "includeAll": false,
                     "label": "Connector Name",
                     "multi": false,
-                    "name": "connector_name",
+                    "name": "CONNECTOR_NAME",
                     "options": [
                         {
                             "selected": true,
@@ -1605,7 +1686,7 @@ spec:
                         }
                     ],
                     "query": {
-                        "query": "debezium_metrics_totalnumberofeventsseen{plugin=\"$connector_type\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+                        "query": "debezium_metrics_totalnumberofeventsseen{plugin=\"$CONNECTOR_TYPE\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
                         "refId": "worker-01-connector_name-Variable-Query"
                     },
                     "refresh": 0,
@@ -1651,5 +1732,5 @@ spec:
         },
         "timezone": "",
         "title": "Debezium connectors",
-        "version": 18
+        "version": 19
     }
