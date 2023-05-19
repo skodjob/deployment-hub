@@ -1,0 +1,1723 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: strimzi
+    monitoring-key: tealc
+  name: dmt
+spec:
+  datasources:
+    - datasourceName: tealc-thanos
+      inputName: DS_THANOS
+  customFolderName: "debezium"
+  json: |
+    {
+      "annotations":{
+          "list":[
+            {
+                "builtIn":1,
+                "datasource":{
+                  "type":"grafana",
+                  "uid":"-- Grafana --"
+                },
+                "enable":true,
+                "hide":true,
+                "iconColor":"rgba(0, 211, 255, 1)",
+                "name":"Annotations & Alerts",
+                "target":{
+                  "limit":100,
+                  "matchAny":false,
+                  "tags":[
+                      
+                  ],
+                  "type":"dashboard"
+                },
+                "type":"dashboard"
+            },
+            {
+                "$$hashKey":"object:138",
+                "datasource": "${DS_THANOS}",
+                "enable":true,
+                "expr":"resets(process_uptime_seconds{pod=~\"dmt.*\", namespace=\"$NAMESPACE\"}[1m]) > 0",
+                "iconColor":"rgba(255, 96, 96, 1)",
+                "name":"Restart Detection",
+                "showIn":0,
+                "step":"1m",
+                "tagKeys":"restart-tag",
+                "textFormat":"uptime reset",
+                "titleFormat":"Restart"
+            }
+          ]
+      },
+      "description":"Dashboard for DMT metrics",
+      "editable":true,
+      "fiscalYearStartMonth":0,
+      "gnetId":14370,
+      "graphTooltip":1,
+      "id":16,
+      "links":[
+          
+      ],
+      "liveNow":false,
+      "panels":[
+          {
+            "collapsed":false,
+            "datasource": "${DS_THANOS}",
+            "gridPos":{
+                "h":1,
+                "w":24,
+                "x":0,
+                "y":0
+            },
+            "id":125,
+            "panels":[
+                
+            ],
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "refId":"A"
+                }
+            ],
+            "title":"Quick Facts",
+            "type":"row"
+          },
+          {
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "color":{
+                      "mode":"thresholds"
+                  },
+                  "decimals":1,
+                  "mappings":[
+                      {
+                        "options":{
+                            "match":"null",
+                            "result":{
+                              "text":"N/A"
+                            }
+                        },
+                        "type":"special"
+                      }
+                  ],
+                  "thresholds":{
+                      "mode":"absolute",
+                      "steps":[
+                        {
+                            "color":"green",
+                            "value":null
+                        },
+                        {
+                            "color":"red",
+                            "value":80
+                        }
+                      ]
+                  },
+                  "unit":"s"
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "gridPos":{
+                "h":3,
+                "w":6,
+                "x":0,
+                "y":1
+            },
+            "id":63,
+            "links":[
+                
+            ],
+            "maxDataPoints":100,
+            "options":{
+                "colorMode":"value",
+                "graphMode":"none",
+                "justifyMode":"auto",
+                "orientation":"horizontal",
+                "reduceOptions":{
+                  "calcs":[
+                      "lastNotNull"
+                  ],
+                  "fields":"",
+                  "values":false
+                },
+                "textMode":"auto"
+            },
+            "pluginVersion":"9.4.7",
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"process_uptime_seconds{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "format":"time_series",
+                  "intervalFactor":2,
+                  "legendFormat":"{{instance}} - {{pod}}",
+                  "metric":"",
+                  "range":true,
+                  "refId":"A",
+                  "step":14400
+                }
+            ],
+            "title":"Uptime",
+            "type":"stat"
+          },
+          {
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "color":{
+                      "mode":"thresholds"
+                  },
+                  "mappings":[
+                      {
+                        "options":{
+                            "match":"null",
+                            "result":{
+                              "text":"N/A"
+                            }
+                        },
+                        "type":"special"
+                      }
+                  ],
+                  "thresholds":{
+                      "mode":"absolute",
+                      "steps":[
+                        {
+                            "color":"green",
+                            "value":null
+                        },
+                        {
+                            "color":"red",
+                            "value":80
+                        }
+                      ]
+                  },
+                  "unit":"dateTimeAsIso"
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "gridPos":{
+                "h":3,
+                "w":6,
+                "x":6,
+                "y":1
+            },
+            "id":92,
+            "links":[
+                
+            ],
+            "maxDataPoints":100,
+            "options":{
+                "colorMode":"value",
+                "graphMode":"none",
+                "justifyMode":"auto",
+                "orientation":"horizontal",
+                "reduceOptions":{
+                  "calcs":[
+                      "lastNotNull"
+                  ],
+                  "fields":"",
+                  "values":false
+                },
+                "textMode":"auto"
+            },
+            "pluginVersion":"9.4.7",
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"process_start_time_seconds{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}*1000",
+                  "format":"time_series",
+                  "intervalFactor":2,
+                  "legendFormat":"{{instance}} - {{pod}}",
+                  "metric":"",
+                  "range":true,
+                  "refId":"A",
+                  "step":14400
+                }
+            ],
+            "title":"Start time",
+            "type":"stat"
+          },
+          {
+            "collapsed":false,
+            "datasource": "${DS_THANOS}",
+            "gridPos":{
+                "h":1,
+                "w":24,
+                "x":0,
+                "y":4
+            },
+            "id":126,
+            "panels":[
+                
+            ],
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "refId":"A"
+                }
+            ],
+            "title":"I/O Overview",
+            "type":"row"
+          },
+          {
+            "aliasColors":{
+                
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "gridPos":{
+                "h":7,
+                "w":9,
+                "x":0,
+                "y":5
+            },
+            "hiddenSeries":false,
+            "id":111,
+            "legend":{
+                "avg":false,
+                "current":true,
+                "max":false,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":true
+            },
+            "lines":true,
+            "linewidth":1,
+            "links":[
+                
+            ],
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":5,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"sum(rate(http_server_requests_seconds_count{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[10m]))",
+                  "format":"time_series",
+                  "interval":"",
+                  "intervalFactor":1,
+                  "legendFormat":"HTTP",
+                  "range":true,
+                  "refId":"A"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"Rate",
+            "tooltip":{
+                "shared":true,
+                "sort":0,
+                "value_type":"individual"
+            },
+            "type":"graph",
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "yaxes":[
+                {
+                  "$$hashKey":"object:3248",
+                  "format":"ops",
+                  "logBase":1,
+                  "min":"0",
+                  "show":true
+                },
+                {
+                  "$$hashKey":"object:3249",
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          },
+          {
+            "aliasColors":{
+                
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "gridPos":{
+                "h":7,
+                "w":9,
+                "x":9,
+                "y":5
+            },
+            "hiddenSeries":false,
+            "id":113,
+            "legend":{
+                "avg":false,
+                "current":true,
+                "max":false,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":true
+            },
+            "lines":true,
+            "linewidth":1,
+            "links":[
+                
+            ],
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":5,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"sum(rate(http_server_requests_seconds_sum{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[10m]))/sum(rate(http_server_requests_seconds_count{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[10m]))",
+                  "format":"time_series",
+                  "hide":false,
+                  "interval":"",
+                  "intervalFactor":1,
+                  "legendFormat":"HTTP - AVG",
+                  "range":true,
+                  "refId":"A"
+                },
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"max(http_server_requests_seconds_max{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
+                  "format":"time_series",
+                  "hide":false,
+                  "interval":"",
+                  "intervalFactor":1,
+                  "legendFormat":"HTTP - MAX",
+                  "range":true,
+                  "refId":"B"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"Duration",
+            "tooltip":{
+                "shared":true,
+                "sort":0,
+                "value_type":"individual"
+            },
+            "type":"graph",
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "yaxes":[
+                {
+                  "$$hashKey":"object:1260",
+                  "format":"s",
+                  "logBase":1,
+                  "min":"0",
+                  "show":true
+                },
+                {
+                  "$$hashKey":"object:1261",
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          },
+          {
+            "aliasColors":{
+                "HTTP":"#890f02",
+                "HTTP - 5xx":"#bf1b00"
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "gridPos":{
+                "h":7,
+                "w":6,
+                "x":18,
+                "y":5
+            },
+            "hiddenSeries":false,
+            "id":112,
+            "legend":{
+                "avg":false,
+                "current":true,
+                "max":false,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":true
+            },
+            "lines":true,
+            "linewidth":1,
+            "links":[
+                
+            ],
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":5,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"sum(rate(http_server_requests_seconds_count{status=\"500\", pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[10m]))",
+                  "format":"time_series",
+                  "interval":"",
+                  "intervalFactor":1,
+                  "legendFormat":"HTTP - 5xx",
+                  "range":true,
+                  "refId":"A"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"Errors",
+            "tooltip":{
+                "shared":true,
+                "sort":0,
+                "value_type":"individual"
+            },
+            "type":"graph",
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "yaxes":[
+                {
+                  "format":"ops",
+                  "logBase":1,
+                  "min":"0",
+                  "show":true
+                },
+                {
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          },
+          {
+            "collapsed":false,
+            "gridPos":{
+                "h":1,
+                "w":24,
+                "x":0,
+                "y":12
+            },
+            "id":181,
+            "panels":[
+                
+            ],
+            "title":"Table overview",
+            "type":"row"
+          },
+          {
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "color":{
+                      "mode":"thresholds"
+                  },
+                  "mappings":[
+                      
+                  ],
+                  "thresholds":{
+                      "mode":"absolute",
+                      "steps":[
+                        {
+                            "color":"green",
+                            "value":null
+                        },
+                        {
+                            "color":"red",
+                            "value":80
+                        }
+                      ]
+                  }
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "gridPos":{
+                "h":8,
+                "w":12,
+                "x":0,
+                "y":13
+            },
+            "id":183,
+            "options":{
+                "colorMode":"value",
+                "graphMode":"area",
+                "justifyMode":"auto",
+                "orientation":"auto",
+                "reduceOptions":{
+                  "calcs":[
+                      "lastNotNull"
+                  ],
+                  "fields":"",
+                  "values":false
+                },
+                "textMode":"auto"
+            },
+            "pluginVersion":"9.4.7",
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"table_count{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "legendFormat":"{{instance}} - {{pod}}",
+                  "range":true,
+                  "refId":"A"
+                }
+            ],
+            "title":"Table count",
+            "type":"stat"
+          },
+          {
+            "datasource": "${DS_THANOS}",
+            "description":"Size of selected table",
+            "fieldConfig":{
+                "defaults":{
+                  "color":{
+                      "mode":"thresholds"
+                  },
+                  "mappings":[
+                      
+                  ],
+                  "thresholds":{
+                      "mode":"absolute",
+                      "steps":[
+                        {
+                            "color":"green",
+                            "value":null
+                        }
+                      ]
+                  }
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "gridPos":{
+                "h":8,
+                "w":12,
+                "x":12,
+                "y":13
+            },
+            "id":185,
+            "options":{
+                "colorMode":"value",
+                "graphMode":"area",
+                "justifyMode":"auto",
+                "orientation":"auto",
+                "reduceOptions":{
+                  "calcs":[
+                      "lastNotNull"
+                  ],
+                  "fields":"",
+                  "values":false
+                },
+                "textMode":"auto"
+            },
+            "pluginVersion":"9.4.7",
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"$TABLE{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "legendFormat":"{{instance}} - {{pod}}",
+                  "range":true,
+                  "refId":"A"
+                }
+            ],
+            "title":"$TABLE",
+            "type":"stat"
+          },
+          {
+            "collapsed":false,
+            "datasource": "${DS_THANOS}",
+            "gridPos":{
+                "h":1,
+                "w":24,
+                "x":0,
+                "y":21
+            },
+            "id":163,
+            "panels":[
+                
+            ],
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "refId":"A"
+                }
+            ],
+            "title":"HTTP Edpoints",
+            "type":"row"
+          },
+          {
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "color":{
+                      "mode":"palette-classic"
+                  },
+                  "custom":{
+                      "axisCenteredZero":false,
+                      "axisColorMode":"text",
+                      "axisLabel":"",
+                      "axisPlacement":"auto",
+                      "barAlignment":0,
+                      "drawStyle":"line",
+                      "fillOpacity":0,
+                      "gradientMode":"none",
+                      "hideFrom":{
+                        "legend":false,
+                        "tooltip":false,
+                        "viz":false
+                      },
+                      "lineInterpolation":"linear",
+                      "lineWidth":1,
+                      "pointSize":5,
+                      "scaleDistribution":{
+                        "type":"linear"
+                      },
+                      "showPoints":"auto",
+                      "spanNulls":false,
+                      "stacking":{
+                        "group":"A",
+                        "mode":"none"
+                      },
+                      "thresholdsStyle":{
+                        "mode":"off"
+                      }
+                  },
+                  "mappings":[
+                      
+                  ],
+                  "thresholds":{
+                      "mode":"absolute",
+                      "steps":[
+                        {
+                            "color":"green",
+                            "value":null
+                        },
+                        {
+                            "color":"red",
+                            "value":80
+                        }
+                      ]
+                  }
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "gridPos":{
+                "h":10,
+                "w":24,
+                "x":0,
+                "y":22
+            },
+            "id":179,
+            "options":{
+                "legend":{
+                  "calcs":[
+                      
+                  ],
+                  "displayMode":"list",
+                  "placement":"bottom",
+                  "showLegend":true
+                },
+                "tooltip":{
+                  "mode":"multi",
+                  "sort":"desc"
+                }
+            },
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"http_server_requests_seconds_count{status=\"200\", pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "interval":"",
+                  "legendFormat":"200 Requests",
+                  "range":true,
+                  "refId":"A"
+                },
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"http_server_requests_seconds_count{status=\"500\", pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "hide":false,
+                  "legendFormat":"500 Requests",
+                  "range":true,
+                  "refId":"B"
+                },
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"http_server_requests_seconds_count{status=\"RESET\", pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "hide":false,
+                  "legendFormat":"Reset requests",
+                  "range":true,
+                  "refId":"C"
+                }
+            ],
+            "title":"Total requests",
+            "type":"timeseries"
+          },
+          {
+            "aliasColors":{
+                
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "gridPos":{
+                "h":8,
+                "w":12,
+                "x":0,
+                "y":32
+            },
+            "hiddenSeries":false,
+            "id":143,
+            "legend":{
+                "avg":false,
+                "current":false,
+                "max":false,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":false
+            },
+            "lines":true,
+            "linewidth":1,
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":2,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"rate(http_server_requests_seconds_count{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[10m])",
+                  "interval":"",
+                  "legendFormat":"{{method}} - {{uri}} - {{status}}",
+                  "range":true,
+                  "refId":"A"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"Total number of requests per second",
+            "tooltip":{
+                "shared":true,
+                "sort":0,
+                "value_type":"individual"
+            },
+            "type":"graph",
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "yaxes":[
+                {
+                  "$$hashKey":"object:2112",
+                  "format":"ops",
+                  "logBase":1,
+                  "show":true
+                },
+                {
+                  "$$hashKey":"object:2113",
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          },
+          {
+            "aliasColors":{
+                
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "gridPos":{
+                "h":8,
+                "w":12,
+                "x":12,
+                "y":32
+            },
+            "hiddenSeries":false,
+            "id":155,
+            "legend":{
+                "avg":false,
+                "current":false,
+                "max":false,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":false
+            },
+            "lines":true,
+            "linewidth":1,
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":2,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"rate(http_server_requests_seconds_sum{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[5m]) / rate(http_server_requests_seconds_count{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[5m])",
+                  "interval":"",
+                  "legendFormat":"{{method}} - {{uri}} - {{status}}",
+                  "range":true,
+                  "refId":"A"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"Average inbound request duration",
+            "tooltip":{
+                "shared":true,
+                "sort":0,
+                "value_type":"individual"
+            },
+            "type":"graph",
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "yaxes":[
+                {
+                  "$$hashKey":"object:1612",
+                  "format":"s",
+                  "logBase":1,
+                  "show":true
+                },
+                {
+                  "$$hashKey":"object:1613",
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          },
+          {
+            "aliasColors":{
+                
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "gridPos":{
+                "h":8,
+                "w":12,
+                "x":0,
+                "y":40
+            },
+            "hiddenSeries":false,
+            "id":153,
+            "legend":{
+                "avg":false,
+                "current":false,
+                "max":false,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":false
+            },
+            "lines":true,
+            "linewidth":1,
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":2,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"http_server_requests_seconds_max{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "interval":"",
+                  "legendFormat":"{{method}} - {{uri}} - {{status}}",
+                  "range":true,
+                  "refId":"A"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"Maximum inbound request duration",
+            "tooltip":{
+                "shared":true,
+                "sort":0,
+                "value_type":"individual"
+            },
+            "type":"graph",
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "yaxes":[
+                {
+                  "$$hashKey":"object:2041",
+                  "format":"s",
+                  "logBase":1,
+                  "show":true
+                },
+                {
+                  "$$hashKey":"object:2042",
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          },
+          {
+            "aliasColors":{
+                
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "gridPos":{
+                "h":8,
+                "w":12,
+                "x":12,
+                "y":40
+            },
+            "hiddenSeries":false,
+            "id":151,
+            "legend":{
+                "avg":false,
+                "current":false,
+                "max":false,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":false
+            },
+            "lines":true,
+            "linewidth":1,
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":2,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"rate(http_server_requests_seconds_sum{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[5m])",
+                  "interval":"",
+                  "legendFormat":"{{method}} - {{uri}} - {{status}}",
+                  "range":true,
+                  "refId":"A"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"Sum of the duration of every request",
+            "tooltip":{
+                "shared":true,
+                "sort":0,
+                "value_type":"individual"
+            },
+            "type":"graph",
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "yaxes":[
+                {
+                  "$$hashKey":"object:1970",
+                  "format":"s",
+                  "logBase":1,
+                  "show":true
+                },
+                {
+                  "$$hashKey":"object:1971",
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          },
+          {
+            "collapsed":false,
+            "datasource": "${DS_THANOS}",
+            "gridPos":{
+                "h":1,
+                "w":24,
+                "x":0,
+                "y":48
+            },
+            "id":128,
+            "panels":[
+                
+            ],
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "refId":"A"
+                }
+            ],
+            "title":"JVM Misc",
+            "type":"row"
+          },
+          {
+            "aliasColors":{
+                
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "editable":true,
+            "error":false,
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "grid":{
+                "leftLogBase":1,
+                "rightLogBase":1
+            },
+            "gridPos":{
+                "h":7,
+                "w":11,
+                "x":0,
+                "y":49
+            },
+            "hiddenSeries":false,
+            "id":106,
+            "legend":{
+                "avg":false,
+                "current":true,
+                "max":true,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":true
+            },
+            "lines":true,
+            "linewidth":1,
+            "links":[
+                
+            ],
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":5,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"system_cpu_usage{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "format":"time_series",
+                  "hide":false,
+                  "intervalFactor":1,
+                  "legendFormat":"system",
+                  "metric":"",
+                  "range":true,
+                  "refId":"A",
+                  "step":2400
+                },
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"process_cpu_usage{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "format":"time_series",
+                  "hide":false,
+                  "intervalFactor":1,
+                  "legendFormat":"process",
+                  "range":true,
+                  "refId":"B"
+                },
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"avg_over_time(process_cpu_usage{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}[1h])",
+                  "format":"time_series",
+                  "hide":false,
+                  "intervalFactor":1,
+                  "legendFormat":"process-1h",
+                  "range":true,
+                  "refId":"C"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"CPU Usage",
+            "tooltip":{
+                "msResolution":false,
+                "shared":true,
+                "sort":0,
+                "value_type":"cumulative"
+            },
+            "type":"graph",
+            "x-axis":true,
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "y-axis":true,
+            "y_formats":[
+                "short",
+                "short"
+            ],
+            "yaxes":[
+                {
+                  "decimals":1,
+                  "format":"percentunit",
+                  "label":"",
+                  "logBase":1,
+                  "max":"1",
+                  "min":0,
+                  "show":true
+                },
+                {
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          },
+          {
+            "aliasColors":{
+                
+            },
+            "bars":false,
+            "dashLength":10,
+            "dashes":false,
+            "datasource": "${DS_THANOS}",
+            "editable":true,
+            "error":false,
+            "fieldConfig":{
+                "defaults":{
+                  "links":[
+                      
+                  ]
+                },
+                "overrides":[
+                  
+                ]
+            },
+            "fill":1,
+            "fillGradient":0,
+            "grid":{
+                "leftLogBase":1,
+                "rightLogBase":1
+            },
+            "gridPos":{
+                "h":7,
+                "w":13,
+                "x":11,
+                "y":49
+            },
+            "hiddenSeries":false,
+            "id":93,
+            "legend":{
+                "avg":false,
+                "current":true,
+                "max":true,
+                "min":false,
+                "show":true,
+                "total":false,
+                "values":true
+            },
+            "lines":true,
+            "linewidth":1,
+            "links":[
+                
+            ],
+            "nullPointMode":"null",
+            "options":{
+                "alertThreshold":true
+            },
+            "percentage":false,
+            "pluginVersion":"9.4.7",
+            "pointradius":5,
+            "points":false,
+            "renderer":"flot",
+            "seriesOverrides":[
+                
+            ],
+            "spaceLength":10,
+            "stack":false,
+            "steppedLine":false,
+            "targets":[
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"system_load_average_1m{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "format":"time_series",
+                  "intervalFactor":2,
+                  "legendFormat":"system-1m",
+                  "metric":"",
+                  "range":true,
+                  "refId":"A",
+                  "step":2400
+                },
+                {
+                  "datasource": "${DS_THANOS}",
+                  "editorMode":"code",
+                  "expr":"system_cpu_count{pod=~\"dmt.*\", namespace=\"$NAMESPACE\", clusterName=\"$OPENSHIFT_CLUSTER\"}",
+                  "format":"time_series",
+                  "intervalFactor":2,
+                  "legendFormat":"cpus",
+                  "range":true,
+                  "refId":"B"
+                }
+            ],
+            "thresholds":[
+                
+            ],
+            "timeRegions":[
+                
+            ],
+            "title":"Load",
+            "tooltip":{
+                "msResolution":false,
+                "shared":true,
+                "sort":0,
+                "value_type":"cumulative"
+            },
+            "type":"graph",
+            "x-axis":true,
+            "xaxis":{
+                "mode":"time",
+                "show":true,
+                "values":[
+                  
+                ]
+            },
+            "y-axis":true,
+            "y_formats":[
+                "short",
+                "short"
+            ],
+            "yaxes":[
+                {
+                  "decimals":1,
+                  "format":"short",
+                  "label":"",
+                  "logBase":1,
+                  "min":0,
+                  "show":true
+                },
+                {
+                  "format":"short",
+                  "logBase":1,
+                  "show":true
+                }
+            ],
+            "yaxis":{
+                "align":false
+            }
+          }
+      ],
+      "refresh":"5s",
+      "revision":1,
+      "schemaVersion":38,
+      "style":"dark",
+      "tags":[
+          
+      ],
+      "templating":{
+          "list":[
+            {
+                "current":{
+                  "selected":false,
+                  "text":"worker-01",
+                  "value":"worker-01"
+                },
+                "hide":0,
+                "includeAll":false,
+                "label":"Cluster",
+                "multi":false,
+                "name":"OPENSHIFT_CLUSTER",
+                "options":[
+                  
+                ],
+                "query":"prometheus",
+                "queryValue":"",
+                "refresh":1,
+                "regex":"worker.*",
+                "skipUrlSync":false,
+                "type":"datasource"
+            },
+            {
+                "current":{
+                  "selected":false,
+                  "text":"debezium-apps",
+                  "value":"debezium-apps"
+                },
+                "datasource":{
+                  "uid":"${OPENSHIFT_CLUSTER}"
+                },
+                "definition":"label_values(kube_pod_info{pod=~\"dmt.*\"}, namespace)",
+                "hide":0,
+                "includeAll":false,
+                "label":"namespace",
+                "multi":false,
+                "name":"NAMESPACE",
+                "options":[
+                  
+                ],
+                "query":{
+                  "query":"label_values(kube_pod_info{pod=~\"dmt.*\"}, namespace)",
+                  "refId":"StandardVariableQuery"
+                },
+                "refresh":1,
+                "regex":"",
+                "skipUrlSync":false,
+                "sort":0,
+                "tagValuesQuery":"",
+                "tags":[
+                  
+                ],
+                "tagsQuery":"",
+                "type":"query",
+                "useTags":false
+            },
+            {
+                "current":{
+                  "selected":false,
+                  "text":"crypto_table_size",
+                  "value":"crypto_table_size"
+                },
+                "datasource":{
+                  "type":"prometheus",
+                  "uid":"${OPENSHIFT_CLUSTER}"
+                },
+                "definition":"metrics(.*table_size$)",
+                "hide":0,
+                "includeAll":false,
+                "label":"table",
+                "multi":false,
+                "name":"TABLE",
+                "options":[
+                  
+                ],
+                "query":{
+                  "query":"metrics(.*table_size$)",
+                  "refId":"StandardVariableQuery"
+                },
+                "refresh":2,
+                "regex":"",
+                "skipUrlSync":false,
+                "sort":0,
+                "type":"query"
+            }
+          ]
+      },
+      "time":{
+          "from":"now-15m",
+          "to":"now"
+      },
+      "timepicker":{
+          "now":true,
+          "refresh_intervals":[
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+          ],
+          "time_options":[
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+          ]
+      },
+      "timezone":"browser",
+      "title":"DMT",
+      "uid":"xIBBKNU4k",
+      "version":5,
+      "weekStart":""
+    }
