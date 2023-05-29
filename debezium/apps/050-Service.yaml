@@ -40,3 +40,24 @@ spec:
   selector:
     app: dmt
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /actuator/prometheus
+    prometheus.io/port: "8080"
+    prometheus.io/scheme: http
+  labels:
+    app: data-generator-api
+  name: data-generator-api-svc
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: data-generator-api
+  type: ClusterIP

@@ -24,3 +24,16 @@ spec:
     name: dmt-svc
   port:
     targetPort: http
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: data-generator-api-route
+  labels:
+    app: data-generator-api
+spec:
+  to:
+    kind: Service
+    name: data-generator-api-svc
+  port:
+    targetPort: http
