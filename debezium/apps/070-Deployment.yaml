@@ -120,3 +120,65 @@ spec:
             successThreshold: 1
             timeoutSeconds: 10
       serviceAccountName: dmt-sa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /actuator/prometheus
+    prometheus.io/port: "8080"
+    prometheus.io/scheme: http
+  labels:
+    app: data-generator-api
+  name: data-generator-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-generator-api
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8080"
+        prometheus.io/scheme: http
+      labels:
+        app: data-generator-api
+    spec:
+      containers:
+        - image: quay.io/tealc/data-generator-api:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: data-generator-api
+          env:
+            - name: dmt.endpoint
+              valueFrom:
+                secretKeyRef:
+                  name: data-generator-secret
+                  key: dmt-endpoint
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 20
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+      serviceAccountName: data-generator-api-sa
