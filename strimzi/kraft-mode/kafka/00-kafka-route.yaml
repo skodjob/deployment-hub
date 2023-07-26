@@ -1,3 +1,39 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: controller
+  labels:
+    strimzi.io/cluster: horus
+spec:
+  replicas: 3
+  roles:
+    - controller
+  storage:
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: 20Gi
+        deleteClaim: false
+---
+
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: broker
+  labels:
+    strimzi.io/cluster: horus
+spec:
+  replicas: 5
+  roles:
+    - broker
+  storage:
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: 100Gi
+        deleteClaim: false
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
@@ -5,9 +41,12 @@ metadata:
   name: horus
   labels:
     mode: kraft
+  annotations:
+    strimzi.io/node-pools: enabled
 spec:
   kafka:
     version: 3.5.0
+    # ignored by nodepools, needed just for schema validation
     replicas: 5
     listeners:
       - name: plain
@@ -35,6 +74,7 @@ spec:
       log.message.format.version: "3.5"
       inter.broker.protocol.version: "3.5"
       min.insync.replicas: 2
+    # ignored by nodepools, needed just for schema validation
     storage:
       type: persistent-claim
       size: 100Gi
