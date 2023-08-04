@@ -356,7 +356,7 @@ spec:
             severity: warning
             app: tealc
           annotations:
-            summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) abnormal controller state'
+            summary: 'Kafka ({{ $labels.strimzi_io_name }}) abnormal controller state'
             description: 'There are {{ $value }} active controllers in the cluster'
         - alert: OfflinePartitions
           expr: sum(kafka_controller_kafkacontroller_offlinepartitionscount) > 0
