@@ -10,11 +10,11 @@ spec:
     - name: connect
       rules:
         - alert: ConnectContainersDown
-          expr: absent(container_last_seen{container=~".+-connect",pod=~".+-connect-.+"})
-          for: 3m
+          expr: time() - container_last_seen{container=~".+-connect",pod=~".+-connect-.+"} > 300
+          for: 5m
           labels:
             severity: major
             app: tealc
           annotations:
-            summary: 'All Kafka Connect containers down or in CrashLookBackOff status'
-            description: 'All Kafka Connect containers have been down or in CrashLookBackOff status for 3 minutes'
+            summary: 'All Kafka Connect containers ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
+            description: 'All Kafka Connect containers ({{ $labels.namespace }}/{{ $labels.pod }}) have been down or in CrashLookBackOff status for 5+ minutes'

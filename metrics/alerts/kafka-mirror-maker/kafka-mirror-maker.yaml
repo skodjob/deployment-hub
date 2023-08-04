@@ -10,11 +10,11 @@ spec:
     - name: mirrorMaker
       rules:
         - alert: MirrorMakerContainerDown
-          expr: absent(container_last_seen{container=~".+-mirror-maker",pod=~".+-mirror-maker-.+"})
-          for: 3m
+          expr: time() - container_last_seen{container=~".+-mirrormaker2"} > 300
+          for: 5m
           labels:
             severity: major
             app: tealc
           annotations:
-            summary: 'All Kafka Mirror Maker containers down or in CrashLookBackOff status'
-            description: 'All Kafka Mirror Maker containers have been down or in CrashLookBackOff status for 3 minutes'
+            summary: 'All Kafka MirrorMaker2 containers ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
+            description: 'All Kafka MirrorMaker2 containers ({{ $labels.namespace }}/{{ $labels.pod }}) have been down or in CrashLookBackOff status for 5+ minutes'
