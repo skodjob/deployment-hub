@@ -15,8 +15,8 @@ spec:
             severity: critical
             app: tealc
           annotations:
-            summary: 'Strimzi resource {{ $labels.kind }} is stuck in a non-ready state'
-            description: 'The Strimzi {{ $labels.kind }}/{{ $labels.name }} in the {{ $labels.resource_namespace }} namespace, managed by Strimzi pod {{ $labels.pod }} has been in a non-ready state for 20 minutes'
+            summary: 'Strimzi resource `{{ $labels.kind }}` is stuck in a non-ready state'
+            description: 'The Strimzi `{{ $labels.kind }}/{{ $labels.name }}` in the `{{ $labels.resource_namespace }}` namespace, managed by Strimzi pod {{ $labels.pod }} has been in a non-ready state for 20 minutes'
             sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/strimzi_kafka_stuck.asciidoc'
         - alert: StrimziOperatorClusterOperatorContainerDown
           expr: up{container="strimzi-cluster-operator"} != 1
@@ -25,6 +25,6 @@ spec:
             severity: critical
             app: tealc
           annotations:
-            summary: 'Strimzi Cluster Operator {{ $labels.namespace }}/{{ $labels.pod }} down'
-            description: 'The Strimzi Cluster Operator {{ $labels.namespace }}/{{ $labels.pod }} has been down for longer than 10 minutes'
+            summary: 'Strimzi Cluster Operator `{{ $labels.namespace }}/{{ $labels.pod }}` down'
+            description: 'The Strimzi Cluster Operator `{{ $labels.namespace }}/{{ $labels.pod }}` has been down for longer than 10 minutes'
             sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/container_down.asciidoc'
