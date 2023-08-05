@@ -16,7 +16,6 @@ spec:
         size: 20Gi
         deleteClaim: false
 ---
-
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaNodePool
 metadata:
@@ -33,6 +32,28 @@ spec:
       - id: 0
         type: persistent-claim
         size: 100Gi
+        deleteClaim: false
+      - id: 1
+        type: persistent-claim
+        size: 80Gi
+        deleteClaim: false
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: broker-big
+  labels:
+    strimzi.io/cluster: horus
+spec:
+  replicas: 3
+  roles:
+    - broker
+  storage:
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: 250Gi
         deleteClaim: false
 ---
 apiVersion: kafka.strimzi.io/v1beta2
