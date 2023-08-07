@@ -1,7 +1,7 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: amq-streams-operator-006
+  name: amq-streams-operator-007
   labels:
     app: strimzi
 spec:
@@ -16,7 +16,7 @@ spec:
         # we want to have cluster-wide operator
         value: "*"
       - name: STRIMZI_FEATURE_GATES
-        value: "+UseStrimziPodSets"
+        value: "+StableConnectIdentities"
       - name: STRIMZI_LOG_LEVEL
         value: "DEBUG"
     resources:
