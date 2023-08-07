@@ -350,7 +350,7 @@ spec:
             summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) under replicated partitions'
             description: 'There are {{ $value }} under replicated partitions on {{ $labels.kubernetes_pod_name }}'
         - alert: AbnormalControllerState
-          expr: sum(kafka_controller_kafkacontroller_activecontrollercount) by (strimzi_io_name) != 1
+          expr: sum(kafka_controller_kafkacontroller_activecontrollercount) by (prometheus_pod, strimzi_io_name) != 1
           for: 20m
           labels:
             severity: warning
