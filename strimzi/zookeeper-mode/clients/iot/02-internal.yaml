@@ -3,21 +3,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: kafka-external-producer
-  name: kafka-external-producer
+    app: iot-internal-producer
+  name: iot-internal-producer
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
-      app: kafka-external-producer
+      app: iot-internal-producer
   template:
     metadata:
       labels:
-        app: kafka-external-producer
+        app: iot-internal-producer
     spec:
       serviceAccountName: clients-sa
       containers:
-        - name: kafka-external-producer
+        - name: iot-internal-producer
           image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
           imagePullPolicy: Always
           resources:
@@ -26,27 +26,32 @@ spec:
               cpu: 50m
             limits:
               memory: 350Mi
-              cpu: 250m
+              cpu: 350m
           env:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
             - name: USER_CRT
-              value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
+              value: ${secrets:strimzi-kafka/iot-internal-producer:user.crt}
             - name: USER_KEY
-              value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
+              value: ${secrets:strimzi-kafka/iot-internal-producer:user.key}
             - name: BOOTSTRAP_SERVERS
-              value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
             - name: TOPIC
-              value: kafka-anubis-external-data
+              value: iot-anubis-internal-data
             - name: DELAY_MS
-              value: "10"
+              value: "100"
+            - name: MESSAGE
+              value: |
+                {"state_class":"measurement","battery":100,"humidity":58.4,"last_seen":"2023-08-11T11:49:49.075Z","linkquality":33,"temperature":21.3,"voltage":3000,"unit_of_measurement":"°C","device_class":"temperature"}
             - name: LOG_LEVEL
               value: "INFO"
             - name: MESSAGE_COUNT
-              value: "10000000"
+              value: "100000000"
             - name: PRODUCER_ACKS
               value: all
             - name: ADDITIONAL_CONFIG
+            - name: BLOCKING_PRODUCER
+              value: "true"
             - name: CLIENT_TYPE
               value: KafkaProducer
       affinity:
@@ -58,26 +63,27 @@ spec:
                     operator: In
                     values:
                       - infra
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: kafka-external-streams
-  name: kafka-external-streams
+    app: iot-internal-streams
+  name: iot-internal-streams
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: kafka-external-streams
+      app: iot-internal-streams
   template:
     metadata:
       labels:
-        app: kafka-external-streams
+        app: iot-internal-streams
     spec:
       serviceAccountName: clients-sa
       containers:
-        - name: kafka-external-streams
+        - name: iot-internal-streams
           image: quay.io/strimzi-test-clients/test-client-kafka-streams@sha256:349a368470d4510964ccb44a18bc2d57016dba3b642f963933dccf95a8eed185
           imagePullPolicy: Always
           resources:
@@ -91,17 +97,17 @@ spec:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
             - name: USER_CRT
-              value: ${secrets:strimzi-kafka/kafka-external-streams:user.crt}
+              value: ${secrets:strimzi-kafka/iot-internal-streams:user.crt}
             - name: USER_KEY
-              value: ${secrets:strimzi-kafka/kafka-external-streams:user.key}
+              value: ${secrets:strimzi-kafka/iot-internal-streams:user.key}
             - name: BOOTSTRAP_SERVERS
-              value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
             - name: APPLICATION_ID
-              value: kafka-anubis-external-data-streams
+              value: iot-anubis-internal-data-streams
             - name: SOURCE_TOPIC
-              value: kafka-anubis-external-data
+              value: iot-anubis-internal-data
             - name: TARGET_TOPIC
-              value: kafka-anubis-external-data-reversed
+              value: iot-anubis-internal-data-reversed
             - name: LOG_LEVEL
               value: "INFO"
             - name: CLIENT_TYPE
@@ -115,26 +121,27 @@ spec:
                     operator: In
                     values:
                       - infra
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: kafka-external-consumer
-  name: kafka-external-consumer
+    app: iot-internal-consumer
+  name: iot-internal-consumer
 spec:
   replicas: 4
   selector:
     matchLabels:
-      app: kafka-external-consumer
+      app: iot-internal-consumer
   template:
     metadata:
       labels:
-        app: kafka-external-consumer
+        app: iot-internal-consumer
     spec:
       serviceAccountName: clients-sa
       containers:
-        - name: kafka-external-consumer
+        - name: iot-internal-consumer
           image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
           imagePullPolicy: Always
           resources:
@@ -148,19 +155,19 @@ spec:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
             - name: USER_CRT
-              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
+              value: ${secrets:strimzi-kafka/iot-internal-consumer:user.crt}
             - name: USER_KEY
-              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
+              value: ${secrets:strimzi-kafka/iot-internal-consumer:user.key}
             - name: BOOTSTRAP_SERVERS
-              value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
             - name: TOPIC
-              value: kafka-anubis-external-data-reversed
+              value: iot-anubis-internal-data-reversed
             - name: GROUP_ID
-              value: kafka-anubis-external-data-consumer
+              value: iot-anubis-internal-data-consumer
             - name: LOG_LEVEL
               value: "INFO"
             - name: MESSAGE_COUNT
-              value: "10000000"
+              value: "100000000"
             - name: CLIENT_TYPE
               value: KafkaConsumer
       affinity:
