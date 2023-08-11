@@ -6,7 +6,7 @@ metadata:
     app: fast-internal-producer
   name: fast-internal-producer
 spec:
-  replicas: 4
+  replicas: 6
   selector:
     matchLabels:
       app: fast-internal-producer
@@ -18,7 +18,7 @@ spec:
       serviceAccountName: clients-sa
       containers:
         - name: fast-internal-producer
-          image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
           imagePullPolicy: Always
           resources:
             requests:
@@ -139,7 +139,7 @@ spec:
       serviceAccountName: clients-sa
       containers:
         - name: fast-internal-consumer
-          image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
           imagePullPolicy: Always
           resources:
             requests:

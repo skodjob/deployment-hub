@@ -18,7 +18,7 @@ spec:
       serviceAccountName: clients-sa
       containers:
         - name: big-external-producer
-          image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
           imagePullPolicy: Always
           resources:
             requests:
@@ -42,6 +42,12 @@ spec:
               value: "100"
             - name: MESSAGE
               value: |
+                I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+                I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+                Another line! What a message, right? I think it is enough!
+                I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+                I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+                Another line! What a message, right? I think it is enough!
                 I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
                 I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
                 Another line! What a message, right? I think it is enough!
@@ -140,7 +146,7 @@ spec:
       serviceAccountName: clients-sa
       containers:
         - name: big-external-consumer
-          image: quay.io/strimzi-test-clients/test-clients:0.5.1-kafka-3.4.0
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
           imagePullPolicy: Always
           resources:
             requests:
