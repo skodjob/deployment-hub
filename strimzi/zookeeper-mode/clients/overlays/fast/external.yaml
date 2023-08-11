@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fast-external-producer
+  name: fast-external-producer
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: fast-external-producer
+  template:
+    metadata:
+      labels:
+        app: fast-external-producer
+    spec:
+      containers:
+        - name: fast-external-producer
+          env:
+            - name: TOPIC
+              value: fast-external-data
+            - name: DELAY_MS
+              value: "10"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fast-external-streams
+  name: fast-external-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fast-external-streams
+  template:
+    metadata:
+      labels:
+        app: fast-external-streams
+    spec:
+      containers:
+        - name: fast-external-streams
+          env:
+            - name: APPLICATION_ID
+              value: fast-external-data-streams
+            - name: SOURCE_TOPIC
+              value: fast-external-data
+            - name: TARGET_TOPIC
+              value: fast-external-data-reversed
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fast-external-consumer
+  name: fast-external-consumer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: fast-external-consumer
+  template:
+    metadata:
+      labels:
+        app: fast-external-consumer
+    spec:
+      containers:
+        - name: fast-external-consumer
+          env:
+            - name: TOPIC
+              value: fast-external-reversed
+            - name: GROUP_ID
+              value: fast-external-data-consumer

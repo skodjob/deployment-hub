@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: iot-external-producer
+  name: iot-external-producer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: iot-external-producer
+  template:
+    metadata:
+      labels:
+        app: iot-external-producer
+    spec:
+      containers:
+        - name: iot-external-producer
+          env:
+            - name: TOPIC
+              value: iot-external-data
+            - name: DELAY_MS
+              value: "100"
+            - name: MESSAGE
+              value: |
+                {"state_class":"measurement","battery":100,"humidity":58.4,"last_seen":"2023-08-11T11:49:49.075Z","linkquality":33,"temperature":21.3,"voltage":3000,"unit_of_measurement":"°C","device_class":"temperature"}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: iot-external-streams
+  name: iot-external-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iot-external-streams
+  template:
+    metadata:
+      labels:
+        app: iot-external-streams
+    spec:
+      containers:
+        - name: iot-external-streams
+          env:
+            - name: APPLICATION_ID
+              value: iot-external-data-streams
+            - name: SOURCE_TOPIC
+              value: iot-external-data
+            - name: TARGET_TOPIC
+              value: iot-external-data-reversed
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: iot-external-consumer
+  name: iot-external-consumer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: iot-external-consumer
+  template:
+    metadata:
+      labels:
+        app: iot-external-consumer
+    spec:
+      containers:
+        - name: iot-external-consumer
+          env:
+            - name: TOPIC
+              value: iot-external-reversed
+            - name: GROUP_ID
+              value: iot-external-data-consumer

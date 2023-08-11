@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: big-external-producer
+  name: big-external-producer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: big-external-producer
+  template:
+    metadata:
+      labels:
+        app: big-external-producer
+    spec:
+      containers:
+        - name: big-external-producer
+          env:
+            - name: TOPIC
+              value: big-external-data
+            - name: DELAY_MS
+              value: "100"
+            - name: MESSAGE
+              value: |
+                I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+                I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+                Another line! What a message, right? I think it is enough!
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: big-external-streams
+  name: big-external-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: big-external-streams
+  template:
+    metadata:
+      labels:
+        app: big-external-streams
+    spec:
+      containers:
+        - name: big-external-streams
+          env:
+            - name: APPLICATION_ID
+              value: big-external-data-streams
+            - name: SOURCE_TOPIC
+              value: big-external-data
+            - name: TARGET_TOPIC
+              value: big-external-data-reversed
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: big-external-consumer
+  name: big-external-consumer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: big-external-consumer
+  template:
+    metadata:
+      labels:
+        app: big-external-consumer
+    spec:
+      containers:
+        - name: big-external-consumer
+          env:
+            - name: TOPIC
+              value: big-external-reversed
+            - name: GROUP_ID
+              value: big-external-data-consumer
