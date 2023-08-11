@@ -15,7 +15,21 @@ spec:
     acls:
       - resource:
           type: topic
-          name: kafka-anubis-external-data
+          name: big-anubis-external-data
+        operations:
+          - Write
+          - Create
+          - Describe
+      - resource:
+          type: topic
+          name: fast-anubis-external-data
+        operations:
+          - Write
+          - Create
+          - Describe
+      - resource:
+          type: topic
+          name: iot-anubis-external-data
         operations:
           - Write
           - Create
@@ -42,25 +56,77 @@ spec:
     acls:
       - resource:
           type: topic
-          name: kafka-anubis-external-data
+          name: big-anubis-external-data
         operations:
           - Read
           - Describe
       - resource:
           type: group
-          name: kafka-anubis-external-data-streams
+          name: big-anubis-external-data-streams
         operations:
           - Describe
           - Read
       - resource:
           type: group
-          name: kafka-anubis-external-data-reversed
+          name: big-anubis-external-data-reversed
         operations:
           - Describe
           - Read
       - resource:
           type: topic
-          name: kafka-anubis-external-data-reversed
+          name: big-anubis-external-data-reversed
+        operations:
+          - Write
+          - Create
+          - Describe
+
+      - resource:
+          type: topic
+          name: fast-anubis-external-data
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: fast-anubis-external-data-streams
+        operations:
+          - Describe
+          - Read
+      - resource:
+          type: group
+          name: fast-anubis-external-data-reversed
+        operations:
+          - Describe
+          - Read
+      - resource:
+          type: topic
+          name: fast-anubis-external-data-reversed
+        operations:
+          - Write
+          - Create
+          - Describe
+
+      - resource:
+          type: topic
+          name: iot-anubis-external-data
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: iot-anubis-external-data-streams
+        operations:
+          - Describe
+          - Read
+      - resource:
+          type: group
+          name: iot-anubis-external-data-reversed
+        operations:
+          - Describe
+          - Read
+      - resource:
+          type: topic
+          name: iot-anubis-external-data-reversed
         operations:
           - Write
           - Create
@@ -87,13 +153,37 @@ spec:
     acls:
       - resource:
           type: topic
-          name: kafka-anubis-external-data-reversed
+          name: big-anubis-external-data-reversed
         operations:
           - Read
           - Describe
       - resource:
           type: group
-          name: kafka-anubis-external-data-consumer
+          name: big-anubis-external-data-consumer
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: topic
+          name: fast-anubis-external-data-reversed
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: fast-anubis-external-data-consumer
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: topic
+          name: iot-anubis-external-data-reversed
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: iot-anubis-external-data-consumer
         operations:
           - Read
           - Describe
