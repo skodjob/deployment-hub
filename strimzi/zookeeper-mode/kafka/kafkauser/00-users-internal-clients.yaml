@@ -15,7 +15,21 @@ spec:
     acls:
       - resource:
           type: topic
-          name: kafka-anubis-internal-data
+          name: big-anubis-internal-data
+        operations:
+          - Write
+          - Create
+          - Describe
+      - resource:
+          type: topic
+          name: fast-anubis-internal-data
+        operations:
+          - Write
+          - Create
+          - Describe
+      - resource:
+          type: topic
+          name: iot-anubis-internal-data
         operations:
           - Write
           - Create
@@ -42,27 +56,83 @@ spec:
     acls:
       - resource:
           type: topic
-          name: kafka-anubis-internal-data
+          name: big-anubis-internal-data
         operations:
           - Read
           - Describe
       - resource:
           type: group
-          name: kafka-anubis-internal-data-streams
+          name: big-anubis-internal-data-streams
           patternType: prefix
         operations:
           - Read
           - Describe
       - resource:
           type: group
-          name: kafka-anubis-internal-data-reversed
+          name: big-anubis-internal-data-reversed
         operations:
           - Describe
           - Write
           - Create
       - resource:
           type: topic
-          name: kafka-anubis-internal-data-reversed
+          name: big-anubis-internal-data-reversed
+        operations:
+          - Describe
+          - Write
+          - Create
+
+      - resource:
+          type: topic
+          name: fast-anubis-internal-data
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: fast-anubis-internal-data-streams
+          patternType: prefix
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: fast-anubis-internal-data-reversed
+        operations:
+          - Describe
+          - Write
+          - Create
+      - resource:
+          type: topic
+          name: fast-anubis-internal-data-reversed
+        operations:
+          - Describe
+          - Write
+          - Create
+
+      - resource:
+          type: topic
+          name: iot-anubis-internal-data
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: iot-anubis-internal-data-streams
+          patternType: prefix
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: iot-anubis-internal-data-reversed
+        operations:
+          - Describe
+          - Write
+          - Create
+      - resource:
+          type: topic
+          name: iot-anubis-internal-data-reversed
         operations:
           - Describe
           - Write
@@ -89,13 +159,37 @@ spec:
     acls:
       - resource:
           type: topic
-          name: kafka-anubis-internal-data-reversed
+          name: big-anubis-internal-data-reversed
         operations:
           - Read
           - Describe
       - resource:
           type: group
-          name: kafka-anubis-internal-data-consumer
+          name: big-anubis-internal-data-consumer
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: topic
+          name: fast-anubis-internal-data-reversed
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: fast-anubis-internal-data-consumer
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: topic
+          name: iot-anubis-internal-data-reversed
+        operations:
+          - Read
+          - Describe
+      - resource:
+          type: group
+          name: iot-anubis-internal-data-consumer
         operations:
           - Read
           - Describe

@@ -1,0 +1,177 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: big-external-producer
+  name: iot-external-producer
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: big-external-producer
+  template:
+    metadata:
+      labels:
+        app: big-external-producer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: big-external-producer
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 350Mi
+              cpu: 250m
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+            - name: TOPIC
+              value: big-anubis-external-data
+            - name: DELAY_MS
+              value: "100"
+            - name: MESSAGE
+              value: |
+                {"state_class":"measurement","battery":100,"humidity":58.4,"last_seen":"2023-08-11T11:49:49.075Z","linkquality":33,"temperature":21.3,"voltage":3000,"unit_of_measurement":"°C","device_class":"temperature"}
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "10000000"
+            - name: PRODUCER_ACKS
+              value: all
+            - name: ADDITIONAL_CONFIG
+            - name: CLIENT_TYPE
+              value: KafkaProducer
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: big-external-streams
+  name: big-external-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: big-external-streams
+  template:
+    metadata:
+      labels:
+        app: big-external-streams
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: big-external-streams
+          image: quay.io/strimzi-test-clients/test-client-kafka-streams@sha256:349a368470d4510964ccb44a18bc2d57016dba3b642f963933dccf95a8eed185
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/kafka-external-streams:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/kafka-external-streams:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+            - name: APPLICATION_ID
+              value: big-anubis-external-data-streams
+            - name: SOURCE_TOPIC
+              value: big-anubis-external-data
+            - name: TARGET_TOPIC
+              value: big-anubis-external-data-reversed
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: CLIENT_TYPE
+              value: KafkaStreams
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: big-external-consumer
+  name: big-external-consumer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: big-external-consumer
+  template:
+    metadata:
+      labels:
+        app: big-external-consumer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: big-external-consumer
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+            - name: TOPIC
+              value: big-anubis-external-data-reversed
+            - name: GROUP_ID
+              value: big-anubis-external-data-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "10000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - infra
