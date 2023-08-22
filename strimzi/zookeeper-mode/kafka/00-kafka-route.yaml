@@ -26,7 +26,7 @@ spec:
     - broker
   storage:
     type: persistent-claim
-    size: 250Gi
+    size: 150Gi
     deleteClaim: false
 ---
 apiVersion: kafka.strimzi.io/v1beta2
@@ -234,6 +234,8 @@ spec:
                 # label on KE pods
                 strimzi.io/kind: Kafka
   cruiseControl:
+    brokerCapacity:
+      cpu: "3"
     config:
       cruise.control.metrics.topic.num.partitions: 1
       cruise.control.metrics.topic.replication.factor: 3
