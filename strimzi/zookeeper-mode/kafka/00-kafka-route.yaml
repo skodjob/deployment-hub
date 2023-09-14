@@ -116,7 +116,7 @@ spec:
                         - kafka
         topologySpreadConstraints:
           # Deploy Kafka pods with spread with difference max 1 pod
-          - maxSkew: 1
+          - maxSkew: 2
             # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
             topologyKey: kubernetes.io/hostname
             whenUnsatisfiable: DoNotSchedule
