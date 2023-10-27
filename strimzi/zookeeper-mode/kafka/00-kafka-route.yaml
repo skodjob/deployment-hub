@@ -5,6 +5,7 @@ metadata:
   name: pool-small
   labels:
     strimzi.io/cluster: anubis
+    mode: zookeeper
 spec:
   replicas: 3
   roles:
@@ -20,6 +21,7 @@ metadata:
   name: pool-big
   labels:
     strimzi.io/cluster: anubis
+    mode: zookeeper
 spec:
   replicas: 5
   roles:
@@ -60,10 +62,10 @@ spec:
         authentication:
           type: tls
     config:
-      offsets.topic.replication.factor: 5
-      transaction.state.log.replication.factor: 5
-      transaction.state.log.min.isr: 3
-      default.replication.factor: 5
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 2
       log.retention.hours: 120
       log.message.format.version: "3.5"
       inter.broker.protocol.version: "3.5"
