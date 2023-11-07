@@ -18,8 +18,15 @@ spec:
     spec:
       containers:
         - name: kafka-internal-consumer
-          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
           env:
             - name: CA_CRT
               value: ${secrets:strimzi-kafka/heimdall-cluster-ca-cert:ca.crt}
@@ -37,6 +44,8 @@ spec:
               value: "INFO"
             - name: MESSAGE_COUNT
               value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

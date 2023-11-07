@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: imhotep-consumer-postgres
-          image: quay.io/strimzi-test-clients/test-client-kafka-consumer@sha256:0e92ed607ed9caca575528690ae82741def274f3fbee4680991d35c9f02b554e
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
           imagePullPolicy: Always
           resources:
             requests:
@@ -42,3 +42,5 @@ spec:
               value: "INFO"
             - name: MESSAGE_COUNT
               value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
