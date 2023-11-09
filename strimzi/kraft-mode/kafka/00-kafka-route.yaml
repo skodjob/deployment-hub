@@ -143,7 +143,7 @@ spec:
                         - kafka
         topologySpreadConstraints:
           # Deploy Kafka pods with spread with difference max 1 pod
-          - maxSkew: 2
+          - maxSkew: 3
             # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
             topologyKey: kubernetes.io/hostname
             whenUnsatisfiable: DoNotSchedule
@@ -181,7 +181,7 @@ spec:
                         - kafka
         topologySpreadConstraints:
           # Deploy Zookeeper pods with spread with difference max 2 pod
-          - maxSkew: 2
+          - maxSkew: 3
             # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
             topologyKey: kubernetes.io/hostname
             whenUnsatisfiable: DoNotSchedule
@@ -209,7 +209,7 @@ spec:
                         - kafka
         topologySpreadConstraints:
           # Deploy EO pods with spread with difference max 2 pod
-          - maxSkew: 2
+          - maxSkew: 3
             # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
             topologyKey: kubernetes.io/hostname
             whenUnsatisfiable: DoNotSchedule
