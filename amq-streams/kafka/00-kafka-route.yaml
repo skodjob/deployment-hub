@@ -64,6 +64,8 @@ spec:
           key: heimdall-kafka-jmx-exporter-configuration.yaml
           name: heimdall-kafka-jmx-exporter-configuration
     template:
+      podDisruptionBudget:
+        maxUnavailable: 0
       pod:
         tolerations:
           - key: "nodetype"
@@ -102,6 +104,8 @@ spec:
           key: heimdall-zookeeper-jmx-exporter-configuration.yaml
           name: heimdall-zookeeper-jmx-exporter-configuration
     template:
+      podDisruptionBudget:
+        maxUnavailable: 0
       pod:
         tolerations:
           - key: "nodetype"
