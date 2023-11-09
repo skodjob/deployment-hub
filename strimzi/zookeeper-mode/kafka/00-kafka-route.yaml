@@ -101,6 +101,8 @@ spec:
         metadata:
           annotations:
             kubed.appscode.com/sync: ""
+      podDisruptionBudget:
+        maxUnavailable: 0
       pod:
         tolerations:
           - key: "nodetype"
@@ -139,6 +141,8 @@ spec:
           key: anubis-zookeeper-jmx-exporter-configuration.yaml
           name: anubis-zookeeper-jmx-exporter-configuration
     template:
+      podDisruptionBudget:
+        maxUnavailable: 0
       pod:
         tolerations:
           - key: "nodetype"

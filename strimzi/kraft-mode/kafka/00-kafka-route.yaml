@@ -126,6 +126,8 @@ spec:
         metadata:
           annotations:
             kubed.appscode.com/sync: ""
+      podDisruptionBudget:
+        maxUnavailable: 0
       pod:
         tolerations:
           - key: "nodetype"
@@ -164,6 +166,8 @@ spec:
           key: horus-zookeeper-jmx-exporter-configuration.yaml
           name: horus-zookeeper-jmx-exporter-configuration
     template:
+      podDisruptionBudget:
+        maxUnavailable: 0
       pod:
         tolerations:
           - key: "nodetype"
