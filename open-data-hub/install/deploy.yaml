@@ -1490,6 +1490,12 @@ rules:
   verbs:
   - get
 - apiGroups:
+  - image.openshift.io
+  resources:
+  - registry/metrics
+  verbs:
+  - get
+- apiGroups:
   - integreatly.org
   resources:
   - rhmis
@@ -1922,6 +1928,18 @@ rules:
   - roles
   verbs:
   - '*'
+- apiGroups:
+  - route.openshift.io
+  resources:
+  - routers/federate
+  verbs:
+  - get
+- apiGroups:
+  - route.openshift.io
+  resources:
+  - routers/metrics
+  verbs:
+  - get
 - apiGroups:
   - route.openshift.io
   resources:
@@ -2396,7 +2414,7 @@ spec:
         - --leader-elect
         command:
         - /manager
-        image: quay.io/opendatahub/opendatahub-operator@sha256:0781c5875f3dab69dee7ee3b342c8e9da93fed3b50ba907ed82dddca346e93b7
+        image: quay.io/opendatahub/opendatahub-operator@sha256:5de0c591de0bff44b7d1d7934b00e6aaf2ce1a92bc717b2ac2dd82ee46a83efd
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
