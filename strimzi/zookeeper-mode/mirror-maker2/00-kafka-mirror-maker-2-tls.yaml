@@ -79,6 +79,17 @@ spec:
       configMapKeyRef:
         name: mirror-maker-2-metrics
         key: metrics-config.yml
+  template:
+    pod:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - connect
 
 ---
 kind: ConfigMap
