@@ -1,18 +1,18 @@
-kind: KafkaConnector
-apiVersion: kafka.strimzi.io/v1beta2
-metadata:
-  name: mongodb-connector
-  labels:
-    strimzi.io/cluster: imhotep
-spec:
-  class: io.debezium.connector.mongodb.MongoDbConnector
-  autoRestart:
-    enabled: true
-  config:
-    mongodb.connection.string: '${secrets:debezium-mongo/sharded-mongo-shard-user-admin:connectionString.standard}'
-    mongodb.user: '${secrets:debezium-mongo/sharded-mongo-shard-user-admin:username}'
-    mongodb.password: '${secrets:debezium-mongo/sharded-mongo-shard-user-admin:password}'
-    topic.prefix: mongodb
-    collection.include.list: debezium.crypto
-    database.include.list: debezium
-    mongodb.connection.mode: sharded
+#kind: KafkaConnector
+#apiVersion: kafka.strimzi.io/v1beta2
+#metadata:
+#  name: mongodb-connector
+#  labels:
+#    strimzi.io/cluster: imhotep
+#spec:
+#  class: io.debezium.connector.mongodb.MongoDbConnector
+#  autoRestart:
+#    enabled: true
+#  config:
+#    mongodb.connection.string: '${secrets:debezium-mongo/sharded-mongo-shard-user-admin:connectionString.standard}'
+#    mongodb.user: '${secrets:debezium-mongo/sharded-mongo-shard-user-admin:username}'
+#    mongodb.password: '${secrets:debezium-mongo/sharded-mongo-shard-user-admin:password}'
+#    topic.prefix: mongodb
+#    collection.include.list: debezium.crypto
+#    database.include.list: debezium
+#    mongodb.connection.mode: sharded
