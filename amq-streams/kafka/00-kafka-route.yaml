@@ -159,6 +159,10 @@ spec:
                 # label on Zookeper pods
                 strimzi.io/kind: Kafka
     topicOperator:
+      logging:
+        type: inline
+        loggers:
+          rootLogger.level: DEBUG
       resources:
         limits:
           cpu: '1'
@@ -167,6 +171,10 @@ spec:
           cpu: '0.2'
           memory: 256Mi
     userOperator:
+      logging:
+        type: inline
+        loggers:
+          rootLogger.level: DEBUG
       resources:
         limits:
           cpu: '1'

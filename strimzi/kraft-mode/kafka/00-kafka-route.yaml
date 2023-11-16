@@ -222,6 +222,10 @@ spec:
                 # label on EO pods
                 strimzi.io/kind: Kafka
     userOperator:
+      logging:
+        type: inline
+        loggers:
+          rootLogger.level: DEBUG
       resources:
         limits:
           cpu: '1'
@@ -230,6 +234,10 @@ spec:
           cpu: '0.2'
           memory: 512Mi
     topicOperator:
+      logging:
+        type: inline
+        loggers:
+          rootLogger.level: DEBUG
       resources:
         limits:
           cpu: '1'
