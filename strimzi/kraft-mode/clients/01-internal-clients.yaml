@@ -46,6 +46,11 @@ spec:
               value: "100000000"
             - name: CLIENT_TYPE
               value: KafkaConsumer
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "connect"
+          effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
