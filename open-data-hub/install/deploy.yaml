@@ -48,8 +48,9 @@ spec:
                 description: Override and fine tune specific component configurations.
                 properties:
                   codeflare:
-                    description: CodeFlare component configuration. Require CodeFlare
-                      Operator to be installed before enable component
+                    description: CodeFlare component configuration. If CodeFlare Operator
+                      has been installed in the cluster, it should be uninstalled
+                      first before enabled component.
                     properties:
                       devFlags:
                         description: Add developer fields
@@ -284,9 +285,8 @@ spec:
                         type: object
                     type: object
                   modelmeshserving:
-                    description: ModelMeshServing component configuration. Require
-                      CodeFlare Operator to be installed before enable component Does
-                      not support enabled Kserve at the same time
+                    description: ModelMeshServing component configuration. Does not
+                      support enabled Kserve at the same time
                     properties:
                       devFlags:
                         description: Add developer fields
@@ -329,8 +329,7 @@ spec:
                         type: string
                     type: object
                   ray:
-                    description: Ray component configuration. Require CodeFlare Operator
-                      to be installed before enable component
+                    description: Ray component configuration.
                     properties:
                       devFlags:
                         description: Add developer fields
@@ -2554,7 +2553,7 @@ spec:
         - --leader-elect
         command:
         - /manager
-        image: quay.io/opendatahub/opendatahub-operator@sha256:a77fd6e4d1bff2cade1f9c62af505834e746fc2cb39e191b604849c6b30ef730
+        image: quay.io/opendatahub/opendatahub-operator@sha256:171ead0cddad6376e8c6b8fa963bbbfeebcff19e353f52c1434b5f1562f26313
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
