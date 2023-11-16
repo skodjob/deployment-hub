@@ -65,6 +65,11 @@ spec:
       memory: 4Gi
   template:
     pod:
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "connect"
+          effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
