@@ -81,6 +81,11 @@ spec:
         key: metrics-config.yml
   template:
     pod:
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "connect"
+          effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
