@@ -127,11 +127,6 @@ spec:
             requests:
               cpu: 200m
               memory: 384Mi
-      tolerations:
-        - key: "nodetype"
-          operator: "Equal"
-          value: "connect"
-          effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -141,3 +136,8 @@ spec:
                     operator: In
                     values:
                       - connect
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "connect"
+          effect: "NoSchedule"
