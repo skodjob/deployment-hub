@@ -3,7 +3,7 @@ kind: PrometheusRule
 metadata:
   labels:
     role: alert-rules
-    app: tealc
+    app: strimzi
   name: canary-rules
 spec:
   groups:
@@ -13,7 +13,7 @@ spec:
           expr: increase(kube_pod_container_status_restarts_total{container="canary"}[60m]) > 3
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} restarting frequently'
             description: 'canary container in namespace {{ $labels.namespace }} restarted frequently in the last 60 minutes'
@@ -23,7 +23,7 @@ spec:
             on (namespace) (max_over_time(kafka_external_connections_unavailable[5m]))
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} inactive'
             description: 'canary container in namespace {{ $labels.namespace }} has not produced/consumed messages for 5m'
@@ -32,7 +32,7 @@ spec:
           for: 5m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} cluster sizing error'
             description: 'Kafka cluster in namespace {{ $labels.namespace }} does not have all 3 brokers available yet'
@@ -41,7 +41,7 @@ spec:
           for: 10m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} sarama client failure'
             description: 'canary in namespace {{ $labels.namespace }} is reporting that the sarama client has failed evaluation on startup'
@@ -52,7 +52,7 @@ spec:
           for: 20m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} message latencies extended'
             description: 'canary in namespace {{ $labels.namespace }} is reporting extended produce/consume message latencies'
@@ -65,7 +65,7 @@ spec:
           for: 5m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} connection latencies extended'
             description: 'canary in namespace {{ $labels.namespace }} is reporting extended connection establishment latencies'
@@ -78,7 +78,7 @@ spec:
           for: 5m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'canary in namespace {{ $labels.namespace }} connection failure'
             description: 'canary in namespace {{ $labels.namespace }} is reporting connection establishment failures'

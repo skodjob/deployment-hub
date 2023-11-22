@@ -6,7 +6,8 @@ metadata:
   labels:
     prometheus: k8s
     role: alert-rules
-    app: tealc
+    app: argo
+    purpose: infra
     project: tealc
 spec:
   groups:
@@ -17,7 +18,8 @@ spec:
           for: 5m
           labels:
             severity: major
-            app: tealc
+            app: argo
+            purpose: infra
           annotations:
             summary: 'Argo Applications are down'
             description: 'There are some Argo applications which are not created!'
@@ -26,7 +28,8 @@ spec:
           for: 5m
           labels:
             severity: major
-            app: tealc
+            app: argo
+            purpose: infra
           annotations:
             summary: 'Argo lost some of the external cluster access'
             description: 'There are cluster access configurations which are deleted, but should be available!'
@@ -35,7 +38,8 @@ spec:
           for: 10m
           labels:
             severity: major
-            app: tealc
+            app: argo
+            purpose: infra
           annotations:
             summary: 'Some Argo applications are not healthy'
             description: 'Some Argo application are not healthy and should be checked why is this happening!'
@@ -44,7 +48,8 @@ spec:
           for: 10m
           labels:
             severity: major
-            app: tealc
+            app: argo
+            purpose: infra
           annotations:
             summary: 'Some Argo applications are out of sync'
             description: 'Some Argo application are out of sync and should be checked why is this happening!'
