@@ -3,7 +3,7 @@ kind: PrometheusRule
 metadata:
   labels:
     role: alert-rules
-    app: tealc
+    app: strimzi
   name: kafka-mirror-maker-rules
 spec:
   groups:
@@ -14,7 +14,7 @@ spec:
           for: 5m
           labels:
             severity: major
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'All Kafka MirrorMaker2 containers (`{{ $labels.namespace }}/{{ $labels.pod }}`) down or in CrashLookBackOff status'
             description: 'All Kafka MirrorMaker2 containers (`{{ $labels.namespace }}/{{ $labels.pod }}`) have been down or in CrashLookBackOff status for 5+ minutes'

@@ -3,7 +3,7 @@ kind: PrometheusRule
 metadata:
   labels:
     role: alert-rules
-    app: tealc
+    app: strimzi
   name: kafka-rules
 spec:
   groups:
@@ -21,7 +21,7 @@ spec:
           labels:
             name: FailedProduceRequestsPerSec
             severity: critical
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_ProduceRequests
           annotations:
             message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
@@ -34,7 +34,7 @@ spec:
           labels:
             name: FailedProduceRequestsPerSec
             severity: critical
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_ProduceRequests
           annotations:
             message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
@@ -47,7 +47,7 @@ spec:
           labels:
             name: FailedProduceRequestsPerSec
             severity: warning
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_ProduceRequests
           annotations:
             message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
@@ -60,14 +60,14 @@ spec:
           labels:
             name: FailedProduceRequestsPerSec
             severity: warning
-            app: tealc
+            app: strimzi
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[1d]))
             /
             sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[1d]))
           labels:
             name: FailedProduceRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1d
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[1h]))
@@ -75,7 +75,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[1h]))
           labels:
             name: FailedProduceRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1h
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[2h]))
@@ -83,7 +83,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[2h]))
           labels:
             name: FailedProduceRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate2h
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[30m]))
@@ -91,7 +91,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[30m]))
           labels:
             name: FailedProduceRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate30m
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[3d]))
@@ -99,7 +99,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[3d]))
           labels:
             name: FailedProduceRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate3d
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[5m]))
@@ -107,7 +107,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[5m]))
           labels:
             name: FailedProduceRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate5m
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[6h]))
@@ -115,7 +115,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[6h]))
           labels:
             name: FailedProduceRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate6h
         - alert: ErrorBudgetBurn_FetchRequests
           annotations:
@@ -129,7 +129,7 @@ spec:
           labels:
             name: FailedFetchRequestsPerSec
             severity: critical
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_FetchRequests
           annotations:
             message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
@@ -142,7 +142,7 @@ spec:
           labels:
             name: FailedFetchRequestsPerSec
             severity: critical
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_FetchRequests
           annotations:
             message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
@@ -155,7 +155,7 @@ spec:
           labels:
             name: FailedFetchRequestsPerSec
             severity: warning
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_FetchRequests
           annotations:
             message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
@@ -168,14 +168,14 @@ spec:
           labels:
             name: FailedFetchRequestsPerSec
             severity: warning
-            app: tealc
+            app: strimzi
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[1d]))
             /
             sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[1d]))
           labels:
             name: FailedFetchRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1d
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[1h]))
@@ -183,7 +183,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[1h]))
           labels:
             name: FailedFetchRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1h
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[2h]))
@@ -191,7 +191,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[2h]))
           labels:
             name: FailedFetchRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate2h
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[30m]))
@@ -199,7 +199,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[30m]))
           labels:
             name: FailedFetchRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate30m
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[3d]))
@@ -207,7 +207,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[3d]))
           labels:
             name: FailedFetchRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate3d
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[5m]))
@@ -215,7 +215,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[5m]))
           labels:
             name: FailedFetchRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate5m
         - expr: |
             sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[6h]))
@@ -223,7 +223,7 @@ spec:
             sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[6h]))
           labels:
             name: FailedFetchRequestsPerSec
-            app: tealc
+            app: strimzi
           record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate6h
         - alert: ErrorBudgetBurn_Connections
           annotations:
@@ -236,7 +236,7 @@ spec:
           labels:
             name: FailedConnectionsPerSec
             severity: warning
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_Connections
           annotations:
             message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
@@ -248,7 +248,7 @@ spec:
           labels:
             name: FailedConnectionsPerSec
             severity: warning
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_Connections
           annotations:
             message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
@@ -260,7 +260,7 @@ spec:
           labels:
             name: FailedConnectionsPerSec
             severity: warning
-            app: tealc
+            app: strimzi
         - alert: ErrorBudgetBurn_Connections
           annotations:
             message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
@@ -272,14 +272,14 @@ spec:
           labels:
             name: FailedConnectionsPerSec
             severity: warning
-            app: tealc
+            app: strimzi
         - expr: |
             sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1d]))
             /
             sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1d]))
           labels:
             name: FailedConnectionsPerSec
-            app: tealc
+            app: strimzi
           record: haproxy_backend_connection_errors_total:burnrate1d
         - expr: |
             sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1h]))
@@ -287,7 +287,7 @@ spec:
             sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1h]))
           labels:
             name: FailedConnectionsPerSec
-            app: tealc
+            app: strimzi
           record: haproxy_backend_connection_errors_total:burnrate1h
         - expr: |
             sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[2h]))
@@ -295,7 +295,7 @@ spec:
             sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[2h]))
           labels:
             name: FailedConnectionsPerSec
-            app: tealc
+            app: strimzi
           record: haproxy_backend_connection_errors_total:burnrate2h
         - expr: |
             sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[30m]))
@@ -303,7 +303,7 @@ spec:
             sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[30m]))
           labels:
             name: FailedConnectionsPerSec
-            app: tealc
+            app: strimzi
           record: haproxy_backend_connection_errors_total:burnrate30m
         - expr: |
             sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[3d]))
@@ -311,7 +311,7 @@ spec:
             sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[3d]))
           labels:
             name: FailedConnectionsPerSec
-            app: tealc
+            app: strimzi
           record: haproxy_backend_connection_errors_total:burnrate3d
         - expr: |
             sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[5m]))
@@ -319,7 +319,7 @@ spec:
             sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[5m]))
           labels:
             name: FailedConnectionsPerSec
-            app: tealc
+            app: strimzi
           record: haproxy_backend_connection_errors_total:burnrate5m
         - expr: |
             sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[6h]))
@@ -327,7 +327,7 @@ spec:
             sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[6h]))
           labels:
             name: FailedConnectionsPerSec
-            app: tealc
+            app: strimzi
           record: haproxy_backend_connection_errors_total:burnrate6h
     - name: kafka
       rules:
@@ -336,7 +336,7 @@ spec:
           for: 2m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) is running out of free disk space'
             description: 'There are only {{ $value }} percent available at {{ $labels.persistentvolumeclaim }} PVC'
@@ -345,7 +345,7 @@ spec:
           for: 20m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) under replicated partitions'
             description: 'There are {{ $value }} under replicated partitions on {{ $labels.kubernetes_pod_name }}'
@@ -354,7 +354,7 @@ spec:
           for: 20m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Kafka ({{ $labels.strimzi_io_name }}) abnormal controller state'
             description: 'There are {{ $value }} active controllers in the cluster'
@@ -363,7 +363,7 @@ spec:
           for: 15m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) offline partitions'
             description: 'One or more partitions have no leader'
@@ -372,7 +372,7 @@ spec:
           for: 20m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) under min ISR partitions'
             description: 'There are {{ $value }} partitions under the min ISR on {{ $labels.kubernetes_pod_name }}'
@@ -381,7 +381,7 @@ spec:
           for: 15m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Kafka offline log directories'
             description: 'There are {{ $value }} offline log directories on {{ $labels.kubernetes_pod_name }}'
@@ -390,7 +390,7 @@ spec:
           for: 5m
           labels:
             severity: major
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Prometheus unable to scrape metrics from {{ $labels.kubernetes_pod_name }}/{{ $labels.instance }}'
             description: 'Prometheus was unable to scrape metrics from {{ $labels.kubernetes_pod_name }}/{{ $labels.instance }} for more than 3 minutes'
@@ -399,7 +399,7 @@ spec:
           for: 5m
           labels:
             severity: major
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'All `kafka` containers ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
             description: 'All `kafka` containers have been down or in CrashLookBackOff status for 3 minutes'
@@ -408,7 +408,7 @@ spec:
           for: 5m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'One or more Kafka containers restarted too often ({{ $labels.namespace }}/{{ $labels.pod }})'
             description: 'One or more Kafka containers were restarted too often within the last 5 minutes'
@@ -419,7 +419,7 @@ spec:
           for: 1m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Zookeeper average request latency'
             description: 'The average request latency is {{ $value }} on {{ $labels.kubernetes_pod_name }}'
@@ -428,7 +428,7 @@ spec:
           for: 1m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Zookeeper outstanding requests'
             description: 'There are {{ $value }} outstanding requests on {{ $labels.kubernetes_pod_name }}'
@@ -437,7 +437,7 @@ spec:
           for: 2m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Zookeeper is running out of free disk space'
             description: 'There are only {{ $value }} bytes available at {{ $labels.persistentvolumeclaim }} PVC'
@@ -446,7 +446,7 @@ spec:
           for: 5m
           labels:
             severity: warning
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'One or more Zookeeper containers were restarted too often ({{ $labels.namespace }}/{{ $labels.pod }})'
             description: 'One or more Zookeeper containers were restarted too often within the last 5 minutes. This alert can be ignored when the Zookeeper cluster is scaling up'
@@ -455,7 +455,7 @@ spec:
           for: 3m
           labels:
             severity: major
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'All `zookeeper` containers in the Zookeeper pods ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
             description: 'All `zookeeper` containers in the Zookeeper pods ({{ $labels.namespace }}/{{ $labels.pod }}) have been down or in CrashLookBackOff status for 3 minutes'
@@ -466,7 +466,7 @@ spec:
           for: 3m
           labels:
             severity: major
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Container topic-operator in Entity Operator pod ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
             description: 'Container topic-operator in Entity Operator pod ({{ $labels.namespace }}/{{ $labels.pod }}}) has been or in CrashLookBackOff status for 3 minutes'
@@ -475,7 +475,7 @@ spec:
           for: 3m
           labels:
             severity: major
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Container user-operator in Entity Operator pod ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
             description: 'Container user-operator in Entity Operator pod ({{ $labels.namespace }}/{{ $labels.pod }}) have been down or in CrashLookBackOff status for 3 minutes'

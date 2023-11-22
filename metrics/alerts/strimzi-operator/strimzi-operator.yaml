@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    app: tealc
+    app: strimzi
   name: strimzi-operator-rules
 spec:
   groups:
@@ -13,7 +13,7 @@ spec:
           for: 20m
           labels:
             severity: critical
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Strimzi resource `{{ $labels.kind }}` is stuck in a non-ready state'
             description: 'The Strimzi `{{ $labels.kind }}/{{ $labels.name }}` in the `{{ $labels.resource_namespace }}` namespace, managed by Strimzi pod {{ $labels.pod }} has been in a non-ready state for 20 minutes'
@@ -23,7 +23,7 @@ spec:
           for: 10m
           labels:
             severity: critical
-            app: tealc
+            app: strimzi
           annotations:
             summary: 'Strimzi Cluster Operator `{{ $labels.namespace }}/{{ $labels.pod }}` down'
             description: 'The Strimzi Cluster Operator `{{ $labels.namespace }}/{{ $labels.pod }}` has been down for longer than 10 minutes'
