@@ -1,0 +1,192 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    notebook-name: workbench-karel
+  annotations:
+    serviceaccounts.openshift.io/oauth-redirectreference.first: >-
+      {"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"workbench-karel"}}
+  name: workbench-karel
+  namespace: project-hughie
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    openshift.io/display-name: workbench-karel
+  name: workbench-karel
+  namespace: project-hughie
+  labels:
+    opendatahub.io/dashboard: 'true'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: standard-csi
+  volumeMode: Filesystem
+---
+apiVersion: kubeflow.org/v1
+kind: Notebook
+metadata:
+  annotations:
+    notebooks.opendatahub.io/inject-oauth: 'true'
+    opendatahub.io/service-mesh: 'false'
+    notebooks.opendatahub.io/oauth-logout-url: >-
+      https://odh-dashboard-opendatahub.apps.worker-03.strimzi.app-services-dev.net/projects/project-hughie?notebookLogout=workbench-karel
+    opendatahub.io/accelerator-name: ''
+    openshift.io/description: ''
+    openshift.io/display-name: workbench-karel
+    notebooks.opendatahub.io/last-image-selection: 'jupyter-tensorflow-notebook:2023.2'
+    notebooks.opendatahub.io/last-size-selection: Small
+    opendatahub.io/username: stiglitz
+  labels:
+    app: workbench-karel
+    opendatahub.io/dashboard: 'true'
+    opendatahub.io/odh-managed: 'true'
+    opendatahub.io/user: stiglitz
+    sidecar.istio.io/inject: 'false'
+  name: workbench-karel
+  namespace: project-hughie
+spec:
+  template:
+    spec:
+      affinity: {}
+      containers:
+        - env:
+            - name: NOTEBOOK_ARGS
+              value: |-
+                --ServerApp.port=8888
+                                  --ServerApp.token=''
+                                  --ServerApp.password=''
+                                  --ServerApp.base_url=/notebook/project-hughie/workbench-karel
+                                  --ServerApp.quit_button=False
+                                  --ServerApp.tornado_settings={"user":"stiglitz","hub_host":"https://odh-dashboard-opendatahub.apps.worker-03.strimzi.app-services-dev.net","hub_prefix":"/projects/project-hughie"}
+            - name: JUPYTER_IMAGE
+              value: image-registry.openshift-image-registry.svc:5000/opendatahub/jupyter-tensorflow-notebook:2023.2
+          image: image-registry.openshift-image-registry.svc:5000/opendatahub/jupyter-tensorflow-notebook:2023.2
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/project-hughie/workbench-karel/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: project-hughie
+          ports:
+            - containerPort: 8888
+              name: notebook-port
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/project-hughie/workbench-karel/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: "2"
+              memory: 8Gi
+            requests:
+              cpu: "1"
+              memory: 8Gi
+          volumeMounts:
+            - mountPath: /opt/app-root/src
+              name: workbench-karel
+            - mountPath: /dev/shm
+              name: shm
+          workingDir: /opt/app-root/src
+        - args:
+            - --provider=openshift
+            - --https-address=:8443
+            - --http-address=
+            - --openshift-service-account=workbench-karel
+            - --cookie-secret-file=/etc/oauth/config/cookie_secret
+            - --cookie-expire=24h0m0s
+            - --tls-cert=/etc/tls/private/tls.crt
+            - --tls-key=/etc/tls/private/tls.key
+            - --upstream=http://localhost:8888
+            - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+            - --email-domain=*
+            - --skip-provider-button
+            - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"workbench-karel","namespace":"$(NAMESPACE)"}
+            - --logout-url=https://odh-dashboard-opendatahub.apps.worker-03.strimzi.app-services-dev.net/projects/project-hughie?notebookLogout=project-hughie
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: registry.redhat.io/openshift4/ose-oauth-proxy:v4.10
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTPS
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: oauth-proxy
+          ports:
+            - containerPort: 8443
+              name: oauth-proxy
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTPS
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+            - mountPath: /etc/oauth/config
+              name: oauth-config
+            - mountPath: /etc/tls/private
+              name: tls-certificates
+      enableServiceLinks: false
+      serviceAccountName: workbench-karel
+      volumes:
+        - name: workbench-karel
+          persistentVolumeClaim:
+            claimName: workbench-karel
+        - emptyDir:
+            medium: Memory
+          name: shm
+        - name: oauth-config
+          secret:
+            defaultMode: 420
+            secretName: workbench-karel-oauth-config
+        - name: tls-certificates
+          secret:
+            defaultMode: 420
+            secretName: workbench-karel-tls
+
+#
+#https://oauth-openshift.apps.worker-03.strimzi.app-services-dev.net/oauth/authorize?approval_prompt=force&client_id=system%3Aserviceaccount%3Aproject-hughie%3Aworkbench-karel&redirect_uri=https%3A%2F%2Fworkbench-karel-project-hughie.apps.worker-03.strimzi.app-services-dev.net%2Foauth%2Fcallback&response_type=code&scope=user%3Ainfo+user%3Acheck-access&state=f7b09043567170b21d3dc76608d895a8%3A%2Fnotebook%2Fproject-hughie%2Fworkbench-karel%2F
+#https://oauth-openshift.apps.worker-03.strimzi.app-services-dev.net/oauth/authorize?approval_prompt=force&client_id=system%3Aserviceaccount%3Aproject-hughie%3Aworkbench-karel&redirect_uri=https%3A%2F%2Fworkbench-karel-project-hughie.apps.worker-03.strimzi.app-services-dev.net%2Foauth%2Fcallback&response_type=code&scope=user%3Ainfo+user%3Acheck-access&state=1d2ecf1d45897a58e98ea39d6f4e0cde%3A%2Fnotebook%2Fproject-hughie%2Fworkbench-karel%2F
+#https://oauth-openshift.apps.worker-03.strimzi.app-services-dev.net/oauth/authorize?approval_prompt=force&client_id=system%3Aserviceaccount%3Aproject-hughie%3Atest&redirect_uri=https%3A%2F%2Ftest-project-hughie.apps.worker-03.strimzi.app-services-dev.net%2Foauth%2Fcallback&response_type=code&scope=user%3Ainfo+user%3Acheck-access&state=788a7157e35f4a1c2a0f24061a7ee67d%3A%2Fnotebook%2Fproject-hughie%2Ftest%2F
+#https://-project-hughie.apps.worker-03.strimzi.app-services-dev.net/notebook/project-hughie/workbench-karel/
+#https://test-project-hughie.apps.worker-03.strimzi.app-services-dev.net/notebook/project-hughie/test/
+#https://workbench-karel-project-hughie.apps.worker-03.strimzi.app-services-dev.net/notebook/project-hughie/workbench-karel/
