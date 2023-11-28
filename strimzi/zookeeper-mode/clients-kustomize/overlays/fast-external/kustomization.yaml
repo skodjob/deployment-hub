@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namePrefix: big-external-
+commonLabels:
+  type: big-external
+
+replicas:
+  - name: producer
+    count: 6
+  - name: consumer
+    count: 4
+  - name: streams
+    count: 3
+
+resources:
+  - ../../base
+
+patches:
+  - path: producer.yaml
+    target:
+      name: producer
+  - path: consumer.yaml
+    target:
+      name: consumer
+  - path: streams.yaml
+    target:
+      name: streams
