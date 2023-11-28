@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+BUILD_REASON="${BUILD_REASON:-local}"
+BRANCH="${BRANCH:-$(git rev-parse --abbrev-ref HEAD)}"
+
 echo "Build reason: ${BUILD_REASON}"
 echo "Source branch: ${BRANCH}"
 
