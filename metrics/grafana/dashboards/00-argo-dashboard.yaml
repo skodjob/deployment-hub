@@ -2,18 +2,17 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   labels:
-    app: tealc
-    monitoring-key: tealc
-    project: tealc
+    app: grafana
+    project: skodjob
   name: argo-monitoring
 spec:
   instanceSelector:
     matchLabels:
-      dashboards: "tealc"
+      dashboards: "skodjob"
   datasources:
     - datasourceName: tealc-thanos
       inputName: DS_THANOS
-  folder: "tealc"
+  folder: "infra"
   json: |
     {
       "annotations": {
