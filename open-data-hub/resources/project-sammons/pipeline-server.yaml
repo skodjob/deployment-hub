@@ -1,0 +1,45 @@
+apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
+kind: DataSciencePipelinesApplication
+metadata:
+  name: pipelines-definition
+spec:
+  apiServer:
+    stripEOF: true
+    dbConfigConMaxLifetimeSec: 120
+    applyTektonCustomResource: true
+    deploy: true
+    enableSamplePipeline: false
+    autoUpdatePipelineDefaultVersion: true
+    archiveLogs: false
+    terminateStatus: Cancelled
+    enableOauth: true
+    trackArtifacts: true
+    collectMetrics: true
+    injectDefaultScript: true
+  database:
+    disableHealthCheck: false
+    mariaDB:
+      deploy: true
+      pipelineDBName: mlpipeline
+      pvcSize: 20Gi
+      username: mlpipeline
+  mlmd:
+    deploy: false
+  objectStorage:
+    disableHealthCheck: false
+    enableExternalRoute: false
+    externalStorage:
+      bucket: tealc-models
+      host: s3.us-east-2.amazonaws.com
+      port: ''
+      s3CredentialsSecret:
+        accessKey: AWS_ACCESS_KEY_ID
+        secretKey: AWS_SECRET_ACCESS_KEY
+        secretName: odh-s3-data-connection
+      scheme: https
+  persistenceAgent:
+    deploy: true
+    numWorkers: 2
+  scheduledWorkflow:
+    cronScheduleTimezone: UTC
+    deploy: true
