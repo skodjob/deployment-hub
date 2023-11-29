@@ -1,0 +1,1234 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+    type: big-external
+  name: big-external-consumer
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: consumer
+      type: big-external
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: big-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: big-external-data-reversed
+        - name: GROUP_ID
+          value: big-external-data-consumer
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: big-external
+  name: big-external-producer
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: producer
+      type: big-external
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: big-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: MESSAGE
+          value: |
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough!
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough!
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough! Demo time!
+        - name: TOPIC
+          value: big-external-data
+        - name: DELAY_MS
+          value: "1000"
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        - name: CLIENT_TYPE
+          value: KafkaProducer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: big-external
+  name: big-external-streams
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: streams
+      type: big-external
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: big-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: APPLICATION_ID
+          value: big-external-data-streams
+        - name: SOURCE_TOPIC
+          value: big-external-data
+        - name: TARGET_TOPIC
+          value: big-external-data-reversed
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-streams:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-streams:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 400Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+    type: big-internal
+  name: big-internal-consumer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: consumer
+      type: big-internal
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: big-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: big-internal-data-reversed
+        - name: GROUP_ID
+          value: big-internal-data-consumer
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: big-internal
+  name: big-internal-producer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: producer
+      type: big-internal
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: big-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: MESSAGE
+          value: |
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough!
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough!
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough! Demo time!
+        - name: TOPIC
+          value: big-internal-data
+        - name: DELAY_MS
+          value: "1000"
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        - name: CLIENT_TYPE
+          value: KafkaProducer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: big-internal
+  name: big-internal-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: streams
+      type: big-internal
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: big-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: APPLICATION_ID
+          value: big-internal-data-streams
+        - name: SOURCE_TOPIC
+          value: big-internal-data
+        - name: TARGET_TOPIC
+          value: big-internal-data-reversed
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 400Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+    type: fast-external
+  name: fast-external-consumer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: consumer
+      type: fast-external
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: fast-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: fast-external-data-reversed
+        - name: GROUP_ID
+          value: fast-external-data-consumer
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: fast-external
+  name: fast-external-producer
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: producer
+      type: fast-external
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: fast-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: fast-external-data
+        - name: DELAY_MS
+          value: "500"
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        - name: CLIENT_TYPE
+          value: KafkaProducer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: fast-external
+  name: fast-external-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: streams
+      type: fast-external
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: fast-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: APPLICATION_ID
+          value: fast-external-data-streams
+        - name: SOURCE_TOPIC
+          value: fast-external-data
+        - name: TARGET_TOPIC
+          value: fast-external-data-reversed
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-streams:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-streams:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 400Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+    type: fast-internal
+  name: fast-internal-consumer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: consumer
+      type: fast-internal
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: fast-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: fast-internal-data-reversed
+        - name: GROUP_ID
+          value: fast-internal-data-consumer
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: fast-internal
+  name: fast-internal-producer
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: producer
+      type: fast-internal
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: fast-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: MESSAGE
+          value: |
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough!
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough!
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough! Demo time!
+        - name: TOPIC
+          value: fast-internal-data
+        - name: DELAY_MS
+          value: "1000"
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        - name: CLIENT_TYPE
+          value: KafkaProducer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: fast-internal
+  name: fast-internal-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: streams
+      type: fast-internal
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: fast-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: APPLICATION_ID
+          value: fast-internal-data-streams
+        - name: SOURCE_TOPIC
+          value: fast-internal-data
+        - name: TARGET_TOPIC
+          value: fast-internal-data-reversed
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 400Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+    type: iot-external
+  name: iot-external-consumer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: consumer
+      type: iot-external
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: iot-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: iot-external-data-reversed
+        - name: GROUP_ID
+          value: iot-external-data-consumer
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: iot-external
+  name: iot-external-producer
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: producer
+      type: iot-external
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: iot-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: MESSAGE
+          value: |
+            {"state_class":"measurement","battery":99,"humidity":58.4,"last_seen":"2023-08-11T11:49:49.075Z","linkquality":33,"temperature":21.3,"voltage":3000,"unit_of_measurement":"°C","device_class":"temperature"}
+        - name: TOPIC
+          value: iot-external-data
+        - name: DELAY_MS
+          value: "1000"
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        - name: CLIENT_TYPE
+          value: KafkaProducer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: iot-external
+  name: iot-external-streams
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: streams
+      type: iot-external
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: iot-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: APPLICATION_ID
+          value: iot-external-data-streams
+        - name: SOURCE_TOPIC
+          value: iot-external-data
+        - name: TARGET_TOPIC
+          value: iot-external-data-reversed
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-streams:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-streams:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 400Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+    type: iot-internal
+  name: iot-internal-consumer
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: consumer
+      type: iot-internal
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: iot-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: iot-internal-data-reversed
+        - name: GROUP_ID
+          value: iot-internal-data-consumer
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: iot-internal
+  name: iot-internal-producer
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: producer
+      type: iot-internal
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: iot-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: MESSAGE
+          value: |
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough!
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough!
+            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
+            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
+            Another line! What a message, right? I think it is enough! Demo time!
+        - name: TOPIC
+          value: iot-internal-data
+        - name: DELAY_MS
+          value: "1000"
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        - name: CLIENT_TYPE
+          value: KafkaProducer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: iot-internal
+  name: iot-internal-streams
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: streams
+      type: iot-internal
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: iot-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: APPLICATION_ID
+          value: iot-internal-data-streams
+        - name: SOURCE_TOPIC
+          value: iot-internal-data
+        - name: TARGET_TOPIC
+          value: iot-internal-data-reversed
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 400Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect

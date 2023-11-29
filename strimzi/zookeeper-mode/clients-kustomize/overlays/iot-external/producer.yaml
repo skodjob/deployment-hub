@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatever
+spec:
+  template:
+    spec:
+      containers:
+        - name: producer
+          env:
+            - name: MESSAGE
+              value: |
+                {"state_class":"measurement","battery":99,"humidity":58.4,"last_seen":"2023-08-11T11:49:49.075Z","linkquality":33,"temperature":21.3,"voltage":3000,"unit_of_measurement":"°C","device_class":"temperature"}
+            - name: TOPIC
+              value: iot-external-data
+            - name: DELAY_MS
+              value: "1000"
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443

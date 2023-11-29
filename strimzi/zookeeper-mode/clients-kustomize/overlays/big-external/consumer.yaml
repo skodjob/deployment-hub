@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatever
+spec:
+  template:
+    spec:
+      containers:
+        - name: consumer
+          env:
+            - name: TOPIC
+              value: big-external-data-reversed
+            - name: GROUP_ID
+              value: big-external-data-consumer
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
