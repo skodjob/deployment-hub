@@ -1,0 +1,79 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: strimzi-clients
+  labels:
+    project: skodjob
+    app: strimzi
+    strimzi.io/kind: operator
+    secret: kafka
+spec: {}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    project: skodjob
+    app: strimzi
+  name: strimzi-admin
+  namespace: strimzi-clients
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: strimzi-admin
+  namespace: strimzi-clients
+  labels:
+    project: skodjob
+    app: strimzi
+subjects:
+  - kind: Group
+    name: strimzi-admins
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: strimzi-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    project: skodjob
+    app: strimzi
+  name: strimzi-view
+  namespace: strimzi-clients
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: strimzi-view
+  namespace: strimzi-clients
+  labels:
+    project: skodjob
+    app: strimzi
+subjects:
+  - kind: Group
+    name: strimzi-viewers
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: strimzi-view
+  apiGroup: rbac.authorization.k8s.io
