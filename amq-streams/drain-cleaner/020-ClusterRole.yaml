@@ -12,3 +12,16 @@ rules:
     verbs:
       - get
       - patch
+  # When certificate reloading is enabled, Strimzi needs to be able to get, list and watch the Secret with the
+  # certificate to detect any changes to it. The RBAC allows it to watch only one Secret with given name. If your
+  # certificate Secret has a custom name, you need to modify this Role accordingly.
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - watch
+      - list
+    resourceNames:
+      - strimzi-drain-cleaner
