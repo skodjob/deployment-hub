@@ -1001,14 +1001,6 @@ rules:
 - apiGroups:
   - apps
   resources:
-  - daemonsets
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - apps
-  resources:
   - deployments
   verbs:
   - '*'
@@ -1030,30 +1022,6 @@ rules:
   - statefulsets
   verbs:
   - '*'
-- apiGroups:
-  - apps.openshift.io
-  resources:
-  - deploymentconfigs
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - apps.openshift.io
-  resources:
-  - deploymentconfigs/instantiate
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
 - apiGroups:
   - argoproj.io
   resources:
@@ -1389,16 +1357,24 @@ rules:
   resources:
   - secrets
   verbs:
-  - '*'
   - create
-  - get
+  - delete
+  - list
+  - patch
+  - update
   - watch
 - apiGroups:
   - ""
   resources:
   - secrets/finalizers
   verbs:
-  - '*'
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - ""
   resources:
@@ -1935,10 +1911,13 @@ rules:
   resources:
   - oauthclients
   verbs:
-  - '*'
   - create
   - delete
   - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - opendatahub.io
   resources:
@@ -2553,7 +2532,7 @@ spec:
         - --leader-elect
         command:
         - /manager
-        image: quay.io/opendatahub/opendatahub-operator@sha256:891a6b8ce8afb7ae412613206b7884a69118a448cfc435b08e4a3ab32cf245a3
+        image: quay.io/opendatahub/opendatahub-operator@sha256:352098096b90233fe8fec7099768d0cd5b06d7adbbb32480a35c6e35fd76ee9a
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
