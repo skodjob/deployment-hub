@@ -2536,7 +2536,10 @@ spec:
         - --leader-elect
         command:
         - /manager
-        image: quay.io/opendatahub/opendatahub-operator@sha256:a150a5c98ead526b53fc68b1e130c7c7f7c5b20085ce0d874050eb9c2b3958f0
+        env:
+        - name: DISABLE_DSC_CONFIG
+          value: "true"
+        image: quay.io/opendatahub/opendatahub-operator@sha256:5dccaf4056110c2f2db7fda967c15164ec0e6415fe1c208958f4e3fb4d75ddc0
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
