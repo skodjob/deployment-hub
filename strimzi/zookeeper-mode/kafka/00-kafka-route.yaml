@@ -66,7 +66,8 @@ spec:
       transaction.state.log.replication.factor: 3
       transaction.state.log.min.isr: 2
       default.replication.factor: 3
-      log.retention.hours: 48
+      log.retention.hours: -1 # i.e., not time limit is applied
+      retention.bytes: 26214400  # 200 MiB (the max size for our storage currently would be 1.07 GiB per partition we have 1150 partitions for all KafkaTopics)
       log.segment.bytes: 256000000
       log.message.format.version: "3.6"
       inter.broker.protocol.version: "3.6"
