@@ -6,7 +6,7 @@ metadata:
     type: big-external
   name: big-external-consumer
 spec:
-  replicas: 5
+  replicas: 20
   selector:
     matchLabels:
       app: consumer
@@ -71,7 +71,7 @@ metadata:
     type: big-external
   name: big-external-producer
 spec:
-  replicas: 5
+  replicas: 7
   selector:
     matchLabels:
       app: producer
@@ -602,7 +602,7 @@ metadata:
     type: big-internal
   name: big-internal-consumer
 spec:
-  replicas: 3
+  replicas: 20
   selector:
     matchLabels:
       app: consumer
@@ -667,7 +667,7 @@ metadata:
     type: big-internal
   name: big-internal-producer
 spec:
-  replicas: 3
+  replicas: 7
   selector:
     matchLabels:
       app: producer
@@ -1202,7 +1202,7 @@ metadata:
     type: fast-external
   name: fast-external-consumer
 spec:
-  replicas: 4
+  replicas: 20
   selector:
     matchLabels:
       app: consumer
@@ -1292,7 +1292,7 @@ spec:
         - name: TOPIC
           value: fast-external-data
         - name: DELAY_MS
-          value: "10"
+          value: "5"
         - name: USER_CRT
           value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
         - name: USER_KEY
@@ -1400,7 +1400,7 @@ metadata:
     type: fast-internal
   name: fast-internal-consumer
 spec:
-  replicas: 4
+  replicas: 20
   selector:
     matchLabels:
       app: consumer
@@ -1501,7 +1501,7 @@ spec:
         - name: TOPIC
           value: fast-internal-data
         - name: DELAY_MS
-          value: "10"
+          value: "5"
         - name: USER_CRT
           value: ${secrets:strimzi-kafka/kafka-internal-producer:user.crt}
         - name: USER_KEY
