@@ -47,6 +47,10 @@ spec:
                     default: false
                     description: 'Default: false'
                     type: boolean
+                  argoDriverImage:
+                    type: string
+                  argoLauncherImage:
+                    type: string
                   artifactImage:
                     type: string
                   artifactScriptConfigMap:
@@ -167,6 +171,16 @@ spec:
                     default: true
                     description: 'Default: true'
                     type: boolean
+                type: object
+              crdviewer:
+                default:
+                  deploy: false
+                properties:
+                  deploy:
+                    default: true
+                    type: boolean
+                  image:
+                    type: string
                 type: object
               database:
                 default:
@@ -290,15 +304,16 @@ spec:
                         type: string
                     type: object
                 type: object
+              dspVersion:
+                default: v1
+                type: string
               mlmd:
-                default:
-                  deploy: false
                 properties:
                   deploy:
                     default: false
                     description: 'Enable DS Pipelines Operator management of MLMD.
                       Setting Deploy to false disables operator reconciliation. Default:
-                      false'
+                      true'
                     type: boolean
                   envoy:
                     properties:
@@ -525,6 +540,7 @@ spec:
                           secretKey:
                             type: string
                           secretName:
+                            description: 'Note: In V2 this value needs to be mlpipeline-minio-artifact'
                             type: string
                         required:
                         - accessKey
@@ -619,6 +635,7 @@ spec:
                           secretKey:
                             type: string
                           secretName:
+                            description: 'Note: In V2 this value needs to be mlpipeline-minio-artifact'
                             type: string
                         required:
                         - accessKey
@@ -743,6 +760,19 @@ spec:
                             x-kubernetes-int-or-string: true
                         type: object
                     type: object
+                type: object
+              workflowController:
+                default:
+                  deploy: false
+                description: WorkflowController is an argo-specific component that
+                  manages a DSPA's Workflow objects and handles the orchestration
+                  of them with the central Argo server
+                properties:
+                  deploy:
+                    default: true
+                    type: boolean
+                  image:
+                    type: string
                 type: object
             required:
             - objectStorage
