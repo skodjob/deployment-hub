@@ -1,0 +1,17 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaBridge
+metadata:
+  name: rivendell-bridge
+spec:
+  replicas: 3 # high availability
+  bootstrapServers: anubis-kafka-bootstrap.strimzi-kafka.svc:9092
+  http:
+    port: 8080
+  enableMetrics: true
+  resources:
+    limits:
+      cpu: "2"
+      memory: 256Mi
+    requests:
+      cpu: "1"
+      memory: 256Mi
