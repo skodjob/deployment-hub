@@ -1,7 +1,9 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaBridge
 metadata:
-  name: rivendell-bridge
+  labels:
+    mode: zookeeper
+  name: rivendell-bridge-2
 spec:
   replicas: 1 # TLDR; running more replicas is not recommended
   # HTTP clients must maintain affinity to the same instance of the Kafka Bridge to access any consumers or subscriptions
