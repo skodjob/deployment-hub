@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namePrefix: http-internal-
+commonLabels:
+  type: http-internal
+
+replicas:
+  - name: producer
+    count: 10
+
+resources:
+  - ../../base
+
+patches:
+  - path: producer.yaml
+    target:
+      name: producer
