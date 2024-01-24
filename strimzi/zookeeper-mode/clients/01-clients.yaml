@@ -1606,6 +1606,193 @@ kind: Deployment
 metadata:
   labels:
     app: consumer
+    type: http-internal
+  name: http-internal-consumer
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: consumer
+      type: http-internal
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: http-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: http-internal
+  name: http-internal-producer
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: producer
+      type: http-internal
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: http-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: MESSAGE
+          value: |
+            {
+              "records": [
+                {
+                  "key": "1234",
+                  "value": {
+                    "order_id": "1234",
+                    "amount": 99.99
+                  }
+                }
+              ]
+            }
+        - name: TOPIC
+          value: http-internal-data
+        - name: STRIMZI_SEND_INTERVAL
+          value: "1"
+        - name: STRIMZI_HOSTNAME
+          value: rivendell-bridge-bridge-service.strimzi-bridge.svc.cluster.local
+        - name: STRIMZI_PORT
+          value: "8080"
+        - name: CLIENT_TYPE
+          value: HttpProducer
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: http-internal
+  name: http-internal-streams
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: streams
+      type: http-internal
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: http-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 400Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
     type: iot-external
   name: iot-external-consumer
 spec:
