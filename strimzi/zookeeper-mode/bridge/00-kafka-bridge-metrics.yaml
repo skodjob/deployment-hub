@@ -10,7 +10,17 @@ spec:
   # that they create. Hence, running multiple replicas of the Kafka Bridge per Kubernetes Deployment is not recommended.
   # If the Kafka Bridge pod restarts (for instance, due to Kubernetes relocating the workload to another node),
   # the HTTP client must recreate any consumers or subscriptions.
-  bootstrapServers: anubis-kafka-bootstrap.strimzi-kafka.svc:9092
+  bootstrapServers: anubis-kafka-bootstrap.strimzi-kafka.svc:9093 # using TLS between Bridge <---> Kafka
+  tls:
+    trustedCertificates:
+      - secretName: anubis-cluster-ca-cert
+        certificate: ca.crt
+    authentication:
+      type: tls
+      certificateAndKey:
+        secretName: superuser-anubis
+        certificate: user.crt
+        key: user.key
   http:
     port: 8080
   enableMetrics: true
