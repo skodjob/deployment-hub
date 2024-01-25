@@ -42,7 +42,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: DataScienceCluster defines the desired state of the cluster.
+            description: DataScienceClusterSpec defines the desired state of the cluster.
             properties:
               components:
                 description: Override and fine tune specific component configurations.
@@ -856,6 +856,18 @@ spec:
             type: object
           spec:
             description: FeatureTrackerSpec defines the desired state of FeatureTracker.
+            properties:
+              appNamespace:
+                type: string
+              source:
+                description: Source describes the type of object that created the
+                  related Feature to this FeatureTracker.
+                properties:
+                  name:
+                    type: string
+                  type:
+                    type: string
+                type: object
             type: object
           status:
             description: FeatureTrackerStatus defines the observed state of FeatureTracker.
@@ -2539,7 +2551,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:4c188ec90f512ca6556fb03239e61a5347904a01c6639ce701ed81f4373760c9
+        image: quay.io/opendatahub/opendatahub-operator@sha256:b63eb4eef41bb591f3655aed90e568ce98072775d63f5fb7ff2173889a445fbb
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
