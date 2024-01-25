@@ -145,7 +145,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_bridge_http_server_active_connections{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_bridge_http_server_active_connections{container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -266,7 +266,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_bridge_http_server_active_requests{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_bridge_http_server_active_requests{container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -1938,7 +1938,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (method)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (method)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2035,7 +2035,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2043,7 +2043,7 @@ spec:
               "refId": "A"
             },
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^2..$\", container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^2..$\", container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2051,7 +2051,7 @@ spec:
               "refId": "B"
             },
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^4..$\", container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^4..$\", container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2059,7 +2059,7 @@ spec:
               "refId": "C"
             },
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^5..$\", container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{code=~\"^5..$\", container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2157,7 +2157,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_bytes_written_total{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (container)",
+              "expr": "sum(rate(strimzi_bridge_http_server_bytes_written_total{container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (container)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2255,7 +2255,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_bytes_read_total{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (container)",
+              "expr": "sum(rate(strimzi_bridge_http_server_bytes_read_total{container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (container)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2352,7 +2352,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/topics/[^/]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*",method=\"POST\",path=~\"/topics/[^/]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "B"
@@ -2447,7 +2447,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/topics/.+/partitions/[0-9]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*",method=\"POST\",path=~\"/topics/.+/partitions/[0-9]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2544,7 +2544,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/consumers/[^/]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*",method=\"POST\",path=~\"/consumers/[^/]+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2642,7 +2642,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/consumers/.+/instances/.+/subscription\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*",method=\"POST\",path=~\"/consumers/.+/instances/.+/subscription\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2740,7 +2740,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"DELETE\",path=~\"/consumers/.+/instances/.+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*",method=\"DELETE\",path=~\"/consumers/.+/instances/.+\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -2839,7 +2839,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"GET\",path=~\"/consumers/.+/instances/.+/records\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*",method=\"GET\",path=~\"/consumers/.+/instances/.+/records\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -2937,7 +2937,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"POST\",path=~\"/consumers/.+/instances/.+/offsets\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\".+-bridge.*",method=\"POST\",path=~\"/consumers/.+/instances/.+/offsets\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m])) by (path)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -3035,7 +3035,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_memory_used_bytes{container=~\"^.+-bridge\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(jvm_memory_used_bytes{container=~\".+-bridge.*", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -3120,7 +3120,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_pause_seconds_sum{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(rate(jvm_gc_pause_seconds_sum{container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -3205,7 +3205,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_pause_seconds_count{container=~\"^.+-bridge\", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(rate(jvm_gc_pause_seconds_count{container=~\".+-bridge.*", clusterName=~\"OPENSHIFT_CLUSTER\"}[20m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
