@@ -871,10 +871,39 @@ spec:
             type: object
           status:
             description: FeatureTrackerStatus defines the observed state of FeatureTracker.
+            properties:
+              conditions:
+                items:
+                  description: Condition represents the state of the operator's reconciliation
+                    functionality.
+                  properties:
+                    lastHeartbeatTime:
+                      format: date-time
+                      type: string
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      type: string
+                    reason:
+                      type: string
+                    status:
+                      type: string
+                    type:
+                      description: ConditionType is the state of the operator's reconciliation
+                        functionality.
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
             type: object
         type: object
     served: true
     storage: true
+    subresources:
+      status: {}
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -2551,7 +2580,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:b63eb4eef41bb591f3655aed90e568ce98072775d63f5fb7ff2173889a445fbb
+        image: quay.io/opendatahub/opendatahub-operator@sha256:2702fd5649b0455c56c33be5b4b9d008857a8f61107d0be89b38087bf092988f
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
