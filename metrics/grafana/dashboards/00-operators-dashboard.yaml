@@ -15,6 +15,32 @@ spec:
   folder: "strimzi"
   json: |
     {
+      "__requires": [
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "7.3.7"
+        },
+        {
+          "type": "panel",
+          "id": "graph",
+          "name": "Graph",
+          "version": "5.0.0"
+        },
+        {
+          "type": "datasource",
+          "id": "prometheus",
+          "name": "Prometheus",
+          "version": "5.0.0"
+        },
+        {
+          "type": "panel",
+          "id": "singlestat",
+          "name": "Singlestat",
+          "version": "5.0.0"
+        }
+      ],
       "annotations": {
         "list": [
           {
@@ -31,11 +57,13 @@ spec:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
-      "id": 2,
+      "id": null,
+      "iteration": 1687301758926,
       "links": [],
       "panels": [
         {
           "collapsed": false,
+          "datasource": null,
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -52,11 +80,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -109,7 +143,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"Kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"Kafka\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -135,11 +169,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -192,7 +232,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"KafkaUser\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"KafkaUser\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -218,11 +258,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -275,7 +321,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"KafkaTopic\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"KafkaTopic\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -301,11 +347,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -358,7 +410,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"KafkaConnect\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"KafkaConnect\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -373,7 +425,7 @@ spec:
           "valueMaps": [
             {
               "op": "=",
-              "text": "N/A",
+              "text": "0",
               "value": "null"
             }
           ],
@@ -384,11 +436,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -441,7 +499,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"KafkaMirrorMaker2\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"KafkaMirrorMaker2\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -456,7 +514,7 @@ spec:
           "valueMaps": [
             {
               "op": "=",
-              "text": "N/A",
+              "text": "0",
               "value": "null"
             }
           ],
@@ -467,11 +525,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -524,7 +588,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"KafkaMirrorMaker\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"KafkaMirrorMaker\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -539,7 +603,7 @@ spec:
           "valueMaps": [
             {
               "op": "=",
-              "text": "N/A",
+              "text": "0",
               "value": "null"
             }
           ],
@@ -550,11 +614,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -607,7 +677,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"KafkaBridge\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"KafkaBridge\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -622,7 +692,7 @@ spec:
           "valueMaps": [
             {
               "op": "=",
-              "text": "N/A",
+              "text": "0",
               "value": "null"
             }
           ],
@@ -633,11 +703,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -690,7 +766,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"KafkaConnector\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"KafkaConnector\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -705,7 +781,7 @@ spec:
           "valueMaps": [
             {
               "op": "=",
-              "text": "N/A",
+              "text": "0",
               "value": "null"
             }
           ],
@@ -716,11 +792,17 @@ spec:
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-              "#299c46",
-              "rgba(237, 129, 40, 0.89)",
-              "#d44a3a"
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -760,7 +842,7 @@ spec:
           "rangeMaps": [
             {
               "from": "null",
-              "text": "N/A",
+              "text": "0",
               "to": "null"
             }
           ],
@@ -773,7 +855,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(strimzi_resources{kind=\"KafkaRebalance\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(strimzi_resources{kind=\"KafkaRebalance\", clusterName=\"$OPENSHIFT_CLUSTER\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -796,6 +878,7 @@ spec:
         },
         {
           "collapsed": false,
+          "datasource": null,
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -814,6 +897,13 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "decimals": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -822,6 +912,7 @@ spec:
             "x": 0,
             "y": 8
           },
+          "hiddenSeries": false,
           "id": 48,
           "legend": {
             "avg": false,
@@ -839,10 +930,12 @@ spec:
           "links": [],
           "nullPointMode": "null",
           "options": {
+            "alertThreshold": true,
             "dataLinks": []
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -852,7 +945,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(increase(strimzi_reconciliations_successful_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
+              "expr": "sum(increase(strimzi_reconciliations_successful_total{clusterName=\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{kind}}",
@@ -907,6 +1000,13 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "decimals": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -915,6 +1015,7 @@ spec:
             "x": 8,
             "y": 8
           },
+          "hiddenSeries": false,
           "id": 49,
           "legend": {
             "avg": false,
@@ -932,10 +1033,12 @@ spec:
           "links": [],
           "nullPointMode": "null",
           "options": {
+            "alertThreshold": true,
             "dataLinks": []
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -945,7 +1048,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(increase(strimzi_reconciliations_failed_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
+              "expr": "sum(increase(strimzi_reconciliations_failed_total{clusterName=\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{kind}}",
@@ -1000,6 +1103,13 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "decimals": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1008,6 +1118,7 @@ spec:
             "x": 16,
             "y": 8
           },
+          "hiddenSeries": false,
           "id": 51,
           "legend": {
             "avg": false,
@@ -1025,10 +1136,12 @@ spec:
           "links": [],
           "nullPointMode": "null",
           "options": {
+            "alertThreshold": true,
             "dataLinks": []
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1038,7 +1151,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(increase(strimzi_reconciliations_locked_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
+              "expr": "sum(increase(strimzi_reconciliations_locked_total{clusterName=\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{kind}}",
@@ -1094,6 +1207,13 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "decimals": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1102,6 +1222,7 @@ spec:
             "x": 0,
             "y": 16
           },
+          "hiddenSeries": false,
           "id": 47,
           "legend": {
             "avg": false,
@@ -1119,10 +1240,12 @@ spec:
           "links": [],
           "nullPointMode": "null",
           "options": {
+            "alertThreshold": true,
             "dataLinks": []
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1132,7 +1255,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(increase(strimzi_reconciliations_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
+              "expr": "sum(increase(strimzi_reconciliations_total{clusterName=\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{kind}}",
@@ -1188,6 +1311,13 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "decimals": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1196,6 +1326,7 @@ spec:
             "x": 8,
             "y": 16
           },
+          "hiddenSeries": false,
           "id": 46,
           "legend": {
             "avg": false,
@@ -1213,10 +1344,12 @@ spec:
           "links": [],
           "nullPointMode": "null",
           "options": {
+            "alertThreshold": true,
             "dataLinks": []
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1226,7 +1359,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(increase(strimzi_reconciliations_periodical_total{clusterName=~\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
+              "expr": "sum(increase(strimzi_reconciliations_periodical_total{clusterName=\"$OPENSHIFT_CLUSTER\"}[1h])) by (kind)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{kind}}",
@@ -1282,6 +1415,13 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "decimals": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1290,6 +1430,7 @@ spec:
             "x": 16,
             "y": 16
           },
+          "hiddenSeries": false,
           "hideTimeOverride": false,
           "id": 52,
           "legend": {
@@ -1308,10 +1449,12 @@ spec:
           "links": [],
           "nullPointMode": "null",
           "options": {
+            "alertThreshold": true,
             "dataLinks": []
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1321,7 +1464,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(strimzi_reconciliations_duration_seconds_max{clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (kind)",
+              "expr": "sum(strimzi_reconciliations_duration_seconds_max{clusterName=\"$OPENSHIFT_CLUSTER\"}) by (kind)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -1372,6 +1515,7 @@ spec:
         },
         {
           "collapsed": false,
+          "datasource": null,
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -1389,6 +1533,13 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1416,6 +1567,7 @@ spec:
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1425,7 +1577,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_memory_used_bytes{container=~\"user-operator|topic-operator|strimzi-cluster-operator\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (container)",
+              "expr": "sum(jvm_memory_used_bytes{container=~\"user-operator|topic-operator|strimzi-cluster-operator\", clusterName=\"$OPENSHIFT_CLUSTER\"}) by (container)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{container}}",
@@ -1479,6 +1631,13 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1506,6 +1665,7 @@ spec:
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1515,7 +1675,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_pause_seconds_sum{container=~\"user-operator|topic-operator|strimzi-cluster-operator\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (container)",
+              "expr": "sum(rate(jvm_gc_pause_seconds_sum{container=~\"user-operator|topic-operator|strimzi-cluster-operator\", clusterName=\"$OPENSHIFT_CLUSTER\"}[5m])) by (container)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{container}}",
@@ -1569,6 +1729,13 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
@@ -1596,6 +1763,7 @@ spec:
           },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1605,7 +1773,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_pause_seconds_count{container=~\"user-operator|topic-operator|strimzi-cluster-operator\"}[20m])) by (container)",
+              "expr": "sum(rate(jvm_gc_pause_seconds_count{container=~\"user-operator|topic-operator|strimzi-cluster-operator\", clusterName=\"$OPENSHIFT_CLUSTER\"}[5m])) by (container)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{container}}",
@@ -1655,11 +1823,11 @@ spec:
         }
       ],
       "refresh": "5s",
-      "schemaVersion": 18,
+      "schemaVersion": 26,
       "style": "dark",
       "tags": [
-          "Strimzi",
-          "Kafka"
+        "Strimzi",
+        "Operators"
       ],
       "templating": {
         "list": [
