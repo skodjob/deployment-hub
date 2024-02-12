@@ -17,6 +17,38 @@ spec:
   json: |
     {
       "_comment": "Based on https://grafana.com/grafana/dashboards/7589",
+      "__requires": [
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "7.3.7"
+        },
+        {
+          "type": "panel",
+          "id": "graph",
+          "name": "Graph",
+          "version": "5.0.0"
+        },
+        {
+          "type": "datasource",
+          "id": "prometheus",
+          "name": "Prometheus",
+          "version": "5.0.0"
+        },
+        {
+          "type": "panel",
+          "id": "singlestat",
+          "name": "Singlestat",
+          "version": ""
+        },
+        {
+          "type": "panel",
+          "id": "table",
+          "name": "Table",
+          "version": ""
+        }
+      ],
       "annotations": {
         "list": [
           {
@@ -34,7 +66,7 @@ spec:
       "editable": true,
       "gnetId": 7589,
       "graphTooltip": 0,
-      "iteration": 1571176708910,
+      "iteration": 1687300484097,
       "links": [],
       "panels": [
         {
@@ -47,6 +79,12 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -98,7 +136,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "count(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "count(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -129,6 +167,12 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -180,7 +224,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -211,6 +255,12 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -262,7 +312,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_replicas{topic=~\"$topic\", namespace=\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_topic_partition_replicas{topic=~\"$topic\", namespace=\"$kubernetes_namespace\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -293,6 +343,12 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -344,7 +400,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_in_sync_replica{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_topic_partition_in_sync_replica{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -375,6 +431,12 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -426,7 +488,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_under_replicated_partition{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_topic_partition_under_replicated_partition{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -458,6 +520,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Number of partitions which are at their minimum in sync replica count (| ISR | == | min.insync.replicas |)",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -509,7 +577,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_cluster_partition_atminisr{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_cluster_partition_atminisr{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -541,6 +609,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Number of partitions which are under their minimum in sync replica count (| ISR | < | min.insync.replicas |)",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -592,7 +666,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_cluster_partition_underminisr{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_cluster_partition_underminisr{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -623,6 +697,12 @@ spec:
             "#d44a3a"
           ],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -674,7 +754,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_leader_is_preferred{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"} < bool 1)",
+              "expr": "sum(kafka_topic_partition_leader_is_preferred{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"} < bool 1)",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -701,13 +781,21 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 0,
+          "fillGradient": 0,
           "gridPos": {
             "h": 10,
             "w": 8,
             "x": 0,
             "y": 4
           },
+          "hiddenSeries": false,
           "id": 14,
           "legend": {
             "alignAsTable": true,
@@ -727,8 +815,12 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -738,7 +830,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(kafka_topic_partition_current_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (topic)",
+              "expr": "sum(rate(kafka_topic_partition_current_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}[5m])) by (topic)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{topic}}",
@@ -792,13 +884,21 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 0,
+          "fillGradient": 0,
           "gridPos": {
             "h": 10,
             "w": 8,
             "x": 8,
             "y": 4
           },
+          "hiddenSeries": false,
           "id": 18,
           "legend": {
             "alignAsTable": true,
@@ -818,8 +918,12 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -829,7 +933,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(delta(kafka_consumergroup_current_offset{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])/60) by (consumergroup, topic)",
+              "expr": "sum(delta(kafka_consumergroup_current_offset{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}[5m])/60) by (consumergroup, topic)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{consumergroup}} (topic: {{topic}})",
@@ -883,13 +987,21 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 0,
+          "fillGradient": 0,
           "gridPos": {
             "h": 10,
             "w": 8,
             "x": 16,
             "y": 4
           },
+          "hiddenSeries": false,
           "id": 12,
           "legend": {
             "alignAsTable": true,
@@ -908,8 +1020,12 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -919,7 +1035,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_consumergroup_lag{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (consumergroup, topic) ",
+              "expr": "sum(kafka_consumergroup_lag{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (consumergroup, topic) ",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -972,6 +1088,12 @@ spec:
         {
           "columns": [],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -992,12 +1114,14 @@ spec:
           "styles": [
             {
               "alias": "Time",
+              "align": "auto",
               "dateFormat": "YYYY-MM-DD HH:mm:ss",
               "pattern": "Time",
               "type": "date"
             },
             {
               "alias": "Offset",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1014,6 +1138,7 @@ spec:
             },
             {
               "alias": "",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1029,7 +1154,7 @@ spec:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_consumergroup_current_offset{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (consumergroup,partition,topic)",
+              "expr": "sum(kafka_consumergroup_current_offset{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (consumergroup,partition,topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1046,6 +1171,12 @@ spec:
         {
           "columns": [],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1066,12 +1197,14 @@ spec:
           "styles": [
             {
               "alias": "Time",
+              "align": "auto",
               "dateFormat": "YYYY-MM-DD HH:mm:ss",
               "pattern": "Time",
               "type": "date"
             },
             {
               "alias": "Lag",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1088,6 +1221,7 @@ spec:
             },
             {
               "alias": "",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1103,7 +1237,7 @@ spec:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_consumergroup_lag{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (consumergroup,partition,topic)",
+              "expr": "sum(kafka_consumergroup_lag{consumergroup=~\"$consumergroup\",topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (consumergroup,partition,topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1120,6 +1254,12 @@ spec:
         {
           "columns": [],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1140,12 +1280,14 @@ spec:
           "styles": [
             {
               "alias": "Time",
+              "align": "auto",
               "dateFormat": "YYYY-MM-DD HH:mm:ss",
               "pattern": "Time",
               "type": "date"
             },
             {
               "alias": "Partitions",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1162,6 +1304,7 @@ spec:
             },
             {
               "alias": "",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1177,7 +1320,7 @@ spec:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (topic)",
+              "expr": "sum(kafka_topic_partitions{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1194,6 +1337,12 @@ spec:
         {
           "columns": [],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1214,12 +1363,14 @@ spec:
           "styles": [
             {
               "alias": "Time",
+              "align": "auto",
               "dateFormat": "YYYY-MM-DD HH:mm:ss",
               "pattern": "Time",
               "type": "date"
             },
             {
               "alias": "Offset",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1236,6 +1387,7 @@ spec:
             },
             {
               "alias": "",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1251,7 +1403,7 @@ spec:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_current_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition,topic)",
+              "expr": "sum(kafka_topic_partition_current_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (partition,topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1268,6 +1420,12 @@ spec:
         {
           "columns": [],
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fontSize": "100%",
           "gridPos": {
             "h": 10,
@@ -1288,12 +1446,14 @@ spec:
           "styles": [
             {
               "alias": "Time",
+              "align": "auto",
               "dateFormat": "YYYY-MM-DD HH:mm:ss",
               "pattern": "Time",
               "type": "date"
             },
             {
               "alias": "Offset",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1310,6 +1470,7 @@ spec:
             },
             {
               "alias": "",
+              "align": "auto",
               "colorMode": null,
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -1325,7 +1486,7 @@ spec:
           ],
           "targets": [
             {
-              "expr": "sum(kafka_topic_partition_oldest_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition,topic)",
+              "expr": "sum(kafka_topic_partition_oldest_offset{topic=~\"$topic\", namespace=~\"$kubernetes_namespace\"}) by (partition,topic)",
               "format": "table",
               "instant": true,
               "intervalFactor": 1,
@@ -1341,7 +1502,7 @@ spec:
         }
       ],
       "refresh": "5s",
-      "schemaVersion": 18,
+      "schemaVersion": 26,
       "style": "dark",
       "tags": [
         "Strimzi",

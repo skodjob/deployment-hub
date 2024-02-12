@@ -14,8 +14,34 @@ spec:
     - datasourceName: tealc-thanos
       inputName: DS_THANOS
   folder: "strimzi"
-  json: |
+  json: |      
     {
+      "__requires": [
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "7.3.7"
+        },
+        {
+          "type": "panel",
+          "id": "graph",
+          "name": "Graph",
+          "version": "5.0.0"
+        },
+        {
+          "type": "datasource",
+          "id": "prometheus",
+          "name": "Prometheus",
+          "version": "5.0.0"
+        },
+        {
+          "type": "panel",
+          "id": "singlestat",
+          "name": "Singlestat",
+          "version": "5.0.0"
+        }
+      ],
       "annotations": {
         "list": [
           {
@@ -32,7 +58,7 @@ spec:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
-      "iteration": 1600633283203,
+      "iteration": 1687298918684,
       "links": [],
       "panels": [
         {
@@ -46,6 +72,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Number of brokers online",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -99,7 +131,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "count(kafka_server_replicamanager_leadercount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "count(kafka_server_replicamanager_leadercount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -131,6 +163,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Number of active controllers in the cluster",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -182,7 +220,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_controller_kafkacontroller_activecontrollercount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_controller_kafkacontroller_activecontrollercount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -213,6 +251,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Unclean leader election rate",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -264,7 +308,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(irate(kafka_controller_controllerstats_uncleanleaderelections_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_controller_controllerstats_uncleanleaderelections_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -295,6 +339,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Replicas that are online",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -346,7 +396,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_server_replicamanager_partitioncount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_server_replicamanager_partitioncount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "refId": "A"
@@ -376,6 +426,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Number of under-replicated partitions (| ISR | < | all replicas |).",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -427,7 +483,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_server_replicamanager_underreplicatedpartitions{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_server_replicamanager_underreplicatedpartitions{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -458,6 +514,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Number of partitions which are at their minimum in sync replica count (| ISR | == | min.insync.replicas |)",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -509,7 +571,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_cluster_partition_atminisr{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_cluster_partition_atminisr{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -540,6 +602,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Number of partitions which are under their minimum in sync replica count (| ISR | < | min.insync.replicas |)",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -591,7 +659,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_cluster_partition_underminisr{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_cluster_partition_underminisr{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -622,6 +690,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Number of partitions that don’t have an active leader and are hence not writable or readable",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -673,7 +747,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kafka_controller_kafkacontroller_offlinepartitionscount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
+              "expr": "sum(kafka_controller_kafkacontroller_offlinepartitionscount{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\"})",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -695,6 +769,7 @@ spec:
         },
         {
           "collapsed": false,
+          "datasource": null,
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -713,13 +788,21 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Kafka broker pods memory usage",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 0,
             "y": 5
           },
+          "hiddenSeries": false,
           "id": 82,
           "legend": {
             "avg": false,
@@ -734,9 +817,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -745,7 +832,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(container_memory_usage_bytes{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-$kafka_broker\",container=\"kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
+              "expr": "sum(container_memory_usage_bytes{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-$kafka_broker\",container=\"kafka\"}) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -801,13 +888,21 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Aggregated Kafka broker pods CPU usage",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 6,
             "y": 5
           },
+          "hiddenSeries": false,
           "id": 81,
           "legend": {
             "avg": false,
@@ -822,9 +917,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -833,7 +932,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-$kafka_broker\",container=\"kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-$kafka_broker\",container=\"kafka\"}[5m])) by (pod)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -889,13 +988,21 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Kafka broker pods disk usage",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 12,
             "y": 5
           },
+          "hiddenSeries": false,
           "id": 83,
           "legend": {
             "avg": false,
@@ -910,9 +1017,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -921,7 +1032,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kubelet_volume_stats_available_bytes{namespace=\"$kubernetes_namespace\",persistentvolumeclaim=~\"data(-[0-9]+)?-$strimzi_cluster_name-(kafka|$pool_name)-[0-9]+\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (persistentvolumeclaim)",
+              "expr": "sum(kubelet_volume_stats_available_bytes{namespace=\"$kubernetes_namespace\",persistentvolumeclaim=~\"data(-[0-9]+)?-$strimzi_cluster_name-(kafka|$pool_name)-[0-9]+\"}) by (persistentvolumeclaim)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -977,13 +1088,21 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Open File Descriptors",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 18,
             "y": 5
           },
+          "hiddenSeries": false,
           "id": 107,
           "legend": {
             "avg": false,
@@ -998,9 +1117,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -1009,11 +1132,11 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(process_open_fds{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_cluster_name-$kafka_broker\",container=\"kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
+              "expr": "sum(process_open_fds{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",container=\"kafka\"}) by (kubernetes_pod_name)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -1064,13 +1187,21 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 0,
             "y": 12
           },
+          "hiddenSeries": false,
           "id": 93,
           "legend": {
             "avg": false,
@@ -1085,9 +1216,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -1096,10 +1231,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_memory_bytes_used{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
+              "expr": "sum(jvm_memory_bytes_used{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\"}) by (kubernetes_pod_name)",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -1150,13 +1285,21 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 6,
             "y": 12
           },
+          "hiddenSeries": false,
           "id": 95,
           "legend": {
             "avg": false,
@@ -1171,9 +1314,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -1182,10 +1329,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_collection_seconds_sum{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
+              "expr": "sum(rate(jvm_gc_collection_seconds_sum{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\"}[5m])) by (kubernetes_pod_name)",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -1236,13 +1383,21 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 12,
             "y": 12
           },
+          "hiddenSeries": false,
           "id": 97,
           "legend": {
             "avg": false,
@@ -1257,9 +1412,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -1268,10 +1427,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(jvm_gc_collection_seconds_count{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
+              "expr": "sum(rate(jvm_gc_collection_seconds_count{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\"}[5m])) by (kubernetes_pod_name)",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -1323,13 +1482,21 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "JVM thread count",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 18,
             "y": 12
           },
+          "hiddenSeries": false,
           "id": 108,
           "legend": {
             "avg": false,
@@ -1344,9 +1511,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -1355,10 +1526,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(jvm_threads_current{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod)",
+              "expr": "sum(jvm_threads_current{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\"}) by (kubernetes_pod_name)",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -1414,6 +1585,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Total incoming byte rate",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "Bps",
           "gauge": {
             "maxValue": 100,
@@ -1466,7 +1643,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_bytesin_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_bytesin_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -1498,6 +1675,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Total outgoing byte rate",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "Bps",
           "gauge": {
             "maxValue": 100,
@@ -1550,7 +1733,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_bytesout_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_bytesout_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -1582,6 +1765,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Incoming messages rate",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "wps",
           "gauge": {
             "maxValue": 100,
@@ -1634,7 +1823,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_messagesin_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_messagesin_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -1666,6 +1855,12 @@ spec:
           ],
           "datasource": "${DS_THANOS}",
           "description": "Total produce request rate",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "format": "reqps",
           "gauge": {
             "maxValue": 100,
@@ -1718,7 +1913,7 @@ spec:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_totalproducerequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_totalproducerequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -1746,13 +1941,21 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Byte rate",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
             "y": 23
           },
+          "hiddenSeries": false,
           "id": 44,
           "legend": {
             "alignAsTable": false,
@@ -1771,9 +1974,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -1782,7 +1989,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_bytesin_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_bytesin_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -1792,7 +1999,7 @@ spec:
               "refId": "A"
             },
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_bytesout_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_bytesout_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -1848,13 +2055,21 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 12,
             "y": 23
           },
+          "hiddenSeries": false,
           "id": 58,
           "legend": {
             "alignAsTable": false,
@@ -1870,9 +2085,13 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -1881,7 +2100,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_messagesin_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_messagesin_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Total Incoming Messages Rate",
@@ -1936,6 +2155,12 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Produce request rate",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -1959,7 +2184,8 @@ spec:
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -1968,14 +2194,14 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_totalproducerequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_totalproducerequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Total Produce Request Rate",
               "refId": "A"
             },
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_failedproducerequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_failedproducerequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
@@ -2031,6 +2257,12 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Fetch request rate",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2054,7 +2286,8 @@ spec:
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -2063,14 +2296,14 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_brokertopicmetrics_totalfetchrequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "sum(irate(kafka_server_brokertopicmetrics_totalfetchrequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Fetch Request Rate",
               "refId": "A"
             },
             {
-              "expr": "  sum(irate(kafka_server_brokertopicmetrics_failedfetchrequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m]))",
+              "expr": "  sum(irate(kafka_server_brokertopicmetrics_failedfetchrequests_total{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",topic=~\"$kafka_topic\",topic!=\"\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Failed Fetch Request Rate",
@@ -2125,6 +2358,12 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Average percentage of time network processor is idle",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2148,7 +2387,8 @@ spec:
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -2157,10 +2397,10 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_network_socketserver_networkprocessoravgidle_percent{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}*100) by (pod)",
+              "expr": "sum(kafka_network_socketserver_networkprocessoravgidle_percent{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}*100) by (kubernetes_pod_name)",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -2212,6 +2452,12 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Average percentage of time request handler threads are idle",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2235,7 +2481,8 @@ spec:
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -2244,11 +2491,11 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_server_kafkarequesthandlerpool_requesthandleravgidle_percent{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}*100) by (pod)",
+              "expr": "sum(kafka_server_kafkarequesthandlerpool_requesthandleravgidle_percent{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}*100) by (kubernetes_pod_name)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -2300,6 +2547,12 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Disk writes",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2323,7 +2576,8 @@ spec:
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -2332,11 +2586,11 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_kafkaserver_linux_disk_write_bytes{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
+              "expr": "sum(irate(kafka_server_kafkaserver_linux_disk_write_bytes{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m])) by (kubernetes_pod_name)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -2388,6 +2642,12 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Disk reads",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2411,7 +2671,8 @@ spec:
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -2420,11 +2681,11 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(irate(kafka_server_kafkaserver_linux_disk_read_bytes{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[20m])) by (pod)",
+              "expr": "sum(irate(kafka_server_kafkaserver_linux_disk_read_bytes{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}[5m])) by (kubernetes_pod_name)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
-              "legendFormat": "{{pod}}",
+              "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -2476,6 +2737,12 @@ spec:
           "dashes": false,
           "datasource": "${DS_THANOS}",
           "description": "Disk reads",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2499,7 +2766,8 @@ spec:
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -2508,11 +2776,11 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(kafka_server_socket_server_metrics_connection_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (pod, listener)",
+              "expr": "sum(kafka_server_socket_server_metrics_connection_count{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\"}) by (kubernetes_pod_name, listener)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 1,
-              "legendFormat": "{{listener}}-{{pod}}",
+              "legendFormat": "{{listener}}-{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
@@ -2563,10 +2831,16 @@ spec:
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "gridPos": {
-            "h": 13,
-            "w": 24,
+            "h": 8,
+            "w": 12,
             "x": 0,
             "y": 55
           },
@@ -2586,7 +2860,8 @@ spec:
           "nullPointMode": "null",
           "paceLength": 10,
           "percentage": false,
-          "pointradius": 20,
+          "pluginVersion": "7.3.7",
+          "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -2595,7 +2870,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "kafka_log_log_size{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",topic=~\"$kafka_topic\",partition=~\"$kafka_partition\", clusterName=~\"$OPENSHIFT_CLUSTER\"}",
+              "expr": "kafka_log_log_size{namespace=\"$kubernetes_namespace\",strimzi_io_cluster=\"$strimzi_cluster_name\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",topic=~\"$kafka_topic\",partition=~\"$kafka_partition\"}",
               "format": "time_series",
               "instant": false,
               "intervalFactor": 1,
@@ -2643,10 +2918,105 @@ spec:
             "align": false,
             "alignLevel": null
           }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 55
+          },
+          "id": 110,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.3.7",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(kafka_server_zookeeperclientmetrics_zookeeperrequestlatencyms{namespace=\"$kubernetes_namespace\",kubernetes_pod_name=~\"$strimzi_cluster_name-$kafka_broker\",strimzi_io_name=\"$strimzi_cluster_name-kafka\"}) by (kubernetes_pod_name)",
+              "format": "time_series",
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "{{kubernetes_pod_name}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "ZK request latecy",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
         }
       ],
       "refresh": "5s",
-      "schemaVersion": 21,
+      "schemaVersion": 26,
       "style": "dark",
       "tags": [
         "Strimzi",
@@ -2833,5 +3203,7 @@ spec:
         ]
       },
       "timezone": "",
-      "title": "Strimzi Kafka"
+      "title": "Strimzi Kafka",
+      "version": 2
     }
+  
