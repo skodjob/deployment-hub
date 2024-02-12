@@ -70,7 +70,7 @@ spec:
       "panels": [
         {
           "collapsed": false,
-          "datasource": null,
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -522,7 +522,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}[1m])) by (kubernetes_pod_name)",
+              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}[5m])) by (kubernetes_pod_name)",
               "interval": "",
               "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
@@ -571,7 +571,7 @@ spec:
         },
         {
           "collapsed": false,
-          "datasource": null,
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -584,7 +584,7 @@ spec:
           "type": "row"
         },
         {
-          "datasource": null,
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "custom": {},
@@ -643,7 +643,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": null,
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "custom": {},
@@ -750,7 +750,7 @@ spec:
           }
         },
         {
-          "datasource": null,
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "custom": {},
@@ -806,7 +806,7 @@ spec:
         },
         {
           "collapsed": false,
-          "datasource": null,
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -1338,7 +1338,7 @@ spec:
         },
         {
           "collapsed": false,
-          "datasource": null,
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
