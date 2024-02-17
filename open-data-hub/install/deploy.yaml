@@ -787,6 +787,31 @@ spec:
                     pattern: ^(Managed|Unmanaged|Force|Removed)$
                     type: string
                 type: object
+              trustedCABundle:
+                description: When set to `Managed`, adds odh-trusted-ca-bundle Configmap
+                  to all namespaces that includes cluster-wide Trusted CA Bundle in
+                  .data["ca-bundle.crt"]. Additionally, this fields allows admins
+                  to add custom CA bundles to the configmap using the .CustomCABundle
+                  field.
+                properties:
+                  customCABundle:
+                    description: A custom CA bundle that will be available for  all  components
+                      in the Data Science Cluster(DSC). This bundle will be stored
+                      in odh-trusted-ca-bundle ConfigMap .data.odh-ca-bundle.crt .
+                    type: string
+                  managementState:
+                    default: Removed
+                    description: managementState indicates whether and how the operator
+                      should manage customized CA bundle
+                    enum:
+                    - Managed
+                    - Removed
+                    - Unmanaged
+                    pattern: ^(Managed|Unmanaged|Force|Removed)$
+                    type: string
+                required:
+                - managementState
+                type: object
             required:
             - applicationsNamespace
             type: object
@@ -2677,6 +2702,29 @@ spec:
   selector:
     control-plane: controller-manager
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.openshift.io/inject-cabundle: "true"
+    service.beta.openshift.io/serving-cert-secret-name: opendatahub-operator-controller-webhook-cert
+  labels:
+    app.kubernetes.io/component: webhook
+    app.kubernetes.io/created-by: opendatahub-operator
+    app.kubernetes.io/instance: webhook-service
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: service
+    app.kubernetes.io/part-of: opendatahub-operator
+  name: opendatahub-operator-webhook-service
+  namespace: opendatahub-operator-system
+spec:
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: 9443
+  selector:
+    control-plane: controller-manager
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -2706,7 +2754,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:064d1f427983db5d2ba09ae21e15a77be3c92c6ecd9b029af3bdb684ce5ee218
+        image: quay.io/opendatahub/opendatahub-operator@sha256:d89e297f102d4599d78f018082a25869b693b43c17e5aa2913c1b78750b99b87
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2716,6 +2764,9 @@ spec:
           periodSeconds: 20
         name: manager
         ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
         - containerPort: 8080
           name: http
           protocol: TCP
@@ -2737,7 +2788,47 @@ spec:
           capabilities:
             drop:
             - ALL
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: cert
+          readOnly: true
       securityContext:
         runAsNonRoot: true
       serviceAccountName: opendatahub-operator-controller-manager
       terminationGracePeriodSeconds: 10
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: opendatahub-operator-controller-webhook-cert
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  annotations:
+    service.beta.openshift.io/inject-cabundle: "true"
+  creationTimestamp: null
+  name: opendatahub-operator-validating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: opendatahub-operator-webhook-service
+      namespace: opendatahub-operator-system
+      path: /validate-opendatahub-io-v1
+  failurePolicy: Fail
+  name: operator.opendatahub.io
+  rules:
+  - apiGroups:
+    - datasciencecluster.opendatahub.io
+    - dscinitialization.opendatahub.io
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datascienceclusters
+    - dscinitializations
+  sideEffects: None
