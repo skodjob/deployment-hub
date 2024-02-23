@@ -1047,44 +1047,6 @@ metadata:
   namespace: opendatahub-operator-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: opendatahub-operator-leader-election-role
-  namespace: opendatahub-operator-system
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - coordination.k8s.io
-  resources:
-  - leases
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs:
-  - create
-  - patch
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   creationTimestamp: null
@@ -2649,38 +2611,6 @@ rules:
   - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: opendatahub-operator-proxy-role
-rules:
-- apiGroups:
-  - authentication.k8s.io
-  resources:
-  - tokenreviews
-  verbs:
-  - create
-- apiGroups:
-  - authorization.k8s.io
-  resources:
-  - subjectaccessreviews
-  verbs:
-  - create
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: opendatahub-operator-leader-election-rolebinding
-  namespace: opendatahub-operator-system
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: opendatahub-operator-leader-election-role
-subjects:
-- kind: ServiceAccount
-  name: opendatahub-operator-controller-manager
-  namespace: opendatahub-operator-system
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: opendatahub-operator-controller-manager-rolebinding
@@ -2688,19 +2618,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: opendatahub-operator-controller-manager-role
-subjects:
-- kind: ServiceAccount
-  name: opendatahub-operator-controller-manager
-  namespace: opendatahub-operator-system
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: opendatahub-operator-proxy-rolebinding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: opendatahub-operator-proxy-role
 subjects:
 - kind: ServiceAccount
   name: opendatahub-operator-controller-manager
@@ -2803,7 +2720,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:22c8c92c76c1ed662bdb2982f033bb8afa30763cf9e794d957c78ae13ba934cd
+        image: quay.io/opendatahub/opendatahub-operator@sha256:013eefcc9de2d6ce8330ae490a27a53fb65632aa4c83b8ea244e0238cb661e39
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
