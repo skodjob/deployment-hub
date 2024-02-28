@@ -185,6 +185,17 @@ spec:
                       before enable component Does not support enabled ModelMeshServing
                       at the same time
                     properties:
+                      defaultDeploymentMode:
+                        description: Configures the default deployment mode for Kserve.
+                          This can be set to 'Serverless' or 'RawDeployment'. The
+                          value specified in this field will be used to set the default
+                          deployment mode in the 'inferenceservice-config' configmap
+                          for Kserve
+                        enum:
+                        - Serverless
+                        - RawDeployment
+                        pattern: ^(Serverless|RawDeployment)$
+                        type: string
                       devFlags:
                         description: Add developer fields
                         properties:
@@ -2720,7 +2731,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:725216276f3e78cc15803ee4effa70490e051466e98914a2f74406bf5fefbca4
+        image: quay.io/opendatahub/opendatahub-operator@sha256:a7755da43ae2bdef0369ab5a8fc8094ab542da845b5f3a92794202c389a08ab3
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
