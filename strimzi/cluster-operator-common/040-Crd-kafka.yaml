@@ -1858,15 +1858,15 @@ spec:
                           properties:
                             className:
                               type: string
-                              description: The class name for the 'RemoteStorageManager' implementation.
+                              description: The class name for the `RemoteStorageManager` implementation.
                             classPath:
                               type: string
-                              description: The class path for the 'RemoteStorageManager' implementation.
+                              description: The class path for the `RemoteStorageManager` implementation.
                             config:
                               additionalProperties:
                                 type: string
                               type: object
-                              description: "The additional configuration map for the 'RemoteStorageManager' implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration."
+                              description: "The additional configuration map for the `RemoteStorageManager` implementation. Keys will be automatically prefixed with `rsm.config.`, and added to Kafka broker configuration."
                           description: Configuration for the Remote Storage Manager.
                         type:
                           type: string
@@ -6716,5 +6716,12 @@ spec:
                   description: The KRaft metadata.version currently used by the Kafka cluster.
                 kafkaMetadataState:
                   type: string
-                  description: "Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; KRaft if the metadata are stored in KRaft."
+                  enum:
+                    - ZooKeeper
+                    - KRaftMigration
+                    - KRaftDualWriting
+                    - KRaftPostMigration
+                    - PreKRaft
+                    - KRaft
+                  description: "Defines where cluster metadata are stored. Possible values are: ZooKeeper if the metadata are stored in ZooKeeper; KRaftMigration if the controllers are connected to ZooKeeper, brokers are being rolled with Zookeeper migration enabled and connection information to controllers, and the metadata migration process is running; KRaftDualWriting if the metadata migration process finished and the cluster is in dual-write mode; KRaftPostMigration if the brokers are fully KRaft-based but controllers being rolled to disconnect from ZooKeeper; PreKRaft if brokers and controller are fully KRaft-based, metadata are stored in KRaft, but ZooKeeper must be deleted; KRaft if the metadata are stored in KRaft."
               description: "The status of the Kafka and ZooKeeper clusters, and Topic Operator."
