@@ -190,7 +190,8 @@ spec:
                           This can be set to 'Serverless' or 'RawDeployment'. The
                           value specified in this field will be used to set the default
                           deployment mode in the 'inferenceservice-config' configmap
-                          for Kserve
+                          for Kserve If no default deployment mode is specified, Kserve
+                          will use Serverless mode
                         enum:
                         - Serverless
                         - RawDeployment
@@ -2731,7 +2732,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:2d7fb5ca149c2ea206ff76a1fe950d56e0d80b86b74000d2f97acc657449a677
+        image: quay.io/opendatahub/opendatahub-operator@sha256:ed8cf4b5bba8f5403a41c7e3fd85d1c5bf8ff510b14711c786df22d913a3009b
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
