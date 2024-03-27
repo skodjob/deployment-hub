@@ -7,6 +7,8 @@ metadata:
 spec:
   group: ray.io
   names:
+    categories:
+    - all
     kind: RayCluster
     listKind: RayClusterList
     plural: rayclusters
@@ -20,6 +22,19 @@ spec:
     - jsonPath: .status.availableWorkerReplicas
       name: available workers
       type: integer
+    - jsonPath: .status.desiredCPU
+      name: cpus
+      type: string
+    - jsonPath: .status.desiredMemory
+      name: memory
+      type: string
+    - jsonPath: .status.desiredGPU
+      name: gpus
+      type: string
+    - jsonPath: .status.desiredTPU
+      name: tpus
+      priority: 1
+      type: string
     - jsonPath: .status.state
       name: status
       type: string
@@ -459,9 +474,6 @@ spec:
                     additionalProperties:
                       type: string
                     type: object
-                  replicas:
-                    format: int32
-                    type: integer
                   serviceType:
                     type: string
                   template:
@@ -3738,6 +3750,8 @@ spec:
                 type: object
               rayVersion:
                 type: string
+              suspend:
+                type: boolean
               workerGroupSpecs:
                 items:
                   properties:
@@ -3749,6 +3763,10 @@ spec:
                       type: integer
                     minReplicas:
                       default: 0
+                      format: int32
+                      type: integer
+                    numOfHosts:
+                      default: 1
                       format: int32
                       type: integer
                     rayStartParams:
@@ -7046,6 +7064,30 @@ spec:
               availableWorkerReplicas:
                 format: int32
                 type: integer
+              desiredCPU:
+                anyOf:
+                - type: integer
+                - type: string
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
+              desiredGPU:
+                anyOf:
+                - type: integer
+                - type: string
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
+              desiredMemory:
+                anyOf:
+                - type: integer
+                - type: string
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
+              desiredTPU:
+                anyOf:
+                - type: integer
+                - type: string
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
               desiredWorkerReplicas:
                 format: int32
                 type: integer
@@ -7090,6 +7132,19 @@ spec:
     - jsonPath: .status.availableWorkerReplicas
       name: available workers
       type: integer
+    - jsonPath: .status.desiredCPU
+      name: cpus
+      type: string
+    - jsonPath: .status.desiredMemory
+      name: memory
+      type: string
+    - jsonPath: .status.desiredGPU
+      name: gpus
+      type: string
+    - jsonPath: .status.desiredTPU
+      name: tpus
+      priority: 1
+      type: string
     - jsonPath: .status.state
       name: status
       type: string
@@ -7529,9 +7584,6 @@ spec:
                     additionalProperties:
                       type: string
                     type: object
-                  replicas:
-                    format: int32
-                    type: integer
                   serviceType:
                     type: string
                   template:
@@ -10808,6 +10860,8 @@ spec:
                 type: object
               rayVersion:
                 type: string
+              suspend:
+                type: boolean
               workerGroupSpecs:
                 items:
                   properties:
@@ -14116,6 +14170,30 @@ spec:
               availableWorkerReplicas:
                 format: int32
                 type: integer
+              desiredCPU:
+                anyOf:
+                - type: integer
+                - type: string
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
+              desiredGPU:
+                anyOf:
+                - type: integer
+                - type: string
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
+              desiredMemory:
+                anyOf:
+                - type: integer
+                - type: string
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
+              desiredTPU:
+                anyOf:
+                - type: integer
+                - type: string
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
               desiredWorkerReplicas:
                 format: int32
                 type: integer
@@ -14163,13 +14241,31 @@ metadata:
 spec:
   group: ray.io
   names:
+    categories:
+    - all
     kind: RayJob
     listKind: RayJobList
     plural: rayjobs
     singular: rayjob
   scope: Namespaced
   versions:
-  - name: v1
+  - additionalPrinterColumns:
+    - jsonPath: .status.jobStatus
+      name: job status
+      type: string
+    - jsonPath: .status.jobDeploymentStatus
+      name: deployment status
+      type: string
+    - jsonPath: .status.startTime
+      name: start time
+      type: string
+    - jsonPath: .status.endTime
+      name: end time
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: age
+      type: date
+    name: v1
     schema:
       openAPIV3Schema:
         properties:
@@ -14181,6 +14277,9 @@ spec:
             type: object
           spec:
             properties:
+              activeDeadlineSeconds:
+                format: int32
+                type: integer
               clusterSelector:
                 additionalProperties:
                   type: string
@@ -14614,9 +14713,6 @@ spec:
                         additionalProperties:
                           type: string
                         type: object
-                      replicas:
-                        format: int32
-                        type: integer
                       serviceType:
                         type: string
                       template:
@@ -17893,6 +17989,8 @@ spec:
                     type: object
                   rayVersion:
                     type: string
+                  suspend:
+                    type: boolean
                   workerGroupSpecs:
                     items:
                       properties:
@@ -17904,6 +18002,10 @@ spec:
                           type: integer
                         minReplicas:
                           default: 0
+                          format: int32
+                          type: integer
+                        numOfHosts:
+                          default: 1
                           format: int32
                           type: integer
                         rayStartParams:
@@ -21196,12 +21298,13 @@ spec:
                 required:
                 - headGroupSpec
                 type: object
-              runtimeEnv:
-                type: string
               runtimeEnvYAML:
                 type: string
               shutdownAfterJobFinishes:
                 type: boolean
+              submissionMode:
+                default: K8sJobMode
+                type: string
               submitterPodTemplate:
                 properties:
                   metadata:
@@ -24469,6 +24572,7 @@ spec:
               suspend:
                 type: boolean
               ttlSecondsAfterFinished:
+                default: 0
                 format: int32
                 type: integer
             required:
@@ -24499,6 +24603,30 @@ spec:
                   availableWorkerReplicas:
                     format: int32
                     type: integer
+                  desiredCPU:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
+                  desiredGPU:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
+                  desiredMemory:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
+                  desiredTPU:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
                   desiredWorkerReplicas:
                     format: int32
                     type: integer
@@ -24531,6 +24659,8 @@ spec:
                   state:
                     type: string
                 type: object
+              reason:
+                type: string
               startTime:
                 format: date-time
                 type: string
@@ -24985,9 +25115,6 @@ spec:
                         additionalProperties:
                           type: string
                         type: object
-                      replicas:
-                        format: int32
-                        type: integer
                       serviceType:
                         type: string
                       template:
@@ -28264,6 +28391,8 @@ spec:
                     type: object
                   rayVersion:
                     type: string
+                  suspend:
+                    type: boolean
                   workerGroupSpecs:
                     items:
                       properties:
@@ -31567,8 +31696,6 @@ spec:
                 required:
                 - headGroupSpec
                 type: object
-              runtimeEnv:
-                type: string
               runtimeEnvYAML:
                 type: string
               shutdownAfterJobFinishes:
@@ -34840,6 +34967,7 @@ spec:
               suspend:
                 type: boolean
               ttlSecondsAfterFinished:
+                default: 0
                 format: int32
                 type: integer
             required:
@@ -34870,6 +34998,30 @@ spec:
                   availableWorkerReplicas:
                     format: int32
                     type: integer
+                  desiredCPU:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
+                  desiredGPU:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
+                  desiredMemory:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
+                  desiredTPU:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
                   desiredWorkerReplicas:
                     format: int32
                     type: integer
@@ -34921,13 +35073,22 @@ metadata:
 spec:
   group: ray.io
   names:
+    categories:
+    - all
     kind: RayService
     listKind: RayServiceList
     plural: rayservices
     singular: rayservice
   scope: Namespaced
   versions:
-  - name: v1
+  - additionalPrinterColumns:
+    - jsonPath: .status.serviceStatus
+      name: service status
+      type: string
+    - jsonPath: .status.numServeEndpoints
+      name: num serve endpoints
+      type: string
+    name: v1
     schema:
       openAPIV3Schema:
         properties:
@@ -35357,9 +35518,6 @@ spec:
                         additionalProperties:
                           type: string
                         type: object
-                      replicas:
-                        format: int32
-                        type: integer
                       serviceType:
                         type: string
                       template:
@@ -38636,6 +38794,8 @@ spec:
                     type: object
                   rayVersion:
                     type: string
+                  suspend:
+                    type: boolean
                   workerGroupSpecs:
                     items:
                       properties:
@@ -38647,6 +38807,10 @@ spec:
                           type: integer
                         minReplicas:
                           default: 0
+                          format: int32
+                          type: integer
+                        numOfHosts:
+                          default: 1
                           format: int32
                           type: integer
                         rayStartParams:
@@ -41939,69 +42103,6 @@ spec:
                 required:
                 - headGroupSpec
                 type: object
-              serveConfig:
-                properties:
-                  deployments:
-                    items:
-                      properties:
-                        autoscalingConfig:
-                          type: string
-                        gracefulShutdownTimeoutS:
-                          format: int32
-                          type: integer
-                        gracefulShutdownWaitLoopS:
-                          format: int32
-                          type: integer
-                        healthCheckPeriodS:
-                          format: int32
-                          type: integer
-                        healthCheckTimeoutS:
-                          format: int32
-                          type: integer
-                        maxConcurrentQueries:
-                          format: int32
-                          type: integer
-                        name:
-                          type: string
-                        numReplicas:
-                          format: int32
-                          type: integer
-                        rayActorOptions:
-                          properties:
-                            acceleratorType:
-                              type: string
-                            memory:
-                              format: int64
-                              type: integer
-                            numCpus:
-                              type: number
-                            numGpus:
-                              type: number
-                            objectStoreMemory:
-                              format: int64
-                              type: integer
-                            resources:
-                              type: string
-                            runtimeEnv:
-                              type: string
-                          type: object
-                        routePrefix:
-                          type: string
-                        userConfig:
-                          type: string
-                      required:
-                      - name
-                      type: object
-                    type: array
-                  importPath:
-                    type: string
-                  port:
-                    type: integer
-                  runtimeEnv:
-                    type: string
-                required:
-                - importPath
-                type: object
               serveConfigV2:
                 type: string
               serveService:
@@ -42206,18 +42307,12 @@ spec:
                         healthLastUpdateTime:
                           format: date-time
                           type: string
-                        lastUpdateTime:
-                          format: date-time
-                          type: string
                         message:
                           type: string
                         serveDeploymentStatuses:
                           additionalProperties:
                             properties:
                               healthLastUpdateTime:
-                                format: date-time
-                                type: string
-                              lastUpdateTime:
                                 format: date-time
                                 type: string
                               message:
@@ -42230,17 +42325,6 @@ spec:
                           type: string
                       type: object
                     type: object
-                  dashboardStatus:
-                    properties:
-                      healthLastUpdateTime:
-                        format: date-time
-                        type: string
-                      isHealthy:
-                        type: boolean
-                      lastUpdateTime:
-                        format: date-time
-                        type: string
-                    type: object
                   rayClusterName:
                     type: string
                   rayClusterStatus:
@@ -42248,6 +42332,30 @@ spec:
                       availableWorkerReplicas:
                         format: int32
                         type: integer
+                      desiredCPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredGPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredMemory:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredTPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
                       desiredWorkerReplicas:
                         format: int32
                         type: integer
@@ -42281,6 +42389,12 @@ spec:
                         type: string
                     type: object
                 type: object
+              lastUpdateTime:
+                format: date-time
+                type: string
+              numServeEndpoints:
+                format: int32
+                type: integer
               observedGeneration:
                 format: int64
                 type: integer
@@ -42292,18 +42406,12 @@ spec:
                         healthLastUpdateTime:
                           format: date-time
                           type: string
-                        lastUpdateTime:
-                          format: date-time
-                          type: string
                         message:
                           type: string
                         serveDeploymentStatuses:
                           additionalProperties:
                             properties:
                               healthLastUpdateTime:
-                                format: date-time
-                                type: string
-                              lastUpdateTime:
                                 format: date-time
                                 type: string
                               message:
@@ -42316,17 +42424,6 @@ spec:
                           type: string
                       type: object
                     type: object
-                  dashboardStatus:
-                    properties:
-                      healthLastUpdateTime:
-                        format: date-time
-                        type: string
-                      isHealthy:
-                        type: boolean
-                      lastUpdateTime:
-                        format: date-time
-                        type: string
-                    type: object
                   rayClusterName:
                     type: string
                   rayClusterStatus:
@@ -42334,6 +42431,30 @@ spec:
                       availableWorkerReplicas:
                         format: int32
                         type: integer
+                      desiredCPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredGPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredMemory:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredTPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
                       desiredWorkerReplicas:
                         format: int32
                         type: integer
@@ -42805,9 +42926,6 @@ spec:
                         additionalProperties:
                           type: string
                         type: object
-                      replicas:
-                        format: int32
-                        type: integer
                       serviceType:
                         type: string
                       template:
@@ -46084,6 +46202,8 @@ spec:
                     type: object
                   rayVersion:
                     type: string
+                  suspend:
+                    type: boolean
                   workerGroupSpecs:
                     items:
                       properties:
@@ -49387,69 +49507,6 @@ spec:
                 required:
                 - headGroupSpec
                 type: object
-              serveConfig:
-                properties:
-                  deployments:
-                    items:
-                      properties:
-                        autoscalingConfig:
-                          type: string
-                        gracefulShutdownTimeoutS:
-                          format: int32
-                          type: integer
-                        gracefulShutdownWaitLoopS:
-                          format: int32
-                          type: integer
-                        healthCheckPeriodS:
-                          format: int32
-                          type: integer
-                        healthCheckTimeoutS:
-                          format: int32
-                          type: integer
-                        maxConcurrentQueries:
-                          format: int32
-                          type: integer
-                        name:
-                          type: string
-                        numReplicas:
-                          format: int32
-                          type: integer
-                        rayActorOptions:
-                          properties:
-                            acceleratorType:
-                              type: string
-                            memory:
-                              format: int64
-                              type: integer
-                            numCpus:
-                              type: number
-                            numGpus:
-                              type: number
-                            objectStoreMemory:
-                              format: int64
-                              type: integer
-                            resources:
-                              type: string
-                            runtimeEnv:
-                              type: string
-                          type: object
-                        routePrefix:
-                          type: string
-                        userConfig:
-                          type: string
-                      required:
-                      - name
-                      type: object
-                    type: array
-                  importPath:
-                    type: string
-                  port:
-                    type: integer
-                  runtimeEnv:
-                    type: string
-                required:
-                - importPath
-                type: object
               serveConfigV2:
                 type: string
               serveService:
@@ -49654,18 +49711,12 @@ spec:
                         healthLastUpdateTime:
                           format: date-time
                           type: string
-                        lastUpdateTime:
-                          format: date-time
-                          type: string
                         message:
                           type: string
                         serveDeploymentStatuses:
                           additionalProperties:
                             properties:
                               healthLastUpdateTime:
-                                format: date-time
-                                type: string
-                              lastUpdateTime:
                                 format: date-time
                                 type: string
                               message:
@@ -49678,17 +49729,6 @@ spec:
                           type: string
                       type: object
                     type: object
-                  dashboardStatus:
-                    properties:
-                      healthLastUpdateTime:
-                        format: date-time
-                        type: string
-                      isHealthy:
-                        type: boolean
-                      lastUpdateTime:
-                        format: date-time
-                        type: string
-                    type: object
                   rayClusterName:
                     type: string
                   rayClusterStatus:
@@ -49696,6 +49736,30 @@ spec:
                       availableWorkerReplicas:
                         format: int32
                         type: integer
+                      desiredCPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredGPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredMemory:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredTPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
                       desiredWorkerReplicas:
                         format: int32
                         type: integer
@@ -49729,6 +49793,9 @@ spec:
                         type: string
                     type: object
                 type: object
+              lastUpdateTime:
+                format: date-time
+                type: string
               observedGeneration:
                 format: int64
                 type: integer
@@ -49740,18 +49807,12 @@ spec:
                         healthLastUpdateTime:
                           format: date-time
                           type: string
-                        lastUpdateTime:
-                          format: date-time
-                          type: string
                         message:
                           type: string
                         serveDeploymentStatuses:
                           additionalProperties:
                             properties:
                               healthLastUpdateTime:
-                                format: date-time
-                                type: string
-                              lastUpdateTime:
                                 format: date-time
                                 type: string
                               message:
@@ -49764,17 +49825,6 @@ spec:
                           type: string
                       type: object
                     type: object
-                  dashboardStatus:
-                    properties:
-                      healthLastUpdateTime:
-                        format: date-time
-                        type: string
-                      isHealthy:
-                        type: boolean
-                      lastUpdateTime:
-                        format: date-time
-                        type: string
-                    type: object
                   rayClusterName:
                     type: string
                   rayClusterStatus:
@@ -49782,6 +49832,30 @@ spec:
                       availableWorkerReplicas:
                         format: int32
                         type: integer
+                      desiredCPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredGPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredMemory:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
+                      desiredTPU:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
                       desiredWorkerReplicas:
                         format: int32
                         type: integer
