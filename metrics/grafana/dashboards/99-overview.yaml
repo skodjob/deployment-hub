@@ -9,7 +9,7 @@ metadata:
 spec:
   instanceSelector:
     matchLabels:
-      dashboards: "tealc"
+      dashboards: "skodjob"
   datasources:
     - datasourceName: tealc-thanos
       inputName: DS_THANOS
@@ -59,10 +59,7 @@ spec:
           "type": "row"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -126,10 +123,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "exemplar": false,
               "expr": "max(cluster_version{type=\"cluster\"}) by (version, cluster, type, from_version)",
@@ -193,10 +187,7 @@ spec:
           "type": "table"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -263,10 +254,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "apiserver_request_duration_seconds:histogram_quantile_99{cluster=\"local-cluster\"} > 0",
               "legendFormat": "__auto",
@@ -278,10 +266,7 @@ spec:
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -348,10 +333,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "apiserver_request_duration_seconds:histogram_quantile_99{cluster=\"worker-01\"} > 0",
               "legendFormat": "__auto",
@@ -363,10 +345,7 @@ spec:
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -433,10 +412,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "apiserver_request_duration_seconds:histogram_quantile_99{cluster=\"worker-02\"} > 0",
               "legendFormat": "__auto",
@@ -448,10 +424,7 @@ spec:
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -518,10 +491,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "apiserver_request_duration_seconds:histogram_quantile_99{cluster=\"worker-03\"} > 0",
               "legendFormat": "__auto",
@@ -546,10 +516,7 @@ spec:
           "type": "row"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -600,10 +567,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "exemplar": false,
               "expr": "count(container_memory_usage_bytes{container=\"strimzi-cluster-operator\"})",
@@ -618,10 +582,7 @@ spec:
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -698,10 +659,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "exemplar": false,
               "expr": "container_memory_usage_bytes{container=\"strimzi-cluster-operator\"}",
@@ -744,10 +702,7 @@ spec:
           "type": "table"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -848,10 +803,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "exemplar": false,
               "expr": "strimzi_resource_state{kind!=\"KafkaTopic\"}",
@@ -898,10 +850,7 @@ spec:
           "type": "table"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -980,10 +929,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "sum(strimzi_resource_state{kind=\"Kafka\"}) by (name, kind, clusterName)",
               "legendFormat": "__auto",
@@ -995,10 +941,7 @@ spec:
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1080,10 +1023,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "sum(strimzi_resource_state{kind=\"KafkaMirrorMaker2\"}) by (name, kind, clusterName)",
               "legendFormat": "__auto",
@@ -1096,10 +1036,7 @@ spec:
         },
         {
           "collapsed": false,
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -1110,10 +1047,7 @@ spec:
           "panels": [],
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "refId": "A"
             }
           ],
@@ -1121,10 +1055,7 @@ spec:
           "type": "row"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "description": "Number of passed test cases",
           "fieldConfig": {
             "defaults": {
@@ -1176,10 +1107,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "sum(avg(sum (tealc_tests_passed_tests_total) by (testSuiteName, prometheus_pod)) by (testSuiteName))",
               "legendFormat": "__auto",
@@ -1191,10 +1119,7 @@ spec:
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "description": "Number of failed test cases",
           "fieldConfig": {
             "defaults": {
@@ -1246,10 +1171,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "sum(avg(sum (tealc_tests_failed_tests_total) by (testSuiteName, prometheus_pod)) by (testSuiteName))",
               "legendFormat": "__auto",
@@ -1261,10 +1183,7 @@ spec:
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "description": "Number of flaky test cases",
           "fieldConfig": {
             "defaults": {
@@ -1320,10 +1239,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "sum(avg(sum (tealc_tests_flaky_tests_total) by (testSuiteName, prometheus_pod)) by (testSuiteName))",
               "legendFormat": "__auto",
@@ -1335,10 +1251,7 @@ spec:
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -1423,10 +1336,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "avg(sum (tealc_tests_passed_tests_total) by (testSuiteName, prometheus_pod)) by (testSuiteName)",
               "format": "time_series",
@@ -1440,10 +1350,7 @@ spec:
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1523,10 +1430,7 @@ spec:
           "pluginVersion": "9.4.7",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "avg(sum (tealc_tests_failed_tests_total) by (testSuiteName, prometheus_pod)) by (testSuiteName)",
               "format": "time_series",
@@ -1540,10 +1444,7 @@ spec:
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-          },
+          "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1619,10 +1520,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "6d84eccc-3163-47b3-9486-4feb78a517ed"
-              },
+              "datasource": "${DS_THANOS}",
               "editorMode": "code",
               "expr": "avg(sum (tealc_tests_flaky_tests_total) by (testSuiteName, prometheus_pod)) by (testSuiteName)",
               "legendFormat": "__auto",
@@ -1673,7 +1571,6 @@ spec:
       },
       "timezone": "",
       "title": "Tealc Secnario Overview",
-      "uid": "4f0ae109-7a78-4b63-bdfsd",
       "version": 4,
       "weekStart": ""
     }

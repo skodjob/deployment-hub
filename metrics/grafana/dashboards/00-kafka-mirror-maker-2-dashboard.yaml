@@ -16,49 +16,14 @@ spec:
   folder: "strimzi"
   json: |
     {
-      "__requires": [
-        {
-          "type": "grafana",
-          "id": "grafana",
-          "name": "Grafana",
-          "version": "7.3.7"
-        },
-        {
-          "type": "panel",
-          "id": "graph",
-          "name": "Graph",
-          "version": "5.0.0"
-        },
-        {
-          "type": "datasource",
-          "id": "prometheus",
-          "name": "Prometheus",
-          "version": "5.0.0"
-        },
-        {
-          "type": "panel",
-          "id": "singlestat",
-          "name": "Singlestat",
-          "version": "5.0.0"
-        },
-        {
-          "type": "panel",
-          "id": "stat",
-          "name": "Stat",
-          "version": ""
-        },
-        {
-          "type": "panel",
-          "id": "table",
-          "name": "Table",
-          "version": ""
-        }
-      ],
       "annotations": {
         "list": [
           {
             "builtIn": 1,
-            "datasource": "-- Grafana --",
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
             "enable": true,
             "hide": true,
             "iconColor": "rgba(0, 211, 255, 1)",
@@ -68,11 +33,10 @@ spec:
         ]
       },
       "editable": true,
-      "gnetId": null,
+      "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": null,
-      "iteration": 1701691745357,
-      "links": [ ],
+      "id": 10,
+      "links": [],
       "panels": [
         {
           "collapsed": false,
@@ -84,400 +48,23 @@ spec:
             "y": 0
           },
           "id": 47,
-          "panels": [ ],
+          "panels": [],
+          "targets": [
+            {
+              "datasource": "${DS_THANOS}",
+              "refId": "A"
+            }
+          ],
           "title": "Overview",
           "type": "row"
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_THANOS}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": { }
-            },
-            "overrides": [ ]
-          },
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 0,
-            "y": 1
-          },
-          "height": 250,
-          "id": 26,
-          "interval": null,
-          "links": [ ],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 2,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "sum(kafka_connect_worker_connector_count{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "refId": "A",
-              "step": 40
-            }
-          ],
-          "thresholds": "",
-          "title": "Number of Connectors",
-          "type": "singlestat",
-          "valueFontSize": "200%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_THANOS}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": { }
-            },
-            "overrides": [ ]
-          },
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 4,
-            "y": 1
-          },
-          "id": 37,
-          "interval": null,
-          "links": [ ],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "rps",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 2,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_rate{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "refId": "A",
-              "step": 40
-            }
-          ],
-          "thresholds": "",
-          "title": "Total record rate",
-          "type": "singlestat",
-          "valueFontSize": "200%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": { }
-            },
-            "overrides": [ ]
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 8,
-            "y": 1
-          },
-          "hiddenSeries": false,
-          "id": 28,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [ ],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}[5m]))",
-              "format": "time_series",
-              "hide": false,
-              "intervalFactor": 2,
-              "legendFormat": "{{kubernetes_pod_name}}",
-              "metric": "",
-              "refId": "A",
-              "step": 4
-            }
-          ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
-          "title": "Incoming Bytes per Second",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": "Bytes/sec",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_THANOS}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": { }
-            },
-            "overrides": [ ]
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 16,
-            "y": 1
-          },
-          "hiddenSeries": false,
-          "id": 29,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [ ],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate(kafka_producer_outgoing_byte_total{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}[5m]))",
-              "format": "time_series",
-              "hide": false,
-              "intervalFactor": 2,
-              "legendFormat": "{{kubernetes_pod_name}}",
-              "metric": "",
-              "refId": "A",
-              "step": 4
-            }
-          ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
-          "title": "Outgoing Bytes per Second",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": "Bytes/sec",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "cacheTimeout": null,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
                 "mode": "thresholds"
               },
-              "custom": { },
               "mappings": [
                 {
                   "options": {
@@ -504,17 +91,15 @@ spec:
               },
               "unit": "none"
             },
-            "overrides": [ ]
+            "overrides": []
           },
           "gridPos": {
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 5
+            "y": 1
           },
-          "id": 27,
-          "interval": null,
-          "links": [ ],
+          "id": 26,
           "maxDataPoints": 100,
           "options": {
             "colorMode": "none",
@@ -528,12 +113,355 @@ spec:
               "fields": "",
               "values": false
             },
-            "text": { },
-            "textMode": "auto"
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "7.3.7",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
+              "expr": "sum(kafka_connect_worker_connector_count{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 40
+            }
+          ],
+          "title": "Number of Connectors",
+          "type": "stat"
+        },
+        {
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 4,
+            "y": 1
+          },
+          "id": 37,
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.4.1",
+          "targets": [
+            {
+              "datasource": "${DS_THANOS}",
+              "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_rate{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 40
+            }
+          ],
+          "title": "Total record rate",
+          "type": "stat"
+        },
+        {
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Bytes/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 1
+          },
+          "id": 28,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.1",
+          "targets": [
+            {
+              "datasource": "${DS_THANOS}",
+              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}[5m]))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 2,
+              "legendFormat": "{{kubernetes_pod_name}}",
+              "metric": "",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "title": "Incoming Bytes per Second",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Bytes/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 1
+          },
+          "id": 29,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.1",
+          "targets": [
+            {
+              "datasource": "${DS_THANOS}",
+              "expr": "sum(rate(kafka_producer_outgoing_byte_total{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"}[5m]))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 2,
+              "legendFormat": "{{kubernetes_pod_name}}",
+              "metric": "",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "title": "Outgoing Bytes per Second",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "${DS_THANOS}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 0,
+            "y": 5
+          },
+          "id": 27,
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.4.1",
+          "targets": [
+            {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(kafka_connect_worker_task_count{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
               "format": "time_series",
               "interval": "",
@@ -547,21 +475,12 @@ spec:
           "type": "stat"
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
               "color": {
                 "mode": "thresholds"
               },
-              "custom": { },
               "mappings": [
                 {
                   "options": {
@@ -588,15 +507,7 @@ spec:
               },
               "unit": "Bps"
             },
-            "overrides": [ ]
-          },
-          "format": "Bps",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
+            "overrides": []
           },
           "gridPos": {
             "h": 4,
@@ -605,53 +516,27 @@ spec:
             "y": 5
           },
           "id": 38,
-          "interval": null,
-          "links": [ ],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
           "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
           "options": {
             "colorMode": "none",
             "graphMode": "none",
             "justifyMode": "auto",
             "orientation": "horizontal",
-            "text": { },
-            "textMode": "auto"
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "8.0.3",
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false,
-            "ymax": null,
-            "ymin": null
-          },
-          "tableColumn": "",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_byte_rate{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",
               "format": "time_series",
@@ -662,308 +547,282 @@ spec:
               "step": 40
             }
           ],
-          "thresholds": "",
           "title": "Total byte rate",
-          "type": "singlestat",
-          "valueFontSize": "100%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "avg"
+          "type": "stat"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "msgs",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
             "y": 9
           },
-          "hiddenSeries": false,
           "id": 43,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null as zero",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(kafka_connect_source_task_source_record_active_count{connector=~\"\\\".*SourceConnector\\\"\"})",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "Source Connector - Connect Outstanding Messages Queue",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "decimals": 0,
-              "format": "short",
-              "label": "msgs",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "bytes",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
             "y": 9
           },
-          "hiddenSeries": false,
           "id": 44,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(kafka_producer_buffer_available_bytes{clientid=~\"\\\".*SourceConnector-[0-9]+\\\"\"})",
               "interval": "",
               "legendFormat": "{{clientid}}",
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "Source Connector - Producer Available Buffer",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "bytes",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
-          "decimals": 0,
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "ms",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 16,
             "y": 9
           },
-          "hiddenSeries": false,
           "id": 45,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(kafka_connect_connector_task_offset_commit_avg_time_ms{connector=~\"\\\".*SourceConnector\\\"\", task=~\"[0-9]+\", clusterName=~\"$OPENSHIFT_CLUSTER\"})/count(kafka_connect_connector_task_offset_commit_avg_time_ms{connector=~\"\\\".*SourceConnector\\\"\", task=~\"[0-9]+\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "Source Connector - Average Offset Commit Time",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "ms",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
           "datasource": "${DS_THANOS}",
@@ -974,10 +833,13 @@ spec:
               },
               "custom": {
                 "align": "auto",
-                "displayMode": "auto",
-                "filterable": false
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
               },
-              "mappings": [ ],
+              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -1088,6 +950,15 @@ spec:
           },
           "id": 39,
           "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
             "frameIndex": 0,
             "showHeader": true,
             "sortBy": [
@@ -1097,9 +968,10 @@ spec:
               }
             ]
           },
-          "pluginVersion": "7.3.7",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": false,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1109,6 +981,7 @@ spec:
               "refId": "A"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1119,6 +992,7 @@ spec:
               "refId": "B"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1129,6 +1003,7 @@ spec:
               "refId": "C"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_record_age_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1144,7 +1019,7 @@ spec:
             {
               "id": "organize",
               "options": {
-                "excludeByName": { },
+                "excludeByName": {},
                 "indexByName": {
                   "Time": 0,
                   "Value": 3,
@@ -1160,13 +1035,13 @@ spec:
             },
             {
               "id": "merge",
-              "options": { }
+              "options": {}
             },
             {
               "id": "organize",
               "options": {
-                "excludeByName": { },
-                "indexByName": { },
+                "excludeByName": {},
+                "indexByName": {},
                 "renameByName": {
                   "Value #A": "Current",
                   "Value #Avg": "Average",
@@ -1191,10 +1066,13 @@ spec:
               },
               "custom": {
                 "align": "auto",
-                "displayMode": "auto",
-                "filterable": false
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
               },
-              "mappings": [ ],
+              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -1304,6 +1182,15 @@ spec:
           },
           "id": 40,
           "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
             "frameIndex": 0,
             "showHeader": true,
             "sortBy": [
@@ -1313,9 +1200,10 @@ spec:
               }
             ]
           },
-          "pluginVersion": "7.3.7",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": false,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1325,6 +1213,7 @@ spec:
               "refId": "A"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1335,6 +1224,7 @@ spec:
               "refId": "B"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1345,6 +1235,7 @@ spec:
               "refId": "C"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorsourceconnector_replication_latency_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1360,7 +1251,7 @@ spec:
             {
               "id": "organize",
               "options": {
-                "excludeByName": { },
+                "excludeByName": {},
                 "indexByName": {
                   "Time": 0,
                   "Value": 3,
@@ -1376,13 +1267,13 @@ spec:
             },
             {
               "id": "merge",
-              "options": { }
+              "options": {}
             },
             {
               "id": "organize",
               "options": {
-                "excludeByName": { },
-                "indexByName": { },
+                "excludeByName": {},
+                "indexByName": {},
                 "renameByName": {
                   "Value #A": "Current",
                   "Value #Avg": "Average",
@@ -1407,10 +1298,13 @@ spec:
               },
               "custom": {
                 "align": "auto",
-                "displayMode": "auto",
-                "filterable": false
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
               },
-              "mappings": [ ],
+              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -1532,6 +1426,15 @@ spec:
           },
           "id": 41,
           "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
             "frameIndex": 0,
             "showHeader": true,
             "sortBy": [
@@ -1541,9 +1444,10 @@ spec:
               }
             ]
           },
-          "pluginVersion": "7.3.7",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": false,
               "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
               "format": "table",
@@ -1553,6 +1457,7 @@ spec:
               "refId": "A"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
               "format": "table",
@@ -1563,6 +1468,7 @@ spec:
               "refId": "B"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
               "format": "table",
@@ -1573,6 +1479,7 @@ spec:
               "refId": "C"
             },
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
               "format": "table",
@@ -1588,7 +1495,7 @@ spec:
             {
               "id": "organize",
               "options": {
-                "excludeByName": { },
+                "excludeByName": {},
                 "indexByName": {
                   "Time": 0,
                   "Value": 3,
@@ -1604,13 +1511,13 @@ spec:
             },
             {
               "id": "merge",
-              "options": { }
+              "options": {}
             },
             {
               "id": "organize",
               "options": {
-                "excludeByName": { },
-                "indexByName": { },
+                "excludeByName": {},
+                "indexByName": {},
                 "renameByName": {
                   "Value #A": "Current",
                   "Value #Avg": "Average",
@@ -1629,53 +1536,85 @@ spec:
           "type": "table"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 0,
             "y": 27
           },
-          "hiddenSeries": false,
           "id": 34,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_consumer_fetch_manager_records_lag{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\",clientid!~\"consumer-mirrormaker2-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (topic, partition)",
               "interval": "",
@@ -1683,46 +1622,8 @@ spec:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "Consumer Lag",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
           "datasource": "${DS_THANOS}",
@@ -1733,10 +1634,13 @@ spec:
               },
               "custom": {
                 "align": "auto",
-                "displayMode": "auto",
-                "filterable": false
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
               },
-              "mappings": [ ],
+              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -1751,7 +1655,7 @@ spec:
                 ]
               }
             },
-            "overrides": [ ]
+            "overrides": []
           },
           "gridPos": {
             "h": 9,
@@ -1761,11 +1665,21 @@ spec:
           },
           "id": 36,
           "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
             "showHeader": true
           },
-          "pluginVersion": "7.3.7",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "exemplar": true,
               "expr": "sum(kafka_consumer_fetch_manager_records_lag{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\",clientid!~\"consumer-mirrormaker2-.*\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (partition, topic)",
               "format": "table",
@@ -1780,7 +1694,7 @@ spec:
             {
               "id": "organize",
               "options": {
-                "excludeByName": { },
+                "excludeByName": {},
                 "indexByName": {
                   "Time": 0,
                   "Value": 3,
@@ -1807,7 +1721,13 @@ spec:
             "y": 36
           },
           "id": 53,
-          "panels": [ ],
+          "panels": [],
+          "targets": [
+            {
+              "datasource": "${DS_THANOS}",
+              "refId": "A"
+            }
+          ],
           "title": "Workers",
           "type": "row"
         },
@@ -1815,11 +1735,7 @@ spec:
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "align": null,
-                "filterable": false
-              },
-              "mappings": [ ],
+              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -1834,7 +1750,7 @@ spec:
                 ]
               }
             },
-            "overrides": [ ]
+            "overrides": []
           },
           "gridPos": {
             "h": 3,
@@ -1845,6 +1761,10 @@ spec:
           "id": 55,
           "options": {
             "displayMode": "gradient",
+            "maxVizHeight": 300,
+            "minVizHeight": 16,
+            "minVizWidth": 8,
+            "namePlacement": "auto",
             "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
@@ -1853,11 +1773,14 @@ spec:
               "fields": "",
               "values": false
             },
-            "showUnfilled": true
+            "showUnfilled": true,
+            "sizing": "auto",
+            "valueMode": "color"
           },
-          "pluginVersion": "7.3.7",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(kafka_connect_coordinator_assigned_connectors{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (kubernetes_pod_name)",
               "format": "time_series",
               "instant": false,
@@ -1866,113 +1789,106 @@ spec:
               "refId": "A"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "Assigned Connectors per Worker",
           "type": "bargauge"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "max": 1,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 6,
             "w": 12,
             "x": 12,
             "y": 37
           },
-          "hiddenSeries": false,
           "id": 59,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(kafka_connect_worker_rebalance_rebalancing{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "Rebalancing",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "decimals": 0,
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": "1",
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { },
-              "mappings": [ ],
+              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -1987,7 +1903,7 @@ spec:
                 ]
               }
             },
-            "overrides": [ ]
+            "overrides": []
           },
           "gridPos": {
             "h": 3,
@@ -1998,6 +1914,10 @@ spec:
           "id": 57,
           "options": {
             "displayMode": "gradient",
+            "maxVizHeight": 300,
+            "minVizHeight": 16,
+            "minVizWidth": 8,
+            "namePlacement": "auto",
             "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
@@ -2006,19 +1926,20 @@ spec:
               "fields": "",
               "values": false
             },
-            "showUnfilled": true
+            "showUnfilled": true,
+            "sizing": "auto",
+            "valueMode": "color"
           },
-          "pluginVersion": "7.3.7",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(kafka_connect_coordinator_assigned_tasks{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (kubernetes_pod_name)",
               "interval": "",
               "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "Assigned Tasks per Worker",
           "type": "bargauge"
         },
@@ -2032,61 +1953,98 @@ spec:
             "y": 43
           },
           "id": 51,
-          "panels": [ ],
+          "panels": [],
+          "targets": [
+            {
+              "datasource": "${DS_THANOS}",
+              "refId": "A"
+            }
+          ],
           "title": "JVM",
           "type": "row"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Cores",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 0,
             "y": 44
           },
-          "hiddenSeries": false,
           "id": 30,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [ ],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$kubernetes_namespace\",pod=~\"$strimzi_mirror_maker_cluster_name-mirrormaker2-.+\",container=\"$strimzi_mirror_maker_cluster_name-mirrormaker2\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[5m])) by (pod)",
               "format": "time_series",
               "hide": false,
@@ -2097,98 +2055,91 @@ spec:
               "step": 4
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "CPU Usage",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "Cores",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Memory",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 6,
             "y": 44
           },
-          "hiddenSeries": false,
           "id": 31,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [ ],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(jvm_memory_bytes_used{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (kubernetes_pod_name)",
               "format": "time_series",
               "hide": false,
@@ -2199,98 +2150,93 @@ spec:
               "step": 4
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "JVM Memory",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": "Memory",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "% time in GC",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 12,
             "y": 44
           },
-          "hiddenSeries": false,
           "id": 32,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": true,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [ ],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(rate(jvm_gc_collection_seconds_sum{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}[5m])) by (kubernetes_pod_name)",
               "format": "time_series",
               "hide": false,
@@ -2302,96 +2248,92 @@ spec:
               "step": 4
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "Time Spent in GC",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "format": "percent",
-              "label": "% time in GC",
-              "logBase": 1,
-              "max": "100",
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": { },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${DS_THANOS}",
           "fieldConfig": {
             "defaults": {
-              "custom": { }
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": [ ]
+            "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 6,
             "x": 18,
             "y": 44
           },
-          "hiddenSeries": false,
           "id": 49,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.3.7",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [ ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "10.4.1",
           "targets": [
             {
+              "datasource": "${DS_THANOS}",
               "expr": "sum(jvm_threads_current{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (kubernetes_pod_name)",
               "instant": false,
               "interval": "",
@@ -2399,53 +2341,12 @@ spec:
               "refId": "A"
             }
           ],
-          "thresholds": [ ],
-          "timeFrom": null,
-          "timeRegions": [ ],
-          "timeShift": null,
           "title": "JVM Thread Count",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [ ]
-          },
-          "yaxes": [
-            {
-              "decimals": 0,
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "decimals": null,
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         }
       ],
       "refresh": "5s",
-      "schemaVersion": 26,
-      "style": "dark",
+      "schemaVersion": 39,
       "tags": [
         "Strimzi",
         "Kafka",
@@ -2454,28 +2355,26 @@ spec:
       "templating": {
         "list": [
           {
-            "description": null,
-            "error": null,
+            "current": {},
+            "datasource": "${DS_THANOS}",
+            "definition": "query_result(strimzi_resources)",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster",
             "multi": false,
             "name": "OPENSHIFT_CLUSTER",
             "options": [],
-            "query": "prometheus",
-            "queryValue": "",
+            "query": "query_result(kafka_connect_worker_connector_count{strimzi_io_kind=\"KafkaMirrorMaker2\"})",
             "refresh": 1,
-            "regex": "worker.*",
+            "regex": "/.*clusterName=\"([^\"]*).*/",
             "skipUrlSync": false,
-            "type": "datasource"
+            "sort": 0,
+            "type": "query"
           },
           {
-            "allValue": null,
-            "current": {
-              "text": "",
-              "value": ""
-            },
+            "current": {},
             "datasource": "${DS_THANOS}",
+            "definition": "",
             "hide": 0,
             "includeAll": false,
             "label": "Namespace",
@@ -2485,20 +2384,17 @@ spec:
             "query": "query_result(kafka_connect_worker_connector_count{strimzi_io_kind=\"KafkaMirrorMaker2\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*namespace=\"([^\"]*).*/",
+            "skipUrlSync": false,
             "sort": 0,
             "tagValuesQuery": "",
-            "tags": [],
             "tagsQuery": "",
             "type": "query",
             "useTags": false
           },
           {
-            "allValue": null,
-            "current": {
-              "text": "my-mirror-maker-2-cluster",
-              "value": "my-mirror-maker-2-cluster"
-            },
+            "current": {},
             "datasource": "${DS_THANOS}",
+            "definition": "",
             "hide": 0,
             "includeAll": false,
             "label": "Cluster Name",
@@ -2508,9 +2404,9 @@ spec:
             "query": "query_result(kafka_connect_worker_connector_count{namespace=\"$kubernetes_namespace\", strimzi_io_kind=\"KafkaMirrorMaker2\", clusterName=~\"$OPENSHIFT_CLUSTER\"})",
             "refresh": 1,
             "regex": "/.*strimzi_io_cluster=\"([^\"]*).*/",
+            "skipUrlSync": false,
             "sort": 0,
             "tagValuesQuery": "",
-            "tags": [],
             "tagsQuery": "",
             "type": "query",
             "useTags": false
@@ -2548,5 +2444,6 @@ spec:
       },
       "timezone": "",
       "title": "Strimzi Kafka Mirror Maker 2",
-      "varsion": 8
+      "version": 7,
+      "weekStart": ""
     }
