@@ -2555,7 +2555,7 @@ spec:
           "targets": [
             {
               "datasource": "${DS_THANOS}",
-              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"GET\",path=~\"/consumers/.+/instances/.+/records\"}[5m])) by (path)",
+              "expr": "sum(rate(strimzi_bridge_http_server_requests_total{container=~\"^.+-bridge\",method=\"GET\",path=~\"/consumers/.+/instances/.+/records.*\"}[5m])) by (path)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
