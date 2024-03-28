@@ -1,8 +1,24 @@
 ---
-# We do not use HTTP consumers for KafkaBridge
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: whatever
 spec:
-  replicas: 0
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: consumer
+          env:
+            - name: TOPIC
+              value: http-internal-data
+            - name: HOSTNAME
+              value: rivendell-bridge-bridge-service.strimzi-bridge.svc.cluster.local
+            - name: PORT
+              value: "8080"
+            - name: CLIENT_TYPE
+              value: HttpConsumer
+            - name: GROUP_ID
+              value: http-consumer-default
+            - name: CLIENT_ID
+              value: http-consumer-default

@@ -46,7 +46,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -512,7 +512,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -577,7 +577,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -642,7 +642,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -1112,7 +1112,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -1177,7 +1177,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -1242,7 +1242,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -1310,7 +1310,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -1375,7 +1375,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -1440,7 +1440,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -1519,7 +1519,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -1584,7 +1584,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -1609,7 +1609,7 @@ metadata:
     type: http-internal
   name: http-internal-consumer
 spec:
-  replicas: 0
+  replicas: 3
   selector:
     matchLabels:
       app: consumer
@@ -1631,15 +1631,25 @@ spec:
                 - connect
       containers:
       - env:
+        - name: TOPIC
+          value: http-internal-data
+        - name: HOSTNAME
+          value: rivendell-bridge-bridge-service.strimzi-bridge.svc.cluster.local
+        - name: PORT
+          value: "8080"
+        - name: CLIENT_TYPE
+          value: HttpConsumer
+        - name: GROUP_ID
+          value: http-consumer-default
+        - name: CLIENT_ID
+          value: http-consumer-default
         - name: CA_CRT
           value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
         - name: LOG_LEVEL
           value: INFO
         - name: MESSAGE_COUNT
           value: "10000000"
-        - name: CLIENT_TYPE
-          value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -1707,7 +1717,7 @@ spec:
         - name: PRODUCER_ACKS
           value: all
         - name: ADDITIONAL_CONFIG
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -1760,7 +1770,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -1825,7 +1835,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -1896,7 +1906,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -1961,7 +1971,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -2026,7 +2036,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -2105,7 +2115,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -2170,7 +2180,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.5.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
         imagePullPolicy: Always
         name: streams
         resources:

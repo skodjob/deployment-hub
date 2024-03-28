@@ -206,3 +206,41 @@ spec:
       metadata:
         annotations:
           replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets=true"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: bridge-internal
+  namespace: strimzi-kafka
+  labels:
+    strimzi.io/cluster: anubis
+    mode: zookeeper
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: http
+          patternType: prefix
+        operations:
+          - Read
+          - Describe
+          - Write
+          - Create
+      - resource:
+          type: group
+          name: http
+          patternType: prefix
+        operations:
+          - Read
+          - Describe
+          - Write
+          - Create
+  template:
+    secret:
+      metadata:
+        annotations:
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets=true"
