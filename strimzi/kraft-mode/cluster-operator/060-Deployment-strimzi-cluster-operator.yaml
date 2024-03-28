@@ -48,8 +48,6 @@ spec:
               value: "120000"
             - name: STRIMZI_OPERATION_TIMEOUT_MS
               value: "300000"
-            - name: STRIMZI_DEFAULT_TLS_SIDECAR_ENTITY_OPERATOR_IMAGE
-              value: quay.io/strimzi/kafka@sha256:d38a0cf067709e31ea3870c8005bc8e495fbe7c6ab010391c0d93e9e55ca2a4e
             - name: STRIMZI_DEFAULT_KAFKA_EXPORTER_IMAGE
               value: quay.io/strimzi/kafka@sha256:d38a0cf067709e31ea3870c8005bc8e495fbe7c6ab010391c0d93e9e55ca2a4e
             - name: STRIMZI_DEFAULT_CRUISE_CONTROL_IMAGE
@@ -91,7 +89,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: STRIMZI_FEATURE_GATES
-              value: "+UseKRaft,+UnidirectionalTopicOperator"
+              value: ""
             - name: STRIMZI_LEADER_ELECTION_ENABLED
               value: "true"
             - name: STRIMZI_LEADER_ELECTION_LEASE_NAME
