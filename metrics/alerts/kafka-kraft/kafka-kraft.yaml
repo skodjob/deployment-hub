@@ -1,0 +1,435 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    role: alert-rules
+    app: strimzi
+  name: kafka-rules
+spec:
+  groups:
+    - name: kafka-api-slo
+      rules:
+        - alert: ErrorBudgetBurn_ProduceRequests
+          annotations:
+            message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate5m{}) > (14.40 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1h{}) > (14.40 * (1-0.99000))
+          for: 2m
+          labels:
+            name: FailedProduceRequestsPerSec
+            severity: critical
+            app: strimzi
+        - alert: ErrorBudgetBurn_ProduceRequests
+          annotations:
+            message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate30m{}) > (6.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate6h{}) > (6.00 * (1-0.99000))
+          for: 15m
+          labels:
+            name: FailedProduceRequestsPerSec
+            severity: critical
+            app: strimzi
+        - alert: ErrorBudgetBurn_ProduceRequests
+          annotations:
+            message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate2h{}) > (3.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1d{}) > (3.00 * (1-0.99000))
+          for: 1h
+          labels:
+            name: FailedProduceRequestsPerSec
+            severity: warning
+            app: strimzi
+        - alert: ErrorBudgetBurn_ProduceRequests
+          annotations:
+            message: 'High error budget burn for Failed Produce Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate6h{}) > (1.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate3d{}) > (1.00 * (1-0.99000))
+          for: 3h
+          labels:
+            name: FailedProduceRequestsPerSec
+            severity: warning
+            app: strimzi
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[1d]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[1d]))
+          labels:
+            name: FailedProduceRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1d
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[1h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[1h]))
+          labels:
+            name: FailedProduceRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate1h
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[2h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[2h]))
+          labels:
+            name: FailedProduceRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate2h
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[30m]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[30m]))
+          labels:
+            name: FailedProduceRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate30m
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[3d]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[3d]))
+          labels:
+            name: FailedProduceRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate3d
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[5m]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[5m]))
+          labels:
+            name: FailedProduceRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate5m
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_produce_requests_total{}[6h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_produce_requests_total{}[6h]))
+          labels:
+            name: FailedProduceRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_produce_requests_total:burnrate6h
+        - alert: ErrorBudgetBurn_FetchRequests
+          annotations:
+            message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate5m{}) > (14.40 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1h{}) > (14.40 * (1-0.99000))
+          for: 2m
+          labels:
+            name: FailedFetchRequestsPerSec
+            severity: critical
+            app: strimzi
+        - alert: ErrorBudgetBurn_FetchRequests
+          annotations:
+            message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate30m{}) > (6.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate6h{}) > (6.00 * (1-0.99000))
+          for: 15m
+          labels:
+            name: FailedFetchRequestsPerSec
+            severity: critical
+            app: strimzi
+        - alert: ErrorBudgetBurn_FetchRequests
+          annotations:
+            message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate2h{}) > (3.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1d{}) > (3.00 * (1-0.99000))
+          for: 1h
+          labels:
+            name: FailedFetchRequestsPerSec
+            severity: warning
+            app: strimzi
+        - alert: ErrorBudgetBurn_FetchRequests
+          annotations:
+            message: 'High error budget burn for Failed Fetch Requests (current value: {{ $value }})'
+            sop_url: 'https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/failed_produce_or_fetch_requests.asciidoc'
+          expr: |
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate6h{}) > (1.00 * (1-0.99000))
+            and
+            sum(kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate3d{}) > (1.00 * (1-0.99000))
+          for: 3h
+          labels:
+            name: FailedFetchRequestsPerSec
+            severity: warning
+            app: strimzi
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[1d]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[1d]))
+          labels:
+            name: FailedFetchRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1d
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[1h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[1h]))
+          labels:
+            name: FailedFetchRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate1h
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[2h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[2h]))
+          labels:
+            name: FailedFetchRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate2h
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[30m]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[30m]))
+          labels:
+            name: FailedFetchRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate30m
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[3d]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[3d]))
+          labels:
+            name: FailedFetchRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate3d
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[5m]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[5m]))
+          labels:
+            name: FailedFetchRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate5m
+        - expr: |
+            sum(rate(kafka_server_brokertopicmetrics_failed_fetch_requests_total{}[6h]))
+            /
+            sum(rate(kafka_server_brokertopicmetrics_total_fetch_requests_total{}[6h]))
+          labels:
+            name: FailedFetchRequestsPerSec
+            app: strimzi
+          record: kafka_server_brokertopicmetrics_failed_fetch_requests_total:burnrate6h
+        - alert: ErrorBudgetBurn_Connections
+          annotations:
+            message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
+          expr: |
+            sum(haproxy_backend_connection_errors_total:burnrate5m) > (14.40 * (1-0.99000))
+            and
+            sum(haproxy_backend_connection_errors_total:burnrate1h) > (14.40 * (1-0.99000))
+          for: 2m
+          labels:
+            name: FailedConnectionsPerSec
+            severity: warning
+            app: strimzi
+        - alert: ErrorBudgetBurn_Connections
+          annotations:
+            message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
+          expr: |
+            sum(haproxy_backend_connection_errors_total:burnrate30m) > (6.00 * (1-0.99000))
+            and
+            sum(haproxy_backend_connection_errors_total:burnrate6h) > (6.00 * (1-0.99000))
+          for: 15m
+          labels:
+            name: FailedConnectionsPerSec
+            severity: warning
+            app: strimzi
+        - alert: ErrorBudgetBurn_Connections
+          annotations:
+            message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
+          expr: |
+            sum(haproxy_backend_connection_errors_total:burnrate2h) > (3.00 * (1-0.99000))
+            and
+            sum(haproxy_backend_connection_errors_total:burnrate1d) > (3.00 * (1-0.99000))
+          for: 1h
+          labels:
+            name: FailedConnectionsPerSec
+            severity: warning
+            app: strimzi
+        - alert: ErrorBudgetBurn_Connections
+          annotations:
+            message: 'High error budget burn for haproxy connection errors (current value: {{ $value }})'
+          expr: |
+            sum(haproxy_backend_connection_errors_total:burnrate6h) > (1.00 * (1-0.99000))
+            and
+            sum(haproxy_backend_connection_errors_total:burnrate3d) > (1.00 * (1-0.99000))
+          for: 3h
+          labels:
+            name: FailedConnectionsPerSec
+            severity: warning
+            app: strimzi
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1d]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1d]))
+          labels:
+            name: FailedConnectionsPerSec
+            app: strimzi
+          record: haproxy_backend_connection_errors_total:burnrate1d
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1h]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[1h]))
+          labels:
+            name: FailedConnectionsPerSec
+            app: strimzi
+          record: haproxy_backend_connection_errors_total:burnrate1h
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[2h]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[2h]))
+          labels:
+            name: FailedConnectionsPerSec
+            app: strimzi
+          record: haproxy_backend_connection_errors_total:burnrate2h
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[30m]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[30m]))
+          labels:
+            name: FailedConnectionsPerSec
+            app: strimzi
+          record: haproxy_backend_connection_errors_total:burnrate30m
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[3d]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[3d]))
+          labels:
+            name: FailedConnectionsPerSec
+            app: strimzi
+          record: haproxy_backend_connection_errors_total:burnrate3d
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[5m]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[5m]))
+          labels:
+            name: FailedConnectionsPerSec
+            app: strimzi
+          record: haproxy_backend_connection_errors_total:burnrate5m
+        - expr: |
+            sum(rate(haproxy_backend_connection_errors_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[6h]))
+            /
+            sum(rate(haproxy_backend_connections_total{route=~".+-kafka-([0-9]+|bootstrap)$"}[6h]))
+          labels:
+            name: FailedConnectionsPerSec
+            app: strimzi
+          record: haproxy_backend_connection_errors_total:burnrate6h
+    - name: kafka
+      rules:
+        - alert: KafkaRunningOutOfSpace
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"data(-[0-9]+)?-(.+)-kafka-[0-9]+"} * 100 / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"data(-[0-9]+)?-(.+)-kafka-[0-9]+"} < 30
+          for: 2m
+          labels:
+            severity: warning
+            app: strimzi
+          annotations:
+            summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) is running out of free disk space'
+            description: 'There are only {{ $value }} percent available at {{ $labels.persistentvolumeclaim }} PVC'
+        - alert: UnderReplicatedPartitions
+          expr: kafka_server_replicamanager_underreplicatedpartitions > 0
+          for: 20m
+          labels:
+            severity: warning
+            app: strimzi
+          annotations:
+            summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) under replicated partitions'
+            description: 'There are {{ $value }} under replicated partitions on {{ $labels.kubernetes_pod_name }}'
+        - alert: AbnormalControllerState
+          expr: sum(kafka_controller_kafkacontroller_activecontrollercount) by (prometheus_pod, strimzi_io_name) != 1
+          for: 20m
+          labels:
+            severity: warning
+            app: strimzi
+          annotations:
+            summary: 'Kafka ({{ $labels.strimzi_io_name }}) abnormal controller state'
+            description: 'There are {{ $value }} active controllers in the cluster'
+        - alert: OfflinePartitions
+          expr: sum(kafka_controller_kafkacontroller_offlinepartitionscount) > 0
+          for: 15m
+          labels:
+            severity: warning
+            app: strimzi
+          annotations:
+            summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) offline partitions'
+            description: 'One or more partitions have no leader'
+        - alert: UnderMinIsrPartitionCount
+          expr: kafka_server_replicamanager_underminisrpartitioncount > 0
+          for: 20m
+          labels:
+            severity: warning
+            app: strimzi
+          annotations:
+            summary: 'Kafka ({{ $labels.namespace }}/{{ $labels.pod }}) under min ISR partitions'
+            description: 'There are {{ $value }} partitions under the min ISR on {{ $labels.kubernetes_pod_name }}'
+        - alert: OfflineLogDirectoryCount
+          expr: kafka_log_logmanager_offlinelogdirectorycount > 0
+          for: 15m
+          labels:
+            severity: warning
+            app: strimzi
+          annotations:
+            summary: 'Kafka offline log directories'
+            description: 'There are {{ $value }} offline log directories on {{ $labels.kubernetes_pod_name }}'
+        - alert: ScrapeProblem
+          expr: up{kubernetes_namespace!~"openshift-.+",container="kafka"} == 0
+          for: 5m
+          labels:
+            severity: major
+            app: strimzi
+          annotations:
+            summary: 'Prometheus unable to scrape metrics from {{ $labels.kubernetes_pod_name }}/{{ $labels.instance }}'
+            description: 'Prometheus was unable to scrape metrics from {{ $labels.kubernetes_pod_name }}/{{ $labels.instance }} for more than 3 minutes'
+        - alert: KafkaBrokerContainersDown
+          expr: absent(container_last_seen{container="kafka"})
+          for: 5m
+          labels:
+            severity: major
+            app: strimzi
+          annotations:
+            summary: 'All `kafka` containers ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
+            description: 'All `kafka` containers have been down or in CrashLookBackOff status for 3 minutes'
+        - alert: KafkaContainerRestartedInTheLast5Minutes
+          expr: count(count_over_time(container_last_seen{container="kafka"}[5m])) > 2 * count(container_last_seen{container="kafka",pod=~".+-kafka-[0-9]+"})
+          for: 5m
+          labels:
+            severity: warning
+            app: strimzi
+          annotations:
+            summary: 'One or more Kafka containers restarted too often ({{ $labels.namespace }}/{{ $labels.pod }})'
+            description: 'One or more Kafka containers were restarted too often within the last 5 minutes'
+
+    - name: entityOperator
+      rules:
+        - alert: TopicOperatorContainerDown
+          expr: absent(container_last_seen{container="topic-operator",pod=~".+-entity-operator-.+"})
+          for: 3m
+          labels:
+            severity: major
+            app: strimzi
+          annotations:
+            summary: 'Container topic-operator in Entity Operator pod ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
+            description: 'Container topic-operator in Entity Operator pod ({{ $labels.namespace }}/{{ $labels.pod }}}) has been or in CrashLookBackOff status for 3 minutes'
+        - alert: UserOperatorContainerDown
+          expr: absent(container_last_seen{container="user-operator",pod=~".+-entity-operator-.+"})
+          for: 3m
+          labels:
+            severity: major
+            app: strimzi
+          annotations:
+            summary: 'Container user-operator in Entity Operator pod ({{ $labels.namespace }}/{{ $labels.pod }}) down or in CrashLookBackOff status'
+            description: 'Container user-operator in Entity Operator pod ({{ $labels.namespace }}/{{ $labels.pod }}) have been down or in CrashLookBackOff status for 3 minutes'
