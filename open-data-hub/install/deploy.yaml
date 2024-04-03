@@ -470,6 +470,49 @@ spec:
                         pattern: ^(Managed|Unmanaged|Force|Removed)$
                         type: string
                     type: object
+                  trainingoperator:
+                    description: Training Operator component configuration.
+                    properties:
+                      devFlags:
+                        description: Add developer fields
+                        properties:
+                          manifests:
+                            description: List of custom manifests for the given component
+                            items:
+                              properties:
+                                contextDir:
+                                  default: ""
+                                  description: contextDir is the relative path to
+                                    the folder containing manifests in a repository
+                                  type: string
+                                sourcePath:
+                                  default: ""
+                                  description: 'sourcePath is the subpath within contextDir
+                                    where kustomize builds start. Examples include
+                                    any sub-folder or path: `base`, `overlays/dev`,
+                                    `default`, `odh` etc.'
+                                  type: string
+                                uri:
+                                  default: ""
+                                  description: uri is the URI point to a git repo
+                                    with tag/branch. e.g.  https://github.com/org/repo/tarball/<tag/branch>
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      managementState:
+                        description: "Set to one of the following values: \n - \"Managed\"
+                          : the operator is actively managing the component and trying
+                          to keep it active. It will only upgrade the component if
+                          it is safe to do so \n - \"Removed\" : the operator is actively
+                          managing the component and will not install it, or if it
+                          is installed, the operator will try to remove it"
+                        enum:
+                        - Managed
+                        - Removed
+                        pattern: ^(Managed|Unmanaged|Force|Removed)$
+                        type: string
+                    type: object
                   trustyai:
                     description: TrustyAI component configuration.
                     properties:
@@ -2740,7 +2783,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:6baedbd6a88eb05329cb9f851c03e067f17297d1b2a25f5cbb77f05fe5fef8e5
+        image: quay.io/opendatahub/opendatahub-operator@sha256:c81ebafc5cf4ff4152fc83b938d6788436dc3f6394651c8f9bc1c0356bdce2a7
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
