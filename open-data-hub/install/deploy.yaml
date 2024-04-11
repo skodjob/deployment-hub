@@ -1375,30 +1375,6 @@ rules:
   - create
   - patch
 - apiGroups:
-  - codeflare.codeflare.dev
-  resources:
-  - instascales
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - codeflare.codeflare.dev
-  resources:
-  - mcads
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
   - config.openshift.io
   resources:
   - clusterversions
@@ -1920,16 +1896,6 @@ rules:
   - update
   - use
   - watch
-- apiGroups:
-  - mcad.ibm.com
-  resources:
-  - appwrappers
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
 - apiGroups:
   - modelregistry.opendatahub.io
   resources:
@@ -2610,58 +2576,6 @@ rules:
   - list
   - patch
   - watch
-- apiGroups:
-  - workload.codeflare.dev
-  resources:
-  - appwrappers
-  verbs:
-  - create
-  - delete
-  - deletecollection
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - workload.codeflare.dev
-  resources:
-  - appwrappers/finalizers
-  verbs:
-  - create
-  - delete
-  - deletecollection
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - workload.codeflare.dev
-  resources:
-  - appwrappers/status
-  verbs:
-  - create
-  - delete
-  - deletecollection
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - workload.codeflare.dev
-  resources:
-  - queuejobs
-  verbs:
-  - create
-  - delete
-  - deletecollection
-  - get
-  - list
-  - patch
-  - update
-  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -2783,7 +2697,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:79db47a291c03f582caf86dfe720dc900b4785eac4fed1a72c3f38db09d54203
+        image: quay.io/opendatahub/opendatahub-operator@sha256:52a12ed54b17f979a762ad63d0cf75fc3def7112854d1f0f5e249af90c284a29
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
