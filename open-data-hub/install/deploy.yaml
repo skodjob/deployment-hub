@@ -1096,6 +1096,11 @@ spec:
                   - type
                   type: object
                 type: array
+              phase:
+                description: Phase describes the Phase of FeatureTracker reconciliation
+                  state. This is used by OLM UI to provide status information to the
+                  user.
+                type: string
             type: object
         type: object
     served: true
@@ -2698,7 +2703,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:b67c06cd1e139e6160b6d840e94fbd162ed9cd7e2e94973c5c560d73328dc24a
+        image: quay.io/opendatahub/opendatahub-operator@sha256:9fa3ea135a8f74dbb2e3ea95761ba8ce68b449f66fe2c4d2f888d2659ab65e92
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
