@@ -2616,19 +2616,6 @@ data:
       bindAddress: 0.0.0.0:8080
     webhook:
       port: 9443
-    leaderElection:
-      leaderElect: true
-      resourceName: 07ed84f7.opendatahub.io
-    # leaderElectionReleaseOnCancel defines if the leader should step down volume
-    # when the Manager ends. This requires the binary to immediately end when the
-    # Manager is stopped, otherwise, this setting is unsafe. Setting this significantly
-    # speeds up voluntary leader transitions as the new leader don't have to wait
-    # LeaseDuration time first.
-    # In the default scaffold provided, the program ends immediately after
-    # the manager stops, so would be fine to enable this option. However,
-    # if you are doing or is intended to do any operation such as perform cleanups
-    # after the manager stops then its usage might be unsafe.
-    # leaderElectionReleaseOnCancel: true
 kind: ConfigMap
 metadata:
   name: opendatahub-operator-manager-config
@@ -2697,13 +2684,12 @@ spec:
       - args:
         - --health-probe-bind-address=:8081
         - --metrics-bind-address=0.0.0.0:8080
-        - --leader-elect
         command:
         - /manager
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:0bbb15e6c82b6ec4f8a4b2cb88331f55d14d14613790977dc5ff4aba83d2182f
+        image: quay.io/opendatahub/opendatahub-operator@sha256:f39a6f7e61d8cf2c13c82e87e26e561ae823527fd7e3c803cd105fe8fbd3fa63
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
