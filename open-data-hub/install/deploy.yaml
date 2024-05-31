@@ -721,6 +721,14 @@ spec:
                   type: object
                   x-kubernetes-map-type: atomic
                 type: array
+              release:
+                description: Version and release type
+                properties:
+                  name:
+                    type: string
+                  version:
+                    type: string
+                type: object
             type: object
         type: object
     served: true
@@ -1016,6 +1024,14 @@ spec:
                   type: object
                   x-kubernetes-map-type: atomic
                 type: array
+              release:
+                description: Version and release type
+                properties:
+                  name:
+                    type: string
+                  version:
+                    type: string
+                type: object
             type: object
         type: object
     served: true
@@ -2700,7 +2716,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:a2d3f6a2bef6b2c60a7a25b7eb234f6573cb627d86915b1aa297f47c909a2ae5
+        image: quay.io/opendatahub/opendatahub-operator@sha256:883fddadae8439b97fa88d594b474ef894a1f757c589e619837008ec68f1729f
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
