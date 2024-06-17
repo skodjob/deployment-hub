@@ -492,7 +492,7 @@ spec:
           "targets": [
             {
               "datasource": "${DS_THANOS}",
-              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}[5m])) by (kubernetes_pod_name)",
+              "expr": "sum(rate(kafka_consumer_incoming_byte_total{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}[10m])) by (kubernetes_pod_name)",
               "interval": "",
               "legendFormat": "{{kubernetes_pod_name}}",
               "refId": "A"
