@@ -1496,7 +1496,7 @@ spec:
           "targets": [
             {
               "datasource": "${DS_THANOS}",
-              "expr": "sum (jvm_memory_bytes_used{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}) by (kubernetes_pod_name)",
+              "expr": "sum (jvm_memory_used_bytes{strimzi_io_kind=~\"KafkaConnect.*\",strimzi_io_cluster=\"$strimzi_connect_cluster_name\"}) by (kubernetes_pod_name)",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
