@@ -261,17 +261,20 @@ spec:
                                       for the KNative network.
                                     type: string
                                   type:
-                                    default: SelfSigned
+                                    default: OpenshiftDefaultIngress
                                     description: 'Type specifies if the TLS certificate
                                       should be generated automatically, or if the
                                       certificate is provided by the user. Allowed
                                       values are: * SelfSigned: A certificate is going
                                       to be generated using an own private key. *
                                       Provided: Pre-existence of the TLS Secret (see
-                                      SecretName) with a valid certificate is assumed.'
+                                      SecretName) with a valid certificate is assumed.
+                                      * OpenshiftDefaultIngress: Default ingress certificate
+                                      configured for OpenShift'
                                     enum:
                                     - SelfSigned
                                     - Provided
+                                    - OpenshiftDefaultIngress
                                     type: string
                                 type: object
                               domain:
@@ -2222,6 +2225,15 @@ rules:
   - consoles
   verbs:
   - delete
+  - list
+  - patch
+  - watch
+- apiGroups:
+  - operator.openshift.io
+  resources:
+  - ingresscontrollers
+  verbs:
+  - delete
   - get
   - list
   - patch
@@ -2752,7 +2764,7 @@ spec:
         env:
         - name: DISABLE_DSC_CONFIG
           value: "true"
-        image: quay.io/opendatahub/opendatahub-operator@sha256:5a33c73b1684f222727d9c7839fb3cbf083044d858d0e7f17e5b8341fcacebac
+        image: quay.io/opendatahub/opendatahub-operator@sha256:6042c064f834c76d1458460d682048f8fd3d33e9d69ef4b92c9df2a78a35e11a
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
