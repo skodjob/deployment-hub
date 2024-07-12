@@ -66,9 +66,8 @@ metadata:
     strimzi.io/kraft: enabled
 spec:
   kafka:
-    version: 3.7.0
+    version: 3.7.1
     # ignored by nodepools, needed just for schema validation
-    replicas: 5
     listeners:
       - name: plain
         port: 9092
@@ -94,13 +93,7 @@ spec:
       log.retention.hours: -1 # i.e., not time limit is applied
       log.retention.bytes: 128000000  # 128 MB
       log.segment.bytes: 64000000   # 64 MB
-      log.message.format.version: "3.6"
-      inter.broker.protocol.version: "3.6"
       min.insync.replicas: 2
-    # ignored by nodepools, needed just for schema validation
-    storage:
-      type: persistent-claim
-      size: 100Gi
     authorization:
       type: simple
       superUsers:
@@ -155,46 +148,6 @@ spec:
               matchLabels:
                 # label on Kafka pods
                 strimzi.io/name: horus-kafka
-  zookeeper:
-    replicas: 3
-    storage:
-      type: persistent-claim
-      size: 10Gi
-      class: standard-csi
-    metricsConfig:
-      type: jmxPrometheusExporter
-      valueFrom:
-        configMapKeyRef:
-          key: horus-zookeeper-jmx-exporter-configuration.yaml
-          name: horus-zookeeper-jmx-exporter-configuration
-    template:
-      podDisruptionBudget:
-        maxUnavailable: 0
-      pod:
-        tolerations:
-          - key: "nodetype"
-            operator: "Equal"
-            value: "kafka"
-            effect: "NoSchedule"
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: nodetype
-                      operator: In
-                      values:
-                        - kafka
-        topologySpreadConstraints:
-          # Deploy Zookeeper pods with spread with difference max 2 pod
-          - maxSkew: 4
-            # All nodes with same key are considered as one group, so we should pick a key, which has different values on the nodes
-            topologyKey: kubernetes.io/hostname
-            whenUnsatisfiable: DoNotSchedule
-            labelSelector:
-              matchLabels:
-                # label on Zookeper pods
-                strimzi.io/kind: Kafka
 
   entityOperator:
     template:
