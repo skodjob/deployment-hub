@@ -41,9 +41,7 @@ metadata:
     strimzi.io/node-pools: enabled
 spec:
   kafka:
-    version: 3.7.0
-    # ignored by nodepools, needed just for schema validation
-    replicas: 7
+    version: 3.7.1
     listeners:
       - name: plain
         port: 9092
@@ -69,13 +67,9 @@ spec:
       log.retention.hours: -1 # i.e., not time limit is applied
       log.retention.bytes: 128000000  # 128 MB
       log.segment.bytes: 64000000
-      log.message.format.version: "3.6"
-      inter.broker.protocol.version: "3.6"
+      log.message.format.version: "3.7"
+      inter.broker.protocol.version: "3.7"
       min.insync.replicas: 2
-    # ignored by nodepools, needed just for schema validation
-    storage:
-      type: persistent-claim
-      size: 300Gi
     authorization:
       type: simple
       superUsers:
