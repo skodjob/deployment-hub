@@ -2750,7 +2750,9 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: quay.io/opendatahub/opendatahub-operator@sha256:fcd1ec0951683b494b2d6369fd287123a52bb7b870f55e328c4c04bc63adb48c
+        - name: DEFAULT_MANIFESTS_PATH
+          value: /opt/manifests
+        image: quay.io/opendatahub/opendatahub-operator@sha256:768b1389ef55a6bf07b37ea1cd0effa272a9307bf2bce95c232ef41ab88bc769
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
