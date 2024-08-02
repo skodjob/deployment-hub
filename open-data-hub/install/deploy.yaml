@@ -251,8 +251,8 @@ spec:
                             properties:
                               certificate:
                                 description: Certificate specifies configuration of
-                                  the TLS certificate securing communications of the
-                                  for Ingress Gateway.
+                                  the TLS certificate securing communication for the
+                                  gateway.
                                 properties:
                                   secretName:
                                     description: SecretName specifies the name of
@@ -278,13 +278,12 @@ spec:
                                     type: string
                                 type: object
                               domain:
-                                description: Domain specifies the DNS name for intercepting
-                                  ingress requests coming from outside the cluster.
-                                  Most likely, you will want to use a wildcard name,
-                                  like *.example.com. If not set, the domain of the
-                                  OpenShift Ingress is used. If you choose to generate
-                                  a certificate, this is the domain used for the certificate
-                                  request.
+                                description: Domain specifies the host name for intercepting
+                                  incoming requests. Most likely, you will want to
+                                  use a wildcard name, like *.example.com. If not
+                                  set, the domain of the OpenShift Ingress is used.
+                                  If you choose to generate a certificate, this is
+                                  the domain used for the certificate request.
                                 type: string
                             type: object
                           managementState:
@@ -2752,7 +2751,7 @@ spec:
               fieldPath: metadata.namespace
         - name: DEFAULT_MANIFESTS_PATH
           value: /opt/manifests
-        image: quay.io/opendatahub/opendatahub-operator@sha256:b2f3aba2e2efe3487cabea0fae91cd4cf0c7bf560650197de91a5ef778854c12
+        image: quay.io/opendatahub/opendatahub-operator@sha256:bd42490882fe594ebe2f686a149befd38b9262e0b356e43fb9566711ce7778ad
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
