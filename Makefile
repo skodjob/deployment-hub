@@ -7,7 +7,7 @@ all: kustomize check
 
 .PHONY: kustomize
 kustomize:
-	$(KUSTOMIZE) build strimzi/zookeeper-mode/clients-kustomize/overlays > strimzi/zookeeper-mode/clients/01-clients.yaml
+	$(KUSTOMIZE) build strimzi/main/clients-kustomize/overlays > strimzi/main/clients/01-clients.yaml
 
 .PHONY: check
 check:
