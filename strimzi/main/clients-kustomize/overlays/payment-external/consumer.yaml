@@ -7,17 +7,15 @@ spec:
   template:
     spec:
       containers:
-        - name: producer
+        - name: consumer
           env:
-            - name: MESSAGE_TEMPLATE
-              value: "iot_device"
             - name: TOPIC
-              value: iot-external-data
-            - name: DELAY_MS
-              value: "1"
+              value: payment-external-data-reversed
+            - name: GROUP_ID
+              value: payment-external-data-consumer
             - name: USER_CRT
-              value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
+              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
             - name: USER_KEY
-              value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
+              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
             - name: BOOTSTRAP_SERVERS
               value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
