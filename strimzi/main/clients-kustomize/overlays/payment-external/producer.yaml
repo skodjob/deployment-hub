@@ -7,15 +7,15 @@ spec:
   template:
     spec:
       containers:
-        - name: consumer
+        - name: producer
           env:
-            - name: TOPIC
-              value: fast-external-data-reversed
-            - name: GROUP_ID
-              value: fast-external-data-consumer
+            - name: MESSAGE_TEMPLATE
+              value: "payment"
+            - name: DELAY_MS
+              value: "1"  # 1000 msg/s
             - name: USER_CRT
-              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
+              value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
             - name: USER_KEY
-              value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
+              value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
             - name: BOOTSTRAP_SERVERS
               value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443

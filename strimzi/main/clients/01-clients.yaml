@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   labels:
     app: consumer
-    type: big-external
-  name: big-external-consumer
+    type: flights-external
+  name: flights-external-consumer
 spec:
   replicas: 20
   selector:
     matchLabels:
       app: consumer
-      type: big-external
+      type: flights-external
   template:
     metadata:
       labels:
         app: consumer
-        type: big-external
+        type: flights-external
     spec:
       affinity:
         nodeAffinity:
@@ -29,9 +29,9 @@ spec:
       containers:
       - env:
         - name: TOPIC
-          value: big-external-data-reversed
+          value: flights-external-data-reversed
         - name: GROUP_ID
-          value: big-external-data-consumer
+          value: flights-external-data-consumer
         - name: USER_CRT
           value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
         - name: USER_KEY
@@ -46,7 +46,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -68,19 +68,19 @@ kind: Deployment
 metadata:
   labels:
     app: producer
-    type: big-external
-  name: big-external-producer
+    type: flights-external
+  name: flights-external-producer
 spec:
   replicas: 7
   selector:
     matchLabels:
       app: producer
-      type: big-external
+      type: flights-external
   template:
     metadata:
       labels:
         app: producer
-        type: big-external
+        type: flights-external
     spec:
       affinity:
         nodeAffinity:
@@ -93,410 +93,10 @@ spec:
                 - connect
       containers:
       - env:
-        - name: MESSAGE
-          value: |
-            {"sensor_id": 1, "temperature": 20.94, "humidity": 63.99, "timestamp": "2024-01-17T10:23:27.029216"}
-            {"sensor_id": 2, "temperature": 27.83, "humidity": 57.7, "timestamp": "2024-01-17T10:23:27.029266"}
-            {"sensor_id": 3, "temperature": 34.69, "humidity": 53.64, "timestamp": "2024-01-17T10:23:27.029297"}
-            {"sensor_id": 4, "temperature": 20.64, "humidity": 68.49, "timestamp": "2024-01-17T10:23:27.029325"}
-            {"sensor_id": 5, "temperature": 18.96, "humidity": 34.76, "timestamp": "2024-01-17T10:23:27.029352"}
-            {"sensor_id": 6, "temperature": 25.82, "humidity": 57.45, "timestamp": "2024-01-17T10:23:27.029381"}
-            {"sensor_id": 7, "temperature": 30.55, "humidity": 52.15, "timestamp": "2024-01-17T10:23:27.029408"}
-            {"sensor_id": 8, "temperature": 20.66, "humidity": 53.38, "timestamp": "2024-01-17T10:23:27.029439"}
-            {"sensor_id": 9, "temperature": 16.72, "humidity": 52.08, "timestamp": "2024-01-17T10:23:27.029485"}
-            {"sensor_id": 10, "temperature": 22.11, "humidity": 56.68, "timestamp": "2024-01-17T10:23:27.029521"}
-            {"sensor_id": 11, "temperature": 27.51, "humidity": 40.63, "timestamp": "2024-01-17T10:23:27.029555"}
-            {"sensor_id": 12, "temperature": 33.68, "humidity": 63.25, "timestamp": "2024-01-17T10:23:27.029599"}
-            {"sensor_id": 13, "temperature": 21.58, "humidity": 39.28, "timestamp": "2024-01-17T10:23:27.029638"}
-            {"sensor_id": 14, "temperature": 32.98, "humidity": 46.71, "timestamp": "2024-01-17T10:23:27.029674"}
-            {"sensor_id": 15, "temperature": 17.88, "humidity": 67.16, "timestamp": "2024-01-17T10:23:27.029716"}
-            {"sensor_id": 16, "temperature": 18.87, "humidity": 56.25, "timestamp": "2024-01-17T10:23:27.029754"}
-            {"sensor_id": 17, "temperature": 25.15, "humidity": 53.9, "timestamp": "2024-01-17T10:23:27.029808"}
-            {"sensor_id": 18, "temperature": 32.26, "humidity": 55.9, "timestamp": "2024-01-17T10:23:27.029848"}
-            {"sensor_id": 19, "temperature": 32.64, "humidity": 45.91, "timestamp": "2024-01-17T10:23:27.029889"}
-            {"sensor_id": 20, "temperature": 25.8, "humidity": 43.02, "timestamp": "2024-01-17T10:23:27.029925"}
-            {"sensor_id": 21, "temperature": 34.88, "humidity": 68.55, "timestamp": "2024-01-17T10:23:27.029966"}
-            {"sensor_id": 22, "temperature": 32.73, "humidity": 63.04, "timestamp": "2024-01-17T10:23:27.030009"}
-            {"sensor_id": 23, "temperature": 23.71, "humidity": 61.9, "timestamp": "2024-01-17T10:23:27.030078"}
-            {"sensor_id": 24, "temperature": 33.87, "humidity": 54.03, "timestamp": "2024-01-17T10:23:27.030133"}
-            {"sensor_id": 25, "temperature": 25.11, "humidity": 50.66, "timestamp": "2024-01-17T10:23:27.030180"}
-            {"sensor_id": 26, "temperature": 20.03, "humidity": 62.38, "timestamp": "2024-01-17T10:23:27.030229"}
-            {"sensor_id": 27, "temperature": 24.3, "humidity": 31.27, "timestamp": "2024-01-17T10:23:27.030280"}
-            {"sensor_id": 28, "temperature": 24.14, "humidity": 56.86, "timestamp": "2024-01-17T10:23:27.030335"}
-            {"sensor_id": 29, "temperature": 15.45, "humidity": 64.24, "timestamp": "2024-01-17T10:23:27.030387"}
-            {"sensor_id": 30, "temperature": 33.94, "humidity": 43.02, "timestamp": "2024-01-17T10:23:27.030440"}
-            {"sensor_id": 31, "temperature": 29.78, "humidity": 48.57, "timestamp": "2024-01-17T10:23:27.030494"}
-            {"sensor_id": 32, "temperature": 18.25, "humidity": 49.27, "timestamp": "2024-01-17T10:23:27.030565"}
-            {"sensor_id": 33, "temperature": 29.21, "humidity": 34.44, "timestamp": "2024-01-17T10:23:27.030630"}
-            {"sensor_id": 34, "temperature": 25.73, "humidity": 45.62, "timestamp": "2024-01-17T10:23:27.030687"}
-            {"sensor_id": 35, "temperature": 21.11, "humidity": 31.23, "timestamp": "2024-01-17T10:23:27.030744"}
-            {"sensor_id": 36, "temperature": 32.12, "humidity": 64.88, "timestamp": "2024-01-17T10:23:27.030804"}
-            {"sensor_id": 37, "temperature": 31.57, "humidity": 55.68, "timestamp": "2024-01-17T10:23:27.030879"}
-            {"sensor_id": 38, "temperature": 28.69, "humidity": 69.95, "timestamp": "2024-01-17T10:23:27.030943"}
-            {"sensor_id": 39, "temperature": 20.25, "humidity": 30.48, "timestamp": "2024-01-17T10:23:27.031007"}
-            {"sensor_id": 40, "temperature": 17.93, "humidity": 44.76, "timestamp": "2024-01-17T10:23:27.031071"}
-            {"sensor_id": 41, "temperature": 19.8, "humidity": 61.23, "timestamp": "2024-01-17T10:23:27.031136"}
-            {"sensor_id": 42, "temperature": 27.14, "humidity": 42.98, "timestamp": "2024-01-17T10:23:27.031204"}
-            {"sensor_id": 43, "temperature": 18.24, "humidity": 56.16, "timestamp": "2024-01-17T10:23:27.031273"}
-            {"sensor_id": 44, "temperature": 16.76, "humidity": 64.63, "timestamp": "2024-01-17T10:23:27.031342"}
-            {"sensor_id": 45, "temperature": 21.34, "humidity": 60.13, "timestamp": "2024-01-17T10:23:27.031412"}
-            {"sensor_id": 46, "temperature": 20.61, "humidity": 38.21, "timestamp": "2024-01-17T10:23:27.031502"}
-            {"sensor_id": 47, "temperature": 21.47, "humidity": 68.06, "timestamp": "2024-01-17T10:23:27.031576"}
-            {"sensor_id": 48, "temperature": 19.01, "humidity": 47.59, "timestamp": "2024-01-17T10:23:27.031649"}
-            {"sensor_id": 49, "temperature": 26.66, "humidity": 40.13, "timestamp": "2024-01-17T10:23:27.031724"}
-            {"sensor_id": 50, "temperature": 24.65, "humidity": 55.17, "timestamp": "2024-01-17T10:23:27.032070"}
-            {"sensor_id": 51, "temperature": 34.84, "humidity": 40.25, "timestamp": "2024-01-17T10:23:27.032149"}
-            {"sensor_id": 52, "temperature": 18.44, "humidity": 40.2, "timestamp": "2024-01-17T10:23:27.032223"}
-            {"sensor_id": 53, "temperature": 20.2, "humidity": 34.04, "timestamp": "2024-01-17T10:23:27.032291"}
-            {"sensor_id": 54, "temperature": 25.65, "humidity": 63.6, "timestamp": "2024-01-17T10:23:27.032358"}
-            {"sensor_id": 55, "temperature": 16.36, "humidity": 43.23, "timestamp": "2024-01-17T10:23:27.032466"}
-            {"sensor_id": 56, "temperature": 32.09, "humidity": 30.79, "timestamp": "2024-01-17T10:23:27.032551"}
-            {"sensor_id": 57, "temperature": 27.0, "humidity": 57.67, "timestamp": "2024-01-17T10:23:27.032637"}
-            {"sensor_id": 58, "temperature": 30.65, "humidity": 31.43, "timestamp": "2024-01-17T10:23:27.032717"}
-            {"sensor_id": 59, "temperature": 27.81, "humidity": 64.33, "timestamp": "2024-01-17T10:23:27.032804"}
-            {"sensor_id": 60, "temperature": 32.04, "humidity": 57.81, "timestamp": "2024-01-17T10:23:27.032893"}
-            {"sensor_id": 61, "temperature": 23.95, "humidity": 30.46, "timestamp": "2024-01-17T10:23:27.033024"}
-            {"sensor_id": 62, "temperature": 24.63, "humidity": 61.2, "timestamp": "2024-01-17T10:23:27.033115"}
-            {"sensor_id": 63, "temperature": 33.49, "humidity": 65.7, "timestamp": "2024-01-17T10:23:27.033209"}
-            {"sensor_id": 64, "temperature": 23.88, "humidity": 30.83, "timestamp": "2024-01-17T10:23:27.033317"}
-            {"sensor_id": 65, "temperature": 28.4, "humidity": 31.65, "timestamp": "2024-01-17T10:23:27.033413"}
-            {"sensor_id": 66, "temperature": 25.22, "humidity": 60.91, "timestamp": "2024-01-17T10:23:27.033508"}
-            {"sensor_id": 67, "temperature": 22.36, "humidity": 51.75, "timestamp": "2024-01-17T10:23:27.033605"}
-            {"sensor_id": 68, "temperature": 20.98, "humidity": 65.37, "timestamp": "2024-01-17T10:23:27.033704"}
-            {"sensor_id": 69, "temperature": 32.19, "humidity": 33.64, "timestamp": "2024-01-17T10:23:27.033809"}
-            {"sensor_id": 70, "temperature": 17.09, "humidity": 63.98, "timestamp": "2024-01-17T10:23:27.033904"}
-            {"sensor_id": 71, "temperature": 22.93, "humidity": 59.93, "timestamp": "2024-01-17T10:23:27.034006"}
-            {"sensor_id": 72, "temperature": 22.37, "humidity": 32.59, "timestamp": "2024-01-17T10:23:27.034123"}
-            {"sensor_id": 73, "temperature": 21.36, "humidity": 32.38, "timestamp": "2024-01-17T10:23:27.034881"}
-            {"sensor_id": 74, "temperature": 18.79, "humidity": 34.14, "timestamp": "2024-01-17T10:23:27.035019"}
-            {"sensor_id": 75, "temperature": 25.84, "humidity": 42.88, "timestamp": "2024-01-17T10:23:27.035129"}
-            {"sensor_id": 76, "temperature": 18.67, "humidity": 44.53, "timestamp": "2024-01-17T10:23:27.035260"}
-            {"sensor_id": 77, "temperature": 28.09, "humidity": 44.32, "timestamp": "2024-01-17T10:23:27.035366"}
-            {"sensor_id": 78, "temperature": 17.98, "humidity": 54.97, "timestamp": "2024-01-17T10:23:27.035469"}
-            {"sensor_id": 79, "temperature": 22.01, "humidity": 45.1, "timestamp": "2024-01-17T10:23:27.035594"}
-            {"sensor_id": 80, "temperature": 27.9, "humidity": 59.08, "timestamp": "2024-01-17T10:23:27.035701"}
-            {"sensor_id": 81, "temperature": 30.79, "humidity": 47.27, "timestamp": "2024-01-17T10:23:27.035814"}
-            {"sensor_id": 82, "temperature": 31.46, "humidity": 62.84, "timestamp": "2024-01-17T10:23:27.035949"}
-            {"sensor_id": 83, "temperature": 21.62, "humidity": 67.79, "timestamp": "2024-01-17T10:23:27.036057"}
-            {"sensor_id": 84, "temperature": 27.06, "humidity": 54.16, "timestamp": "2024-01-17T10:23:27.036168"}
-            {"sensor_id": 85, "temperature": 34.11, "humidity": 47.92, "timestamp": "2024-01-17T10:23:27.036288"}
-            {"sensor_id": 86, "temperature": 18.11, "humidity": 53.25, "timestamp": "2024-01-17T10:23:27.036405"}
-            {"sensor_id": 87, "temperature": 21.04, "humidity": 37.74, "timestamp": "2024-01-17T10:23:27.036521"}
-            {"sensor_id": 88, "temperature": 33.7, "humidity": 37.07, "timestamp": "2024-01-17T10:23:27.036702"}
-            {"sensor_id": 89, "temperature": 22.9, "humidity": 55.21, "timestamp": "2024-01-17T10:23:27.036846"}
-            {"sensor_id": 90, "temperature": 19.23, "humidity": 48.91, "timestamp": "2024-01-17T10:23:27.037223"}
-            {"sensor_id": 91, "temperature": 27.79, "humidity": 59.88, "timestamp": "2024-01-17T10:23:27.037375"}
-            {"sensor_id": 92, "temperature": 30.72, "humidity": 56.81, "timestamp": "2024-01-17T10:23:27.037541"}
-            {"sensor_id": 93, "temperature": 24.13, "humidity": 38.26, "timestamp": "2024-01-17T10:23:27.037705"}
-            {"sensor_id": 94, "temperature": 31.91, "humidity": 65.0, "timestamp": "2024-01-17T10:23:27.037848"}
-            {"sensor_id": 95, "temperature": 19.59, "humidity": 44.4, "timestamp": "2024-01-17T10:23:27.038018"}
-            {"sensor_id": 96, "temperature": 15.0, "humidity": 62.96, "timestamp": "2024-01-17T10:23:27.038175"}
-            {"sensor_id": 97, "temperature": 20.35, "humidity": 54.69, "timestamp": "2024-01-17T10:23:27.038319"}
-            {"sensor_id": 98, "temperature": 21.39, "humidity": 47.87, "timestamp": "2024-01-17T10:23:27.038448"}
-            {"sensor_id": 99, "temperature": 28.01, "humidity": 45.68, "timestamp": "2024-01-17T10:23:27.038582"}
-            {"sensor_id": 100, "temperature": 25.16, "humidity": 53.63, "timestamp": "2024-01-17T10:23:27.038709"}
-            {"sensor_id": 101, "temperature": 26.69, "humidity": 48.31, "timestamp": "2024-01-17T10:23:27.038836"}
-            {"sensor_id": 102, "temperature": 34.6, "humidity": 49.42, "timestamp": "2024-01-17T10:23:27.038976"}
-            {"sensor_id": 103, "temperature": 17.83, "humidity": 35.5, "timestamp": "2024-01-17T10:23:27.039128"}
-            {"sensor_id": 104, "temperature": 21.64, "humidity": 54.51, "timestamp": "2024-01-17T10:23:27.039252"}
-            {"sensor_id": 105, "temperature": 24.22, "humidity": 65.71, "timestamp": "2024-01-17T10:23:27.039375"}
-            {"sensor_id": 106, "temperature": 26.37, "humidity": 37.42, "timestamp": "2024-01-17T10:23:27.039491"}
-            {"sensor_id": 107, "temperature": 21.49, "humidity": 55.28, "timestamp": "2024-01-17T10:23:27.039606"}
-            {"sensor_id": 108, "temperature": 34.06, "humidity": 49.42, "timestamp": "2024-01-17T10:23:27.039767"}
-            {"sensor_id": 109, "temperature": 30.88, "humidity": 45.13, "timestamp": "2024-01-17T10:23:27.039912"}
-            {"sensor_id": 110, "temperature": 18.18, "humidity": 43.08, "timestamp": "2024-01-17T10:23:27.040057"}
-            {"sensor_id": 111, "temperature": 34.41, "humidity": 39.01, "timestamp": "2024-01-17T10:23:27.040198"}
-            {"sensor_id": 112, "temperature": 19.79, "humidity": 61.18, "timestamp": "2024-01-17T10:23:27.040342"}
-            {"sensor_id": 113, "temperature": 22.7, "humidity": 37.22, "timestamp": "2024-01-17T10:23:27.040487"}
-            {"sensor_id": 114, "temperature": 21.26, "humidity": 57.71, "timestamp": "2024-01-17T10:23:27.040629"}
-            {"sensor_id": 115, "temperature": 21.01, "humidity": 65.09, "timestamp": "2024-01-17T10:23:27.040777"}
-            {"sensor_id": 116, "temperature": 33.43, "humidity": 44.25, "timestamp": "2024-01-17T10:23:27.040930"}
-            {"sensor_id": 117, "temperature": 30.24, "humidity": 69.13, "timestamp": "2024-01-17T10:23:27.041081"}
-            {"sensor_id": 118, "temperature": 34.04, "humidity": 59.67, "timestamp": "2024-01-17T10:23:27.041236"}
-            {"sensor_id": 119, "temperature": 34.63, "humidity": 31.86, "timestamp": "2024-01-17T10:23:27.041390"}
-            {"sensor_id": 120, "temperature": 34.12, "humidity": 58.05, "timestamp": "2024-01-17T10:23:27.041535"}
-            {"sensor_id": 121, "temperature": 32.14, "humidity": 52.27, "timestamp": "2024-01-17T10:23:27.041662"}
-            {"sensor_id": 122, "temperature": 16.75, "humidity": 65.28, "timestamp": "2024-01-17T10:23:27.041799"}
-            {"sensor_id": 123, "temperature": 19.5, "humidity": 30.41, "timestamp": "2024-01-17T10:23:27.041982"}
-            {"sensor_id": 124, "temperature": 16.56, "humidity": 66.0, "timestamp": "2024-01-17T10:23:27.042701"}
-            {"sensor_id": 125, "temperature": 32.41, "humidity": 48.48, "timestamp": "2024-01-17T10:23:27.042886"}
-            {"sensor_id": 126, "temperature": 28.93, "humidity": 35.39, "timestamp": "2024-01-17T10:23:27.043108"}
-            {"sensor_id": 127, "temperature": 34.46, "humidity": 64.22, "timestamp": "2024-01-17T10:23:27.043310"}
-            {"sensor_id": 128, "temperature": 26.79, "humidity": 52.56, "timestamp": "2024-01-17T10:23:27.043509"}
-            {"sensor_id": 129, "temperature": 33.94, "humidity": 64.87, "timestamp": "2024-01-17T10:23:27.043685"}
-            {"sensor_id": 130, "temperature": 16.54, "humidity": 67.78, "timestamp": "2024-01-17T10:23:27.043880"}
-            {"sensor_id": 131, "temperature": 28.61, "humidity": 62.52, "timestamp": "2024-01-17T10:23:27.044074"}
-            {"sensor_id": 132, "temperature": 23.84, "humidity": 61.51, "timestamp": "2024-01-17T10:23:27.044264"}
-            {"sensor_id": 133, "temperature": 28.02, "humidity": 54.76, "timestamp": "2024-01-17T10:23:27.044444"}
-            {"sensor_id": 134, "temperature": 20.85, "humidity": 67.79, "timestamp": "2024-01-17T10:23:27.044637"}
-            {"sensor_id": 135, "temperature": 33.32, "humidity": 59.4, "timestamp": "2024-01-17T10:23:27.044859"}
-            {"sensor_id": 136, "temperature": 28.05, "humidity": 36.47, "timestamp": "2024-01-17T10:23:27.045060"}
-            {"sensor_id": 137, "temperature": 18.06, "humidity": 58.24, "timestamp": "2024-01-17T10:23:27.048572"}
-            {"sensor_id": 138, "temperature": 23.51, "humidity": 62.74, "timestamp": "2024-01-17T10:23:27.048824"}
-            {"sensor_id": 139, "temperature": 29.0, "humidity": 57.62, "timestamp": "2024-01-17T10:23:27.049006"}
-            {"sensor_id": 140, "temperature": 17.81, "humidity": 60.8, "timestamp": "2024-01-17T10:23:27.049177"}
-            {"sensor_id": 141, "temperature": 20.08, "humidity": 67.56, "timestamp": "2024-01-17T10:23:27.049377"}
-            {"sensor_id": 142, "temperature": 24.16, "humidity": 51.47, "timestamp": "2024-01-17T10:23:27.049553"}
-            {"sensor_id": 143, "temperature": 15.95, "humidity": 66.84, "timestamp": "2024-01-17T10:23:27.049731"}
-            {"sensor_id": 144, "temperature": 21.21, "humidity": 59.8, "timestamp": "2024-01-17T10:23:27.049906"}
-            {"sensor_id": 145, "temperature": 15.17, "humidity": 48.9, "timestamp": "2024-01-17T10:23:27.050180"}
-            {"sensor_id": 146, "temperature": 28.88, "humidity": 31.16, "timestamp": "2024-01-17T10:23:27.050388"}
-            {"sensor_id": 147, "temperature": 18.09, "humidity": 47.07, "timestamp": "2024-01-17T10:23:27.050580"}
-            {"sensor_id": 148, "temperature": 16.86, "humidity": 42.37, "timestamp": "2024-01-17T10:23:27.050761"}
-            {"sensor_id": 149, "temperature": 23.28, "humidity": 57.61, "timestamp": "2024-01-17T10:23:27.050950"}
-            {"sensor_id": 150, "temperature": 15.06, "humidity": 34.37, "timestamp": "2024-01-17T10:23:27.051130"}
-            {"sensor_id": 151, "temperature": 21.75, "humidity": 67.4, "timestamp": "2024-01-17T10:23:27.051294"}
-            {"sensor_id": 152, "temperature": 15.17, "humidity": 64.01, "timestamp": "2024-01-17T10:23:27.051476"}
-            {"sensor_id": 153, "temperature": 27.48, "humidity": 35.32, "timestamp": "2024-01-17T10:23:27.051649"}
-            {"sensor_id": 154, "temperature": 29.34, "humidity": 69.4, "timestamp": "2024-01-17T10:23:27.051822"}
-            {"sensor_id": 155, "temperature": 21.12, "humidity": 65.27, "timestamp": "2024-01-17T10:23:27.052281"}
-            {"sensor_id": 156, "temperature": 24.89, "humidity": 49.86, "timestamp": "2024-01-17T10:23:27.052484"}
-            {"sensor_id": 157, "temperature": 26.63, "humidity": 51.38, "timestamp": "2024-01-17T10:23:27.052673"}
-            {"sensor_id": 158, "temperature": 31.65, "humidity": 59.68, "timestamp": "2024-01-17T10:23:27.052811"}
-            {"sensor_id": 159, "temperature": 33.5, "humidity": 50.8, "timestamp": "2024-01-17T10:23:27.052940"}
-            {"sensor_id": 160, "temperature": 22.85, "humidity": 56.45, "timestamp": "2024-01-17T10:23:27.053169"}
-            {"sensor_id": 161, "temperature": 15.78, "humidity": 53.22, "timestamp": "2024-01-17T10:23:27.053380"}
-            {"sensor_id": 162, "temperature": 34.07, "humidity": 42.86, "timestamp": "2024-01-17T10:23:27.053578"}
-            {"sensor_id": 163, "temperature": 23.52, "humidity": 63.6, "timestamp": "2024-01-17T10:23:27.053767"}
-            {"sensor_id": 164, "temperature": 26.4, "humidity": 51.03, "timestamp": "2024-01-17T10:23:27.053909"}
-            {"sensor_id": 165, "temperature": 28.52, "humidity": 42.06, "timestamp": "2024-01-17T10:23:27.054046"}
-            {"sensor_id": 166, "temperature": 28.7, "humidity": 62.43, "timestamp": "2024-01-17T10:23:27.054265"}
-            {"sensor_id": 167, "temperature": 23.91, "humidity": 44.72, "timestamp": "2024-01-17T10:23:27.054471"}
-            {"sensor_id": 168, "temperature": 23.67, "humidity": 33.37, "timestamp": "2024-01-17T10:23:27.054680"}
-            {"sensor_id": 169, "temperature": 27.74, "humidity": 51.08, "timestamp": "2024-01-17T10:23:27.054880"}
-            {"sensor_id": 170, "temperature": 34.43, "humidity": 69.76, "timestamp": "2024-01-17T10:23:27.055062"}
-            {"sensor_id": 171, "temperature": 32.08, "humidity": 39.72, "timestamp": "2024-01-17T10:23:27.055226"}
-            {"sensor_id": 172, "temperature": 15.49, "humidity": 57.05, "timestamp": "2024-01-17T10:23:27.055761"}
-            {"sensor_id": 173, "temperature": 23.61, "humidity": 59.65, "timestamp": "2024-01-17T10:23:27.056016"}
-            {"sensor_id": 174, "temperature": 20.79, "humidity": 60.04, "timestamp": "2024-01-17T10:23:27.056224"}
-            {"sensor_id": 175, "temperature": 18.19, "humidity": 61.43, "timestamp": "2024-01-17T10:23:27.056436"}
-            {"sensor_id": 176, "temperature": 31.04, "humidity": 30.3, "timestamp": "2024-01-17T10:23:27.056632"}
-            {"sensor_id": 177, "temperature": 29.33, "humidity": 59.22, "timestamp": "2024-01-17T10:23:27.056842"}
-            {"sensor_id": 178, "temperature": 25.2, "humidity": 37.28, "timestamp": "2024-01-17T10:23:27.057052"}
-            {"sensor_id": 179, "temperature": 23.43, "humidity": 42.52, "timestamp": "2024-01-17T10:23:27.057293"}
-            {"sensor_id": 180, "temperature": 27.58, "humidity": 50.16, "timestamp": "2024-01-17T10:23:27.057475"}
-            {"sensor_id": 181, "temperature": 19.21, "humidity": 66.18, "timestamp": "2024-01-17T10:23:27.057665"}
-            {"sensor_id": 182, "temperature": 30.88, "humidity": 36.96, "timestamp": "2024-01-17T10:23:27.057852"}
-            {"sensor_id": 183, "temperature": 30.89, "humidity": 38.95, "timestamp": "2024-01-17T10:23:27.058127"}
-            {"sensor_id": 184, "temperature": 28.07, "humidity": 35.49, "timestamp": "2024-01-17T10:23:27.058336"}
-            {"sensor_id": 185, "temperature": 29.43, "humidity": 69.29, "timestamp": "2024-01-17T10:23:27.058534"}
-            {"sensor_id": 186, "temperature": 29.64, "humidity": 49.4, "timestamp": "2024-01-17T10:23:27.058752"}
-            {"sensor_id": 187, "temperature": 17.3, "humidity": 36.3, "timestamp": "2024-01-17T10:23:27.058936"}
-            {"sensor_id": 188, "temperature": 20.51, "humidity": 43.84, "timestamp": "2024-01-17T10:23:27.059157"}
-            {"sensor_id": 189, "temperature": 25.09, "humidity": 64.27, "timestamp": "2024-01-17T10:23:27.059313"}
-            {"sensor_id": 190, "temperature": 20.78, "humidity": 59.85, "timestamp": "2024-01-17T10:23:27.059510"}
-            {"sensor_id": 191, "temperature": 16.89, "humidity": 35.04, "timestamp": "2024-01-17T10:23:27.059725"}
-            {"sensor_id": 192, "temperature": 17.88, "humidity": 51.67, "timestamp": "2024-01-17T10:23:27.059915"}
-            {"sensor_id": 193, "temperature": 18.04, "humidity": 56.68, "timestamp": "2024-01-17T10:23:27.060133"}
-            {"sensor_id": 194, "temperature": 17.38, "humidity": 69.41, "timestamp": "2024-01-17T10:23:27.060571"}
-            {"sensor_id": 195, "temperature": 17.86, "humidity": 46.87, "timestamp": "2024-01-17T10:23:27.060810"}
-            {"sensor_id": 196, "temperature": 15.73, "humidity": 64.28, "timestamp": "2024-01-17T10:23:27.060973"}
-            {"sensor_id": 197, "temperature": 32.0, "humidity": 48.91, "timestamp": "2024-01-17T10:23:27.061208"}
-            {"sensor_id": 198, "temperature": 24.28, "humidity": 63.97, "timestamp": "2024-01-17T10:23:27.061385"}
-            {"sensor_id": 199, "temperature": 32.33, "humidity": 39.92, "timestamp": "2024-01-17T10:23:27.061638"}
-            {"sensor_id": 200, "temperature": 27.82, "humidity": 36.57, "timestamp": "2024-01-17T10:23:27.061855"}
-            {"sensor_id": 201, "temperature": 28.7, "humidity": 37.2, "timestamp": "2024-01-17T10:23:27.062094"}
-            {"sensor_id": 202, "temperature": 20.81, "humidity": 43.06, "timestamp": "2024-01-17T10:23:27.062525"}
-            {"sensor_id": 203, "temperature": 17.41, "humidity": 40.55, "timestamp": "2024-01-17T10:23:27.062760"}
-            {"sensor_id": 204, "temperature": 28.15, "humidity": 46.95, "timestamp": "2024-01-17T10:23:27.063005"}
-            {"sensor_id": 205, "temperature": 29.66, "humidity": 63.62, "timestamp": "2024-01-17T10:23:27.063188"}
-            {"sensor_id": 206, "temperature": 29.11, "humidity": 51.01, "timestamp": "2024-01-17T10:23:27.063391"}
-            {"sensor_id": 207, "temperature": 28.24, "humidity": 36.71, "timestamp": "2024-01-17T10:23:27.063633"}
-            {"sensor_id": 208, "temperature": 26.08, "humidity": 64.5, "timestamp": "2024-01-17T10:23:27.063833"}
-            {"sensor_id": 209, "temperature": 31.6, "humidity": 36.57, "timestamp": "2024-01-17T10:23:27.064167"}
-            {"sensor_id": 210, "temperature": 30.29, "humidity": 37.12, "timestamp": "2024-01-17T10:23:27.064366"}
-            {"sensor_id": 211, "temperature": 27.47, "humidity": 58.58, "timestamp": "2024-01-17T10:23:27.064605"}
-            {"sensor_id": 212, "temperature": 31.29, "humidity": 54.54, "timestamp": "2024-01-17T10:23:27.064810"}
-            {"sensor_id": 213, "temperature": 16.75, "humidity": 38.45, "timestamp": "2024-01-17T10:23:27.065019"}
-            {"sensor_id": 214, "temperature": 16.18, "humidity": 57.22, "timestamp": "2024-01-17T10:23:27.065327"}
-            {"sensor_id": 215, "temperature": 19.22, "humidity": 56.91, "timestamp": "2024-01-17T10:23:27.065671"}
-            {"sensor_id": 216, "temperature": 28.93, "humidity": 68.56, "timestamp": "2024-01-17T10:23:27.065921"}
-            {"sensor_id": 217, "temperature": 33.6, "humidity": 69.38, "timestamp": "2024-01-17T10:23:27.066176"}
-            {"sensor_id": 218, "temperature": 21.31, "humidity": 68.07, "timestamp": "2024-01-17T10:23:27.066407"}
-            {"sensor_id": 219, "temperature": 29.44, "humidity": 44.89, "timestamp": "2024-01-17T10:23:27.066648"}
-            {"sensor_id": 220, "temperature": 16.73, "humidity": 37.27, "timestamp": "2024-01-17T10:23:27.066950"}
-            {"sensor_id": 221, "temperature": 23.03, "humidity": 38.86, "timestamp": "2024-01-17T10:23:27.067144"}
-            {"sensor_id": 222, "temperature": 25.61, "humidity": 35.8, "timestamp": "2024-01-17T10:23:27.067381"}
-            {"sensor_id": 223, "temperature": 23.27, "humidity": 65.76, "timestamp": "2024-01-17T10:23:27.067635"}
-            {"sensor_id": 224, "temperature": 34.25, "humidity": 43.74, "timestamp": "2024-01-17T10:23:27.068104"}
-            {"sensor_id": 225, "temperature": 25.09, "humidity": 46.45, "timestamp": "2024-01-17T10:23:27.068328"}
-            {"sensor_id": 226, "temperature": 33.93, "humidity": 51.28, "timestamp": "2024-01-17T10:23:27.068588"}
-            {"sensor_id": 227, "temperature": 32.86, "humidity": 55.83, "timestamp": "2024-01-17T10:23:27.068833"}
-            {"sensor_id": 228, "temperature": 31.64, "humidity": 52.29, "timestamp": "2024-01-17T10:23:27.069162"}
-            {"sensor_id": 229, "temperature": 30.09, "humidity": 65.39, "timestamp": "2024-01-17T10:23:27.069369"}
-            {"sensor_id": 230, "temperature": 26.4, "humidity": 60.85, "timestamp": "2024-01-17T10:23:27.069607"}
-            {"sensor_id": 231, "temperature": 33.48, "humidity": 69.14, "timestamp": "2024-01-17T10:23:27.069861"}
-            {"sensor_id": 232, "temperature": 19.05, "humidity": 39.03, "timestamp": "2024-01-17T10:23:27.070095"}
-            {"sensor_id": 233, "temperature": 17.68, "humidity": 51.12, "timestamp": "2024-01-17T10:23:27.070365"}
-            {"sensor_id": 234, "temperature": 33.84, "humidity": 47.24, "timestamp": "2024-01-17T10:23:27.070673"}
-            {"sensor_id": 235, "temperature": 22.24, "humidity": 53.74, "timestamp": "2024-01-17T10:23:27.070940"}
-            {"sensor_id": 236, "temperature": 34.03, "humidity": 69.56, "timestamp": "2024-01-17T10:23:27.071158"}
-            {"sensor_id": 237, "temperature": 28.85, "humidity": 40.56, "timestamp": "2024-01-17T10:23:27.071766"}
-            {"sensor_id": 238, "temperature": 33.47, "humidity": 49.81, "timestamp": "2024-01-17T10:23:27.072058"}
-            {"sensor_id": 239, "temperature": 18.49, "humidity": 65.73, "timestamp": "2024-01-17T10:23:27.072277"}
-            {"sensor_id": 240, "temperature": 17.74, "humidity": 42.75, "timestamp": "2024-01-17T10:23:27.072534"}
-            {"sensor_id": 241, "temperature": 29.0, "humidity": 46.19, "timestamp": "2024-01-17T10:23:27.072809"}
-            {"sensor_id": 242, "temperature": 30.24, "humidity": 42.81, "timestamp": "2024-01-17T10:23:27.073079"}
-            {"sensor_id": 243, "temperature": 17.85, "humidity": 47.79, "timestamp": "2024-01-17T10:23:27.073280"}
-            {"sensor_id": 244, "temperature": 25.56, "humidity": 42.51, "timestamp": "2024-01-17T10:23:27.073488"}
-            {"sensor_id": 245, "temperature": 17.11, "humidity": 41.47, "timestamp": "2024-01-17T10:23:27.073751"}
-            {"sensor_id": 246, "temperature": 26.36, "humidity": 41.06, "timestamp": "2024-01-17T10:23:27.073975"}
-            {"sensor_id": 247, "temperature": 28.01, "humidity": 57.95, "timestamp": "2024-01-17T10:23:27.074274"}
-            {"sensor_id": 248, "temperature": 15.05, "humidity": 57.49, "timestamp": "2024-01-17T10:23:27.074471"}
-            {"sensor_id": 249, "temperature": 19.18, "humidity": 50.18, "timestamp": "2024-01-17T10:23:27.074714"}
-            {"sensor_id": 250, "temperature": 17.9, "humidity": 65.12, "timestamp": "2024-01-17T10:23:27.075094"}
-            {"sensor_id": 251, "temperature": 34.78, "humidity": 54.32, "timestamp": "2024-01-17T10:23:27.075353"}
-            {"sensor_id": 252, "temperature": 23.86, "humidity": 50.61, "timestamp": "2024-01-17T10:23:27.075559"}
-            {"sensor_id": 253, "temperature": 30.44, "humidity": 52.85, "timestamp": "2024-01-17T10:23:27.075852"}
-            {"sensor_id": 254, "temperature": 23.67, "humidity": 67.12, "timestamp": "2024-01-17T10:23:27.076146"}
-            {"sensor_id": 255, "temperature": 21.78, "humidity": 44.61, "timestamp": "2024-01-17T10:23:27.076441"}
-            {"sensor_id": 256, "temperature": 16.5, "humidity": 41.66, "timestamp": "2024-01-17T10:23:27.076666"}
-            {"sensor_id": 257, "temperature": 24.75, "humidity": 55.97, "timestamp": "2024-01-17T10:23:27.076914"}
-            {"sensor_id": 258, "temperature": 29.02, "humidity": 59.29, "timestamp": "2024-01-17T10:23:27.077250"}
-            {"sensor_id": 259, "temperature": 15.8, "humidity": 67.66, "timestamp": "2024-01-17T10:23:27.077489"}
-            {"sensor_id": 260, "temperature": 26.6, "humidity": 60.31, "timestamp": "2024-01-17T10:23:27.077735"}
-            {"sensor_id": 261, "temperature": 21.26, "humidity": 36.32, "timestamp": "2024-01-17T10:23:27.077999"}
-            {"sensor_id": 262, "temperature": 30.2, "humidity": 59.43, "timestamp": "2024-01-17T10:23:27.078627"}
-            {"sensor_id": 263, "temperature": 16.62, "humidity": 61.47, "timestamp": "2024-01-17T10:23:27.078947"}
-            {"sensor_id": 264, "temperature": 30.23, "humidity": 56.18, "timestamp": "2024-01-17T10:23:27.079266"}
-            {"sensor_id": 265, "temperature": 18.94, "humidity": 68.64, "timestamp": "2024-01-17T10:23:27.079593"}
-            {"sensor_id": 266, "temperature": 31.24, "humidity": 63.3, "timestamp": "2024-01-17T10:23:27.079922"}
-            {"sensor_id": 267, "temperature": 22.4, "humidity": 35.11, "timestamp": "2024-01-17T10:23:27.080238"}
-            {"sensor_id": 268, "temperature": 28.01, "humidity": 59.72, "timestamp": "2024-01-17T10:23:27.080565"}
-            {"sensor_id": 269, "temperature": 22.5, "humidity": 51.39, "timestamp": "2024-01-17T10:23:27.080882"}
-            {"sensor_id": 270, "temperature": 25.44, "humidity": 31.54, "timestamp": "2024-01-17T10:23:27.081218"}
-            {"sensor_id": 271, "temperature": 28.0, "humidity": 31.51, "timestamp": "2024-01-17T10:23:27.084924"}
-            {"sensor_id": 272, "temperature": 34.13, "humidity": 44.64, "timestamp": "2024-01-17T10:23:27.085274"}
-            {"sensor_id": 273, "temperature": 25.41, "humidity": 47.14, "timestamp": "2024-01-17T10:23:27.085616"}
-            {"sensor_id": 274, "temperature": 32.49, "humidity": 62.92, "timestamp": "2024-01-17T10:23:27.086000"}
-            {"sensor_id": 275, "temperature": 18.0, "humidity": 41.7, "timestamp": "2024-01-17T10:23:27.086320"}
-            {"sensor_id": 276, "temperature": 15.52, "humidity": 64.64, "timestamp": "2024-01-17T10:23:27.086613"}
-            {"sensor_id": 277, "temperature": 16.65, "humidity": 45.15, "timestamp": "2024-01-17T10:23:27.086920"}
-            {"sensor_id": 278, "temperature": 34.27, "humidity": 49.57, "timestamp": "2024-01-17T10:23:27.087229"}
-            {"sensor_id": 279, "temperature": 34.74, "humidity": 40.41, "timestamp": "2024-01-17T10:23:27.087545"}
-            {"sensor_id": 280, "temperature": 21.8, "humidity": 30.41, "timestamp": "2024-01-17T10:23:27.087858"}
-            {"sensor_id": 281, "temperature": 30.74, "humidity": 63.93, "timestamp": "2024-01-17T10:23:27.089605"}
-            {"sensor_id": 282, "temperature": 29.31, "humidity": 43.84, "timestamp": "2024-01-17T10:23:27.089978"}
-            {"sensor_id": 283, "temperature": 25.39, "humidity": 41.63, "timestamp": "2024-01-17T10:23:27.090334"}
-            {"sensor_id": 284, "temperature": 26.61, "humidity": 64.57, "timestamp": "2024-01-17T10:23:27.090707"}
-            {"sensor_id": 285, "temperature": 33.7, "humidity": 52.27, "timestamp": "2024-01-17T10:23:27.091113"}
-            {"sensor_id": 286, "temperature": 33.02, "humidity": 34.33, "timestamp": "2024-01-17T10:23:27.091468"}
-            {"sensor_id": 287, "temperature": 18.13, "humidity": 46.74, "timestamp": "2024-01-17T10:23:27.091870"}
-            {"sensor_id": 288, "temperature": 33.2, "humidity": 45.73, "timestamp": "2024-01-17T10:23:27.092235"}
-            {"sensor_id": 289, "temperature": 23.57, "humidity": 46.31, "timestamp": "2024-01-17T10:23:27.092579"}
-            {"sensor_id": 290, "temperature": 33.12, "humidity": 56.37, "timestamp": "2024-01-17T10:23:27.092936"}
-            {"sensor_id": 291, "temperature": 25.65, "humidity": 65.04, "timestamp": "2024-01-17T10:23:27.093285"}
-            {"sensor_id": 292, "temperature": 21.22, "humidity": 58.77, "timestamp": "2024-01-17T10:23:27.093606"}
-            {"sensor_id": 293, "temperature": 24.52, "humidity": 53.87, "timestamp": "2024-01-17T10:23:27.096342"}
-            {"sensor_id": 294, "temperature": 24.78, "humidity": 59.43, "timestamp": "2024-01-17T10:23:27.096724"}
-            {"sensor_id": 295, "temperature": 30.33, "humidity": 34.37, "timestamp": "2024-01-17T10:23:27.097077"}
-            {"sensor_id": 296, "temperature": 16.37, "humidity": 56.88, "timestamp": "2024-01-17T10:23:27.097461"}
-            {"sensor_id": 297, "temperature": 26.69, "humidity": 52.7, "timestamp": "2024-01-17T10:23:27.097826"}
-            {"sensor_id": 298, "temperature": 33.41, "humidity": 56.97, "timestamp": "2024-01-17T10:23:27.098187"}
-            {"sensor_id": 299, "temperature": 26.25, "humidity": 68.43, "timestamp": "2024-01-17T10:23:27.098561"}
-            {"sensor_id": 300, "temperature": 32.12, "humidity": 69.2, "timestamp": "2024-01-17T10:23:27.098925"}
-            {"sensor_id": 301, "temperature": 15.93, "humidity": 61.02, "timestamp": "2024-01-17T10:23:27.099292"}
-            {"sensor_id": 302, "temperature": 31.25, "humidity": 44.66, "timestamp": "2024-01-17T10:23:27.099657"}
-            {"sensor_id": 303, "temperature": 25.58, "humidity": 69.07, "timestamp": "2024-01-17T10:23:27.100012"}
-            {"sensor_id": 304, "temperature": 31.64, "humidity": 33.69, "timestamp": "2024-01-17T10:23:27.105196"}
-            {"sensor_id": 305, "temperature": 27.56, "humidity": 55.05, "timestamp": "2024-01-17T10:23:27.105574"}
-            {"sensor_id": 306, "temperature": 17.04, "humidity": 42.67, "timestamp": "2024-01-17T10:23:27.106014"}
-            {"sensor_id": 307, "temperature": 28.65, "humidity": 64.83, "timestamp": "2024-01-17T10:23:27.106560"}
-            {"sensor_id": 308, "temperature": 34.34, "humidity": 51.43, "timestamp": "2024-01-17T10:23:27.106938"}
-            {"sensor_id": 309, "temperature": 30.63, "humidity": 67.91, "timestamp": "2024-01-17T10:23:27.107381"}
-            {"sensor_id": 310, "temperature": 33.47, "humidity": 53.27, "timestamp": "2024-01-17T10:23:27.107762"}
-            {"sensor_id": 311, "temperature": 27.74, "humidity": 52.29, "timestamp": "2024-01-17T10:23:27.108353"}
-            {"sensor_id": 312, "temperature": 31.21, "humidity": 45.74, "timestamp": "2024-01-17T10:23:27.108762"}
-            {"sensor_id": 313, "temperature": 27.51, "humidity": 44.02, "timestamp": "2024-01-17T10:23:27.109145"}
-            {"sensor_id": 314, "temperature": 25.74, "humidity": 56.37, "timestamp": "2024-01-17T10:23:27.109568"}
-            {"sensor_id": 315, "temperature": 33.44, "humidity": 33.22, "timestamp": "2024-01-17T10:23:27.109965"}
-            {"sensor_id": 316, "temperature": 28.1, "humidity": 30.82, "timestamp": "2024-01-17T10:23:27.114186"}
-            {"sensor_id": 317, "temperature": 16.16, "humidity": 66.88, "timestamp": "2024-01-17T10:23:27.114617"}
-            {"sensor_id": 318, "temperature": 20.22, "humidity": 59.0, "timestamp": "2024-01-17T10:23:27.115012"}
-            {"sensor_id": 319, "temperature": 29.51, "humidity": 39.0, "timestamp": "2024-01-17T10:23:27.115476"}
-            {"sensor_id": 320, "temperature": 29.71, "humidity": 32.22, "timestamp": "2024-01-17T10:23:27.115870"}
-            {"sensor_id": 321, "temperature": 27.73, "humidity": 53.97, "timestamp": "2024-01-17T10:23:27.116317"}
-            {"sensor_id": 322, "temperature": 28.73, "humidity": 64.74, "timestamp": "2024-01-17T10:23:27.116708"}
-            {"sensor_id": 323, "temperature": 18.31, "humidity": 51.33, "timestamp": "2024-01-17T10:23:27.117050"}
-            {"sensor_id": 324, "temperature": 20.86, "humidity": 41.45, "timestamp": "2024-01-17T10:23:27.117496"}
-            {"sensor_id": 325, "temperature": 25.33, "humidity": 34.55, "timestamp": "2024-01-17T10:23:27.117902"}
-            {"sensor_id": 326, "temperature": 26.09, "humidity": 47.37, "timestamp": "2024-01-17T10:23:27.119542"}
-            {"sensor_id": 327, "temperature": 26.07, "humidity": 58.94, "timestamp": "2024-01-17T10:23:27.119975"}
-            {"sensor_id": 328, "temperature": 22.65, "humidity": 38.28, "timestamp": "2024-01-17T10:23:27.120445"}
-            {"sensor_id": 329, "temperature": 15.16, "humidity": 57.92, "timestamp": "2024-01-17T10:23:27.120865"}
-            {"sensor_id": 330, "temperature": 34.16, "humidity": 64.86, "timestamp": "2024-01-17T10:23:27.121276"}
-            {"sensor_id": 331, "temperature": 24.54, "humidity": 56.38, "timestamp": "2024-01-17T10:23:27.121739"}
-            {"sensor_id": 332, "temperature": 20.61, "humidity": 42.77, "timestamp": "2024-01-17T10:23:27.122158"}
-            {"sensor_id": 333, "temperature": 20.66, "humidity": 67.72, "timestamp": "2024-01-17T10:23:27.124005"}
-            {"sensor_id": 334, "temperature": 33.91, "humidity": 47.09, "timestamp": "2024-01-17T10:23:27.124434"}
-            {"sensor_id": 335, "temperature": 24.72, "humidity": 45.64, "timestamp": "2024-01-17T10:23:27.124858"}
-            {"sensor_id": 336, "temperature": 24.79, "humidity": 66.3, "timestamp": "2024-01-17T10:23:27.125321"}
-            {"sensor_id": 337, "temperature": 33.32, "humidity": 44.03, "timestamp": "2024-01-17T10:23:27.125739"}
-            {"sensor_id": 338, "temperature": 16.32, "humidity": 34.42, "timestamp": "2024-01-17T10:23:27.126191"}
-            {"sensor_id": 339, "temperature": 17.57, "humidity": 35.8, "timestamp": "2024-01-17T10:23:27.126610"}
-            {"sensor_id": 340, "temperature": 23.15, "humidity": 40.04, "timestamp": "2024-01-17T10:23:27.126902"}
-            {"sensor_id": 341, "temperature": 30.72, "humidity": 33.16, "timestamp": "2024-01-17T10:23:27.127258"}
-            {"sensor_id": 342, "temperature": 19.95, "humidity": 38.8, "timestamp": "2024-01-17T10:23:27.127663"}
-            {"sensor_id": 343, "temperature": 19.9, "humidity": 30.64, "timestamp": "2024-01-17T10:23:27.127913"}
-            {"sensor_id": 344, "temperature": 34.85, "humidity": 46.47, "timestamp": "2024-01-17T10:23:27.129355"}
-            {"sensor_id": 345, "temperature": 31.97, "humidity": 55.05, "timestamp": "2024-01-17T10:23:27.129686"}
-            {"sensor_id": 346, "temperature": 22.43, "humidity": 47.69, "timestamp": "2024-01-17T10:23:27.129997"}
-            {"sensor_id": 347, "temperature": 18.6, "humidity": 45.83, "timestamp": "2024-01-17T10:23:27.130270"}
-            {"sensor_id": 348, "temperature": 19.35, "humidity": 38.48, "timestamp": "2024-01-17T10:23:27.130569"}
-            {"sensor_id": 349, "temperature": 32.66, "humidity": 41.23, "timestamp": "2024-01-17T10:23:27.130966"}
-            {"sensor_id": 350, "temperature": 23.24, "humidity": 51.87, "timestamp": "2024-01-17T10:23:27.131214"}
-            {"sensor_id": 351, "temperature": 16.11, "humidity": 56.83, "timestamp": "2024-01-17T10:23:27.131518"}
-            {"sensor_id": 352, "temperature": 25.34, "humidity": 52.77, "timestamp": "2024-01-17T10:23:27.131840"}
-            {"sensor_id": 353, "temperature": 27.58, "humidity": 63.21, "timestamp": "2024-01-17T10:23:27.132186"}
-            {"sensor_id": 354, "temperature": 17.45, "humidity": 35.75, "timestamp": "2024-01-17T10:23:27.132449"}
-            {"sensor_id": 355, "temperature": 30.25, "humidity": 33.11, "timestamp": "2024-01-17T10:23:27.132762"}
-            {"sensor_id": 356, "temperature": 26.2, "humidity": 58.82, "timestamp": "2024-01-17T10:23:27.133158"}
-            {"sensor_id": 357, "temperature": 19.76, "humidity": 44.31, "timestamp": "2024-01-17T10:23:27.133414"}
-            {"sensor_id": 358, "temperature": 33.71, "humidity": 43.57, "timestamp": "2024-01-17T10:23:27.134904"}
-            {"sensor_id": 359, "temperature": 23.33, "humidity": 50.43, "timestamp": "2024-01-17T10:23:27.135307"}
-            {"sensor_id": 360, "temperature": 32.36, "humidity": 41.02, "timestamp": "2024-01-17T10:23:27.135636"}
-            {"sensor_id": 361, "temperature": 29.94, "humidity": 61.29, "timestamp": "2024-01-17T10:23:27.135997"}
-            {"sensor_id": 362, "temperature": 25.36, "humidity": 55.46, "timestamp": "2024-01-17T10:23:27.136322"}
-            {"sensor_id": 363, "temperature": 29.49, "humidity": 65.73, "timestamp": "2024-01-17T10:23:27.136691"}
-            {"sensor_id": 364, "temperature": 16.93, "humidity": 65.17, "timestamp": "2024-01-17T10:23:27.137020"}
-            {"sensor_id": 365, "temperature": 27.24, "humidity": 60.46, "timestamp": "2024-01-17T10:23:27.137342"}
-            {"sensor_id": 366, "temperature": 31.56, "humidity": 51.23, "timestamp": "2024-01-17T10:23:27.137697"}
-            {"sensor_id": 367, "temperature": 26.7, "humidity": 54.5, "timestamp": "2024-01-17T10:23:27.138035"}
-            {"sensor_id": 368, "temperature": 27.58, "humidity": 38.74, "timestamp": "2024-01-17T10:23:27.138448"}
-            {"sensor_id": 369, "temperature": 33.41, "humidity": 47.23, "timestamp": "2024-01-17T10:23:27.138797"}
-            {"sensor_id": 370, "temperature": 22.31, "humidity": 35.55, "timestamp": "2024-01-17T10:23:27.140911"}
-            {"sensor_id": 371, "temperature": 24.71, "humidity": 43.87, "timestamp": "2024-01-17T10:23:27.141220"}
-            {"sensor_id": 372, "temperature": 32.69, "humidity": 52.72, "timestamp": "2024-01-17T10:23:27.141587"}
-            {"sensor_id": 373, "temperature": 32.54, "humidity": 59.59, "timestamp": "2024-01-17T10:23:27.141851"}
-            {"sensor_id": 374, "temperature": 28.51, "humidity": 42.76, "timestamp": "2024-01-17T10:23:27.142289"}
-            {"sensor_id": 375, "temperature": 33.4, "humidity": 52.77, "timestamp": "2024-01-17T10:23:27.142733"}
-            {"sensor_id": 376, "temperature": 15.47, "humidity": 39.52, "timestamp": "2024-01-17T10:23:27.143127"}
-            {"sensor_id": 377, "temperature": 19.63, "humidity": 65.92, "timestamp": "2024-01-17T10:23:27.143577"}
-            {"sensor_id": 378, "temperature": 29.01, "humidity": 35.85, "timestamp": "2024-01-17T10:23:27.144056"}
-            {"sensor_id": 379, "temperature": 34.26, "humidity": 69.13, "timestamp": "2024-01-17T10:23:27.144509"}
-            {"sensor_id": 380, "temperature": 26.25, "humidity": 36.71, "timestamp": "2024-01-17T10:23:27.145020"}
-            {"sensor_id": 381, "temperature": 16.85, "humidity": 60.24, "timestamp": "2024-01-17T10:23:27.145485"}
-            {"sensor_id": 382, "temperature": 33.71, "humidity": 48.83, "timestamp": "2024-01-17T10:23:27.145899"}
-            {"sensor_id": 383, "temperature": 30.21, "humidity": 51.81, "timestamp": "2024-01-17T10:23:27.146633"}
-            {"sensor_id": 384, "temperature": 24.91, "humidity": 69.54, "timestamp": "2024-01-17T10:23:27.147103"}
-            {"sensor_id": 385, "temperature": 25.76, "humidity": 44.32, "timestamp": "2024-01-17T10:23:27.147599"}
-            {"sensor_id": 386, "temperature": 22.63, "humidity": 51.31, "timestamp": "2024-01-17T10:23:27.148032"}
-            {"sensor_id": 387, "temperature": 16.73, "humidity": 68.62, "timestamp": "2024-01-17T10:23:27.148492"}
-            {"sensor_id": 388, "temperature": 29.59, "humidity": 65.06, "timestamp": "2024-01-17T10:23:27.148947"}
-            {"sensor_id": 389, "temperature": 22.64, "humidity": 66.64, "timestamp": "2024-01-17T10:23:27.149391"}
-            {"sensor_id": 390, "temperature": 21.96, "humidity": 58.14, "timestamp": "2024-01-17T10:23:27.149868"}
-            {"sensor_id": 391, "temperature": 15.56, "humidity": 66.73, "timestamp": "2024-01-17T10:23:27.150506"}
-            {"sensor_id": 392, "temperature": 20.83, "humidity": 36.98, "timestamp": "2024-01-17T10:23:27.150983"}
-            {"sensor_id": 393, "temperature": 26.56, "humidity": 60.17, "timestamp": "2024-01-17T10:23:27.151487"}
-            {"sensor_id": 394, "temperature": 32.44, "humidity": 49.01, "timestamp": "2024-01-17T10:23:27.151980"}
-            {"sensor_id": 395, "temperature": 26.14, "humidity": 49.9, "timestamp": "2024-01-17T10:23:27.152422"}
-            {"sensor_id": 396, "temperature": 21.22, "humidity": 68.59, "timestamp": "2024-01-17T10:23:27.152888"}
-            {"sensor_id": 397, "temperature": 21.7, "humidity": 53.39, "timestamp": "2024-01-17T10:23:27.153350"}
-            {"sensor_id": 398, "temperature": 28.25, "humidity": 47.38, "timestamp": "2024-01-17T10:23:27.153785"}
-            {"sensor_id": 399, "temperature": 16.44, "humidity": 46.52, "timestamp": "2024-01-17T10:23:27.154407"}
-            {"sensor_id": 400, "temperature": 27.87, "humidity": 35.84, "timestamp": "2024-01-17T10:23:27.154889"}
+        - name: MESSAGE_TEMPLATE
+          value: flights
         - name: TOPIC
-          value: big-external-data
+          value: flights-external-data
         - name: DELAY_MS
           value: "100"
         - name: BOOTSTRAP_SERVERS
@@ -512,7 +112,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -534,19 +134,19 @@ kind: Deployment
 metadata:
   labels:
     app: streams
-    type: big-external
-  name: big-external-streams
+    type: flights-external
+  name: flights-external-streams
 spec:
   replicas: 4
   selector:
     matchLabels:
       app: streams
-      type: big-external
+      type: flights-external
   template:
     metadata:
       labels:
         app: streams
-        type: big-external
+        type: flights-external
     spec:
       affinity:
         nodeAffinity:
@@ -560,11 +160,11 @@ spec:
       containers:
       - env:
         - name: APPLICATION_ID
-          value: big-external-data-streams
+          value: flights-external-data-streams
         - name: SOURCE_TOPIC
-          value: big-external-data
+          value: flights-external-data
         - name: TARGET_TOPIC
-          value: big-external-data-reversed
+          value: flights-external-data-reversed
         - name: USER_CRT
           value: ${secrets:strimzi-kafka/kafka-external-streams:user.crt}
         - name: USER_KEY
@@ -577,7 +177,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -599,19 +199,19 @@ kind: Deployment
 metadata:
   labels:
     app: consumer
-    type: big-internal
-  name: big-internal-consumer
+    type: flights-internal
+  name: flights-internal-consumer
 spec:
   replicas: 20
   selector:
     matchLabels:
       app: consumer
-      type: big-internal
+      type: flights-internal
   template:
     metadata:
       labels:
         app: consumer
-        type: big-internal
+        type: flights-internal
     spec:
       affinity:
         nodeAffinity:
@@ -625,9 +225,9 @@ spec:
       containers:
       - env:
         - name: TOPIC
-          value: big-internal-data-reversed
+          value: flights-internal-data-reversed
         - name: GROUP_ID
-          value: big-internal-data-consumer
+          value: flights-internal-data-consumer
         - name: USER_CRT
           value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.crt}
         - name: USER_KEY
@@ -642,7 +242,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -664,19 +264,19 @@ kind: Deployment
 metadata:
   labels:
     app: producer
-    type: big-internal
-  name: big-internal-producer
+    type: flights-internal
+  name: flights-internal-producer
 spec:
   replicas: 7
   selector:
     matchLabels:
       app: producer
-      type: big-internal
+      type: flights-internal
   template:
     metadata:
       labels:
         app: producer
-        type: big-internal
+        type: flights-internal
     spec:
       affinity:
         nodeAffinity:
@@ -689,410 +289,10 @@ spec:
                 - connect
       containers:
       - env:
-        - name: MESSAGE
-          value: |
-            {"sensor_id": 1, "temperature": 20.94, "humidity": 63.99, "timestamp": "2024-01-17T10:23:27.029216"}
-            {"sensor_id": 2, "temperature": 27.83, "humidity": 57.7, "timestamp": "2024-01-17T10:23:27.029266"}
-            {"sensor_id": 3, "temperature": 34.69, "humidity": 53.64, "timestamp": "2024-01-17T10:23:27.029297"}
-            {"sensor_id": 4, "temperature": 20.64, "humidity": 68.49, "timestamp": "2024-01-17T10:23:27.029325"}
-            {"sensor_id": 5, "temperature": 18.96, "humidity": 34.76, "timestamp": "2024-01-17T10:23:27.029352"}
-            {"sensor_id": 6, "temperature": 25.82, "humidity": 57.45, "timestamp": "2024-01-17T10:23:27.029381"}
-            {"sensor_id": 7, "temperature": 30.55, "humidity": 52.15, "timestamp": "2024-01-17T10:23:27.029408"}
-            {"sensor_id": 8, "temperature": 20.66, "humidity": 53.38, "timestamp": "2024-01-17T10:23:27.029439"}
-            {"sensor_id": 9, "temperature": 16.72, "humidity": 52.08, "timestamp": "2024-01-17T10:23:27.029485"}
-            {"sensor_id": 10, "temperature": 22.11, "humidity": 56.68, "timestamp": "2024-01-17T10:23:27.029521"}
-            {"sensor_id": 11, "temperature": 27.51, "humidity": 40.63, "timestamp": "2024-01-17T10:23:27.029555"}
-            {"sensor_id": 12, "temperature": 33.68, "humidity": 63.25, "timestamp": "2024-01-17T10:23:27.029599"}
-            {"sensor_id": 13, "temperature": 21.58, "humidity": 39.28, "timestamp": "2024-01-17T10:23:27.029638"}
-            {"sensor_id": 14, "temperature": 32.98, "humidity": 46.71, "timestamp": "2024-01-17T10:23:27.029674"}
-            {"sensor_id": 15, "temperature": 17.88, "humidity": 67.16, "timestamp": "2024-01-17T10:23:27.029716"}
-            {"sensor_id": 16, "temperature": 18.87, "humidity": 56.25, "timestamp": "2024-01-17T10:23:27.029754"}
-            {"sensor_id": 17, "temperature": 25.15, "humidity": 53.9, "timestamp": "2024-01-17T10:23:27.029808"}
-            {"sensor_id": 18, "temperature": 32.26, "humidity": 55.9, "timestamp": "2024-01-17T10:23:27.029848"}
-            {"sensor_id": 19, "temperature": 32.64, "humidity": 45.91, "timestamp": "2024-01-17T10:23:27.029889"}
-            {"sensor_id": 20, "temperature": 25.8, "humidity": 43.02, "timestamp": "2024-01-17T10:23:27.029925"}
-            {"sensor_id": 21, "temperature": 34.88, "humidity": 68.55, "timestamp": "2024-01-17T10:23:27.029966"}
-            {"sensor_id": 22, "temperature": 32.73, "humidity": 63.04, "timestamp": "2024-01-17T10:23:27.030009"}
-            {"sensor_id": 23, "temperature": 23.71, "humidity": 61.9, "timestamp": "2024-01-17T10:23:27.030078"}
-            {"sensor_id": 24, "temperature": 33.87, "humidity": 54.03, "timestamp": "2024-01-17T10:23:27.030133"}
-            {"sensor_id": 25, "temperature": 25.11, "humidity": 50.66, "timestamp": "2024-01-17T10:23:27.030180"}
-            {"sensor_id": 26, "temperature": 20.03, "humidity": 62.38, "timestamp": "2024-01-17T10:23:27.030229"}
-            {"sensor_id": 27, "temperature": 24.3, "humidity": 31.27, "timestamp": "2024-01-17T10:23:27.030280"}
-            {"sensor_id": 28, "temperature": 24.14, "humidity": 56.86, "timestamp": "2024-01-17T10:23:27.030335"}
-            {"sensor_id": 29, "temperature": 15.45, "humidity": 64.24, "timestamp": "2024-01-17T10:23:27.030387"}
-            {"sensor_id": 30, "temperature": 33.94, "humidity": 43.02, "timestamp": "2024-01-17T10:23:27.030440"}
-            {"sensor_id": 31, "temperature": 29.78, "humidity": 48.57, "timestamp": "2024-01-17T10:23:27.030494"}
-            {"sensor_id": 32, "temperature": 18.25, "humidity": 49.27, "timestamp": "2024-01-17T10:23:27.030565"}
-            {"sensor_id": 33, "temperature": 29.21, "humidity": 34.44, "timestamp": "2024-01-17T10:23:27.030630"}
-            {"sensor_id": 34, "temperature": 25.73, "humidity": 45.62, "timestamp": "2024-01-17T10:23:27.030687"}
-            {"sensor_id": 35, "temperature": 21.11, "humidity": 31.23, "timestamp": "2024-01-17T10:23:27.030744"}
-            {"sensor_id": 36, "temperature": 32.12, "humidity": 64.88, "timestamp": "2024-01-17T10:23:27.030804"}
-            {"sensor_id": 37, "temperature": 31.57, "humidity": 55.68, "timestamp": "2024-01-17T10:23:27.030879"}
-            {"sensor_id": 38, "temperature": 28.69, "humidity": 69.95, "timestamp": "2024-01-17T10:23:27.030943"}
-            {"sensor_id": 39, "temperature": 20.25, "humidity": 30.48, "timestamp": "2024-01-17T10:23:27.031007"}
-            {"sensor_id": 40, "temperature": 17.93, "humidity": 44.76, "timestamp": "2024-01-17T10:23:27.031071"}
-            {"sensor_id": 41, "temperature": 19.8, "humidity": 61.23, "timestamp": "2024-01-17T10:23:27.031136"}
-            {"sensor_id": 42, "temperature": 27.14, "humidity": 42.98, "timestamp": "2024-01-17T10:23:27.031204"}
-            {"sensor_id": 43, "temperature": 18.24, "humidity": 56.16, "timestamp": "2024-01-17T10:23:27.031273"}
-            {"sensor_id": 44, "temperature": 16.76, "humidity": 64.63, "timestamp": "2024-01-17T10:23:27.031342"}
-            {"sensor_id": 45, "temperature": 21.34, "humidity": 60.13, "timestamp": "2024-01-17T10:23:27.031412"}
-            {"sensor_id": 46, "temperature": 20.61, "humidity": 38.21, "timestamp": "2024-01-17T10:23:27.031502"}
-            {"sensor_id": 47, "temperature": 21.47, "humidity": 68.06, "timestamp": "2024-01-17T10:23:27.031576"}
-            {"sensor_id": 48, "temperature": 19.01, "humidity": 47.59, "timestamp": "2024-01-17T10:23:27.031649"}
-            {"sensor_id": 49, "temperature": 26.66, "humidity": 40.13, "timestamp": "2024-01-17T10:23:27.031724"}
-            {"sensor_id": 50, "temperature": 24.65, "humidity": 55.17, "timestamp": "2024-01-17T10:23:27.032070"}
-            {"sensor_id": 51, "temperature": 34.84, "humidity": 40.25, "timestamp": "2024-01-17T10:23:27.032149"}
-            {"sensor_id": 52, "temperature": 18.44, "humidity": 40.2, "timestamp": "2024-01-17T10:23:27.032223"}
-            {"sensor_id": 53, "temperature": 20.2, "humidity": 34.04, "timestamp": "2024-01-17T10:23:27.032291"}
-            {"sensor_id": 54, "temperature": 25.65, "humidity": 63.6, "timestamp": "2024-01-17T10:23:27.032358"}
-            {"sensor_id": 55, "temperature": 16.36, "humidity": 43.23, "timestamp": "2024-01-17T10:23:27.032466"}
-            {"sensor_id": 56, "temperature": 32.09, "humidity": 30.79, "timestamp": "2024-01-17T10:23:27.032551"}
-            {"sensor_id": 57, "temperature": 27.0, "humidity": 57.67, "timestamp": "2024-01-17T10:23:27.032637"}
-            {"sensor_id": 58, "temperature": 30.65, "humidity": 31.43, "timestamp": "2024-01-17T10:23:27.032717"}
-            {"sensor_id": 59, "temperature": 27.81, "humidity": 64.33, "timestamp": "2024-01-17T10:23:27.032804"}
-            {"sensor_id": 60, "temperature": 32.04, "humidity": 57.81, "timestamp": "2024-01-17T10:23:27.032893"}
-            {"sensor_id": 61, "temperature": 23.95, "humidity": 30.46, "timestamp": "2024-01-17T10:23:27.033024"}
-            {"sensor_id": 62, "temperature": 24.63, "humidity": 61.2, "timestamp": "2024-01-17T10:23:27.033115"}
-            {"sensor_id": 63, "temperature": 33.49, "humidity": 65.7, "timestamp": "2024-01-17T10:23:27.033209"}
-            {"sensor_id": 64, "temperature": 23.88, "humidity": 30.83, "timestamp": "2024-01-17T10:23:27.033317"}
-            {"sensor_id": 65, "temperature": 28.4, "humidity": 31.65, "timestamp": "2024-01-17T10:23:27.033413"}
-            {"sensor_id": 66, "temperature": 25.22, "humidity": 60.91, "timestamp": "2024-01-17T10:23:27.033508"}
-            {"sensor_id": 67, "temperature": 22.36, "humidity": 51.75, "timestamp": "2024-01-17T10:23:27.033605"}
-            {"sensor_id": 68, "temperature": 20.98, "humidity": 65.37, "timestamp": "2024-01-17T10:23:27.033704"}
-            {"sensor_id": 69, "temperature": 32.19, "humidity": 33.64, "timestamp": "2024-01-17T10:23:27.033809"}
-            {"sensor_id": 70, "temperature": 17.09, "humidity": 63.98, "timestamp": "2024-01-17T10:23:27.033904"}
-            {"sensor_id": 71, "temperature": 22.93, "humidity": 59.93, "timestamp": "2024-01-17T10:23:27.034006"}
-            {"sensor_id": 72, "temperature": 22.37, "humidity": 32.59, "timestamp": "2024-01-17T10:23:27.034123"}
-            {"sensor_id": 73, "temperature": 21.36, "humidity": 32.38, "timestamp": "2024-01-17T10:23:27.034881"}
-            {"sensor_id": 74, "temperature": 18.79, "humidity": 34.14, "timestamp": "2024-01-17T10:23:27.035019"}
-            {"sensor_id": 75, "temperature": 25.84, "humidity": 42.88, "timestamp": "2024-01-17T10:23:27.035129"}
-            {"sensor_id": 76, "temperature": 18.67, "humidity": 44.53, "timestamp": "2024-01-17T10:23:27.035260"}
-            {"sensor_id": 77, "temperature": 28.09, "humidity": 44.32, "timestamp": "2024-01-17T10:23:27.035366"}
-            {"sensor_id": 78, "temperature": 17.98, "humidity": 54.97, "timestamp": "2024-01-17T10:23:27.035469"}
-            {"sensor_id": 79, "temperature": 22.01, "humidity": 45.1, "timestamp": "2024-01-17T10:23:27.035594"}
-            {"sensor_id": 80, "temperature": 27.9, "humidity": 59.08, "timestamp": "2024-01-17T10:23:27.035701"}
-            {"sensor_id": 81, "temperature": 30.79, "humidity": 47.27, "timestamp": "2024-01-17T10:23:27.035814"}
-            {"sensor_id": 82, "temperature": 31.46, "humidity": 62.84, "timestamp": "2024-01-17T10:23:27.035949"}
-            {"sensor_id": 83, "temperature": 21.62, "humidity": 67.79, "timestamp": "2024-01-17T10:23:27.036057"}
-            {"sensor_id": 84, "temperature": 27.06, "humidity": 54.16, "timestamp": "2024-01-17T10:23:27.036168"}
-            {"sensor_id": 85, "temperature": 34.11, "humidity": 47.92, "timestamp": "2024-01-17T10:23:27.036288"}
-            {"sensor_id": 86, "temperature": 18.11, "humidity": 53.25, "timestamp": "2024-01-17T10:23:27.036405"}
-            {"sensor_id": 87, "temperature": 21.04, "humidity": 37.74, "timestamp": "2024-01-17T10:23:27.036521"}
-            {"sensor_id": 88, "temperature": 33.7, "humidity": 37.07, "timestamp": "2024-01-17T10:23:27.036702"}
-            {"sensor_id": 89, "temperature": 22.9, "humidity": 55.21, "timestamp": "2024-01-17T10:23:27.036846"}
-            {"sensor_id": 90, "temperature": 19.23, "humidity": 48.91, "timestamp": "2024-01-17T10:23:27.037223"}
-            {"sensor_id": 91, "temperature": 27.79, "humidity": 59.88, "timestamp": "2024-01-17T10:23:27.037375"}
-            {"sensor_id": 92, "temperature": 30.72, "humidity": 56.81, "timestamp": "2024-01-17T10:23:27.037541"}
-            {"sensor_id": 93, "temperature": 24.13, "humidity": 38.26, "timestamp": "2024-01-17T10:23:27.037705"}
-            {"sensor_id": 94, "temperature": 31.91, "humidity": 65.0, "timestamp": "2024-01-17T10:23:27.037848"}
-            {"sensor_id": 95, "temperature": 19.59, "humidity": 44.4, "timestamp": "2024-01-17T10:23:27.038018"}
-            {"sensor_id": 96, "temperature": 15.0, "humidity": 62.96, "timestamp": "2024-01-17T10:23:27.038175"}
-            {"sensor_id": 97, "temperature": 20.35, "humidity": 54.69, "timestamp": "2024-01-17T10:23:27.038319"}
-            {"sensor_id": 98, "temperature": 21.39, "humidity": 47.87, "timestamp": "2024-01-17T10:23:27.038448"}
-            {"sensor_id": 99, "temperature": 28.01, "humidity": 45.68, "timestamp": "2024-01-17T10:23:27.038582"}
-            {"sensor_id": 100, "temperature": 25.16, "humidity": 53.63, "timestamp": "2024-01-17T10:23:27.038709"}
-            {"sensor_id": 101, "temperature": 26.69, "humidity": 48.31, "timestamp": "2024-01-17T10:23:27.038836"}
-            {"sensor_id": 102, "temperature": 34.6, "humidity": 49.42, "timestamp": "2024-01-17T10:23:27.038976"}
-            {"sensor_id": 103, "temperature": 17.83, "humidity": 35.5, "timestamp": "2024-01-17T10:23:27.039128"}
-            {"sensor_id": 104, "temperature": 21.64, "humidity": 54.51, "timestamp": "2024-01-17T10:23:27.039252"}
-            {"sensor_id": 105, "temperature": 24.22, "humidity": 65.71, "timestamp": "2024-01-17T10:23:27.039375"}
-            {"sensor_id": 106, "temperature": 26.37, "humidity": 37.42, "timestamp": "2024-01-17T10:23:27.039491"}
-            {"sensor_id": 107, "temperature": 21.49, "humidity": 55.28, "timestamp": "2024-01-17T10:23:27.039606"}
-            {"sensor_id": 108, "temperature": 34.06, "humidity": 49.42, "timestamp": "2024-01-17T10:23:27.039767"}
-            {"sensor_id": 109, "temperature": 30.88, "humidity": 45.13, "timestamp": "2024-01-17T10:23:27.039912"}
-            {"sensor_id": 110, "temperature": 18.18, "humidity": 43.08, "timestamp": "2024-01-17T10:23:27.040057"}
-            {"sensor_id": 111, "temperature": 34.41, "humidity": 39.01, "timestamp": "2024-01-17T10:23:27.040198"}
-            {"sensor_id": 112, "temperature": 19.79, "humidity": 61.18, "timestamp": "2024-01-17T10:23:27.040342"}
-            {"sensor_id": 113, "temperature": 22.7, "humidity": 37.22, "timestamp": "2024-01-17T10:23:27.040487"}
-            {"sensor_id": 114, "temperature": 21.26, "humidity": 57.71, "timestamp": "2024-01-17T10:23:27.040629"}
-            {"sensor_id": 115, "temperature": 21.01, "humidity": 65.09, "timestamp": "2024-01-17T10:23:27.040777"}
-            {"sensor_id": 116, "temperature": 33.43, "humidity": 44.25, "timestamp": "2024-01-17T10:23:27.040930"}
-            {"sensor_id": 117, "temperature": 30.24, "humidity": 69.13, "timestamp": "2024-01-17T10:23:27.041081"}
-            {"sensor_id": 118, "temperature": 34.04, "humidity": 59.67, "timestamp": "2024-01-17T10:23:27.041236"}
-            {"sensor_id": 119, "temperature": 34.63, "humidity": 31.86, "timestamp": "2024-01-17T10:23:27.041390"}
-            {"sensor_id": 120, "temperature": 34.12, "humidity": 58.05, "timestamp": "2024-01-17T10:23:27.041535"}
-            {"sensor_id": 121, "temperature": 32.14, "humidity": 52.27, "timestamp": "2024-01-17T10:23:27.041662"}
-            {"sensor_id": 122, "temperature": 16.75, "humidity": 65.28, "timestamp": "2024-01-17T10:23:27.041799"}
-            {"sensor_id": 123, "temperature": 19.5, "humidity": 30.41, "timestamp": "2024-01-17T10:23:27.041982"}
-            {"sensor_id": 124, "temperature": 16.56, "humidity": 66.0, "timestamp": "2024-01-17T10:23:27.042701"}
-            {"sensor_id": 125, "temperature": 32.41, "humidity": 48.48, "timestamp": "2024-01-17T10:23:27.042886"}
-            {"sensor_id": 126, "temperature": 28.93, "humidity": 35.39, "timestamp": "2024-01-17T10:23:27.043108"}
-            {"sensor_id": 127, "temperature": 34.46, "humidity": 64.22, "timestamp": "2024-01-17T10:23:27.043310"}
-            {"sensor_id": 128, "temperature": 26.79, "humidity": 52.56, "timestamp": "2024-01-17T10:23:27.043509"}
-            {"sensor_id": 129, "temperature": 33.94, "humidity": 64.87, "timestamp": "2024-01-17T10:23:27.043685"}
-            {"sensor_id": 130, "temperature": 16.54, "humidity": 67.78, "timestamp": "2024-01-17T10:23:27.043880"}
-            {"sensor_id": 131, "temperature": 28.61, "humidity": 62.52, "timestamp": "2024-01-17T10:23:27.044074"}
-            {"sensor_id": 132, "temperature": 23.84, "humidity": 61.51, "timestamp": "2024-01-17T10:23:27.044264"}
-            {"sensor_id": 133, "temperature": 28.02, "humidity": 54.76, "timestamp": "2024-01-17T10:23:27.044444"}
-            {"sensor_id": 134, "temperature": 20.85, "humidity": 67.79, "timestamp": "2024-01-17T10:23:27.044637"}
-            {"sensor_id": 135, "temperature": 33.32, "humidity": 59.4, "timestamp": "2024-01-17T10:23:27.044859"}
-            {"sensor_id": 136, "temperature": 28.05, "humidity": 36.47, "timestamp": "2024-01-17T10:23:27.045060"}
-            {"sensor_id": 137, "temperature": 18.06, "humidity": 58.24, "timestamp": "2024-01-17T10:23:27.048572"}
-            {"sensor_id": 138, "temperature": 23.51, "humidity": 62.74, "timestamp": "2024-01-17T10:23:27.048824"}
-            {"sensor_id": 139, "temperature": 29.0, "humidity": 57.62, "timestamp": "2024-01-17T10:23:27.049006"}
-            {"sensor_id": 140, "temperature": 17.81, "humidity": 60.8, "timestamp": "2024-01-17T10:23:27.049177"}
-            {"sensor_id": 141, "temperature": 20.08, "humidity": 67.56, "timestamp": "2024-01-17T10:23:27.049377"}
-            {"sensor_id": 142, "temperature": 24.16, "humidity": 51.47, "timestamp": "2024-01-17T10:23:27.049553"}
-            {"sensor_id": 143, "temperature": 15.95, "humidity": 66.84, "timestamp": "2024-01-17T10:23:27.049731"}
-            {"sensor_id": 144, "temperature": 21.21, "humidity": 59.8, "timestamp": "2024-01-17T10:23:27.049906"}
-            {"sensor_id": 145, "temperature": 15.17, "humidity": 48.9, "timestamp": "2024-01-17T10:23:27.050180"}
-            {"sensor_id": 146, "temperature": 28.88, "humidity": 31.16, "timestamp": "2024-01-17T10:23:27.050388"}
-            {"sensor_id": 147, "temperature": 18.09, "humidity": 47.07, "timestamp": "2024-01-17T10:23:27.050580"}
-            {"sensor_id": 148, "temperature": 16.86, "humidity": 42.37, "timestamp": "2024-01-17T10:23:27.050761"}
-            {"sensor_id": 149, "temperature": 23.28, "humidity": 57.61, "timestamp": "2024-01-17T10:23:27.050950"}
-            {"sensor_id": 150, "temperature": 15.06, "humidity": 34.37, "timestamp": "2024-01-17T10:23:27.051130"}
-            {"sensor_id": 151, "temperature": 21.75, "humidity": 67.4, "timestamp": "2024-01-17T10:23:27.051294"}
-            {"sensor_id": 152, "temperature": 15.17, "humidity": 64.01, "timestamp": "2024-01-17T10:23:27.051476"}
-            {"sensor_id": 153, "temperature": 27.48, "humidity": 35.32, "timestamp": "2024-01-17T10:23:27.051649"}
-            {"sensor_id": 154, "temperature": 29.34, "humidity": 69.4, "timestamp": "2024-01-17T10:23:27.051822"}
-            {"sensor_id": 155, "temperature": 21.12, "humidity": 65.27, "timestamp": "2024-01-17T10:23:27.052281"}
-            {"sensor_id": 156, "temperature": 24.89, "humidity": 49.86, "timestamp": "2024-01-17T10:23:27.052484"}
-            {"sensor_id": 157, "temperature": 26.63, "humidity": 51.38, "timestamp": "2024-01-17T10:23:27.052673"}
-            {"sensor_id": 158, "temperature": 31.65, "humidity": 59.68, "timestamp": "2024-01-17T10:23:27.052811"}
-            {"sensor_id": 159, "temperature": 33.5, "humidity": 50.8, "timestamp": "2024-01-17T10:23:27.052940"}
-            {"sensor_id": 160, "temperature": 22.85, "humidity": 56.45, "timestamp": "2024-01-17T10:23:27.053169"}
-            {"sensor_id": 161, "temperature": 15.78, "humidity": 53.22, "timestamp": "2024-01-17T10:23:27.053380"}
-            {"sensor_id": 162, "temperature": 34.07, "humidity": 42.86, "timestamp": "2024-01-17T10:23:27.053578"}
-            {"sensor_id": 163, "temperature": 23.52, "humidity": 63.6, "timestamp": "2024-01-17T10:23:27.053767"}
-            {"sensor_id": 164, "temperature": 26.4, "humidity": 51.03, "timestamp": "2024-01-17T10:23:27.053909"}
-            {"sensor_id": 165, "temperature": 28.52, "humidity": 42.06, "timestamp": "2024-01-17T10:23:27.054046"}
-            {"sensor_id": 166, "temperature": 28.7, "humidity": 62.43, "timestamp": "2024-01-17T10:23:27.054265"}
-            {"sensor_id": 167, "temperature": 23.91, "humidity": 44.72, "timestamp": "2024-01-17T10:23:27.054471"}
-            {"sensor_id": 168, "temperature": 23.67, "humidity": 33.37, "timestamp": "2024-01-17T10:23:27.054680"}
-            {"sensor_id": 169, "temperature": 27.74, "humidity": 51.08, "timestamp": "2024-01-17T10:23:27.054880"}
-            {"sensor_id": 170, "temperature": 34.43, "humidity": 69.76, "timestamp": "2024-01-17T10:23:27.055062"}
-            {"sensor_id": 171, "temperature": 32.08, "humidity": 39.72, "timestamp": "2024-01-17T10:23:27.055226"}
-            {"sensor_id": 172, "temperature": 15.49, "humidity": 57.05, "timestamp": "2024-01-17T10:23:27.055761"}
-            {"sensor_id": 173, "temperature": 23.61, "humidity": 59.65, "timestamp": "2024-01-17T10:23:27.056016"}
-            {"sensor_id": 174, "temperature": 20.79, "humidity": 60.04, "timestamp": "2024-01-17T10:23:27.056224"}
-            {"sensor_id": 175, "temperature": 18.19, "humidity": 61.43, "timestamp": "2024-01-17T10:23:27.056436"}
-            {"sensor_id": 176, "temperature": 31.04, "humidity": 30.3, "timestamp": "2024-01-17T10:23:27.056632"}
-            {"sensor_id": 177, "temperature": 29.33, "humidity": 59.22, "timestamp": "2024-01-17T10:23:27.056842"}
-            {"sensor_id": 178, "temperature": 25.2, "humidity": 37.28, "timestamp": "2024-01-17T10:23:27.057052"}
-            {"sensor_id": 179, "temperature": 23.43, "humidity": 42.52, "timestamp": "2024-01-17T10:23:27.057293"}
-            {"sensor_id": 180, "temperature": 27.58, "humidity": 50.16, "timestamp": "2024-01-17T10:23:27.057475"}
-            {"sensor_id": 181, "temperature": 19.21, "humidity": 66.18, "timestamp": "2024-01-17T10:23:27.057665"}
-            {"sensor_id": 182, "temperature": 30.88, "humidity": 36.96, "timestamp": "2024-01-17T10:23:27.057852"}
-            {"sensor_id": 183, "temperature": 30.89, "humidity": 38.95, "timestamp": "2024-01-17T10:23:27.058127"}
-            {"sensor_id": 184, "temperature": 28.07, "humidity": 35.49, "timestamp": "2024-01-17T10:23:27.058336"}
-            {"sensor_id": 185, "temperature": 29.43, "humidity": 69.29, "timestamp": "2024-01-17T10:23:27.058534"}
-            {"sensor_id": 186, "temperature": 29.64, "humidity": 49.4, "timestamp": "2024-01-17T10:23:27.058752"}
-            {"sensor_id": 187, "temperature": 17.3, "humidity": 36.3, "timestamp": "2024-01-17T10:23:27.058936"}
-            {"sensor_id": 188, "temperature": 20.51, "humidity": 43.84, "timestamp": "2024-01-17T10:23:27.059157"}
-            {"sensor_id": 189, "temperature": 25.09, "humidity": 64.27, "timestamp": "2024-01-17T10:23:27.059313"}
-            {"sensor_id": 190, "temperature": 20.78, "humidity": 59.85, "timestamp": "2024-01-17T10:23:27.059510"}
-            {"sensor_id": 191, "temperature": 16.89, "humidity": 35.04, "timestamp": "2024-01-17T10:23:27.059725"}
-            {"sensor_id": 192, "temperature": 17.88, "humidity": 51.67, "timestamp": "2024-01-17T10:23:27.059915"}
-            {"sensor_id": 193, "temperature": 18.04, "humidity": 56.68, "timestamp": "2024-01-17T10:23:27.060133"}
-            {"sensor_id": 194, "temperature": 17.38, "humidity": 69.41, "timestamp": "2024-01-17T10:23:27.060571"}
-            {"sensor_id": 195, "temperature": 17.86, "humidity": 46.87, "timestamp": "2024-01-17T10:23:27.060810"}
-            {"sensor_id": 196, "temperature": 15.73, "humidity": 64.28, "timestamp": "2024-01-17T10:23:27.060973"}
-            {"sensor_id": 197, "temperature": 32.0, "humidity": 48.91, "timestamp": "2024-01-17T10:23:27.061208"}
-            {"sensor_id": 198, "temperature": 24.28, "humidity": 63.97, "timestamp": "2024-01-17T10:23:27.061385"}
-            {"sensor_id": 199, "temperature": 32.33, "humidity": 39.92, "timestamp": "2024-01-17T10:23:27.061638"}
-            {"sensor_id": 200, "temperature": 27.82, "humidity": 36.57, "timestamp": "2024-01-17T10:23:27.061855"}
-            {"sensor_id": 201, "temperature": 28.7, "humidity": 37.2, "timestamp": "2024-01-17T10:23:27.062094"}
-            {"sensor_id": 202, "temperature": 20.81, "humidity": 43.06, "timestamp": "2024-01-17T10:23:27.062525"}
-            {"sensor_id": 203, "temperature": 17.41, "humidity": 40.55, "timestamp": "2024-01-17T10:23:27.062760"}
-            {"sensor_id": 204, "temperature": 28.15, "humidity": 46.95, "timestamp": "2024-01-17T10:23:27.063005"}
-            {"sensor_id": 205, "temperature": 29.66, "humidity": 63.62, "timestamp": "2024-01-17T10:23:27.063188"}
-            {"sensor_id": 206, "temperature": 29.11, "humidity": 51.01, "timestamp": "2024-01-17T10:23:27.063391"}
-            {"sensor_id": 207, "temperature": 28.24, "humidity": 36.71, "timestamp": "2024-01-17T10:23:27.063633"}
-            {"sensor_id": 208, "temperature": 26.08, "humidity": 64.5, "timestamp": "2024-01-17T10:23:27.063833"}
-            {"sensor_id": 209, "temperature": 31.6, "humidity": 36.57, "timestamp": "2024-01-17T10:23:27.064167"}
-            {"sensor_id": 210, "temperature": 30.29, "humidity": 37.12, "timestamp": "2024-01-17T10:23:27.064366"}
-            {"sensor_id": 211, "temperature": 27.47, "humidity": 58.58, "timestamp": "2024-01-17T10:23:27.064605"}
-            {"sensor_id": 212, "temperature": 31.29, "humidity": 54.54, "timestamp": "2024-01-17T10:23:27.064810"}
-            {"sensor_id": 213, "temperature": 16.75, "humidity": 38.45, "timestamp": "2024-01-17T10:23:27.065019"}
-            {"sensor_id": 214, "temperature": 16.18, "humidity": 57.22, "timestamp": "2024-01-17T10:23:27.065327"}
-            {"sensor_id": 215, "temperature": 19.22, "humidity": 56.91, "timestamp": "2024-01-17T10:23:27.065671"}
-            {"sensor_id": 216, "temperature": 28.93, "humidity": 68.56, "timestamp": "2024-01-17T10:23:27.065921"}
-            {"sensor_id": 217, "temperature": 33.6, "humidity": 69.38, "timestamp": "2024-01-17T10:23:27.066176"}
-            {"sensor_id": 218, "temperature": 21.31, "humidity": 68.07, "timestamp": "2024-01-17T10:23:27.066407"}
-            {"sensor_id": 219, "temperature": 29.44, "humidity": 44.89, "timestamp": "2024-01-17T10:23:27.066648"}
-            {"sensor_id": 220, "temperature": 16.73, "humidity": 37.27, "timestamp": "2024-01-17T10:23:27.066950"}
-            {"sensor_id": 221, "temperature": 23.03, "humidity": 38.86, "timestamp": "2024-01-17T10:23:27.067144"}
-            {"sensor_id": 222, "temperature": 25.61, "humidity": 35.8, "timestamp": "2024-01-17T10:23:27.067381"}
-            {"sensor_id": 223, "temperature": 23.27, "humidity": 65.76, "timestamp": "2024-01-17T10:23:27.067635"}
-            {"sensor_id": 224, "temperature": 34.25, "humidity": 43.74, "timestamp": "2024-01-17T10:23:27.068104"}
-            {"sensor_id": 225, "temperature": 25.09, "humidity": 46.45, "timestamp": "2024-01-17T10:23:27.068328"}
-            {"sensor_id": 226, "temperature": 33.93, "humidity": 51.28, "timestamp": "2024-01-17T10:23:27.068588"}
-            {"sensor_id": 227, "temperature": 32.86, "humidity": 55.83, "timestamp": "2024-01-17T10:23:27.068833"}
-            {"sensor_id": 228, "temperature": 31.64, "humidity": 52.29, "timestamp": "2024-01-17T10:23:27.069162"}
-            {"sensor_id": 229, "temperature": 30.09, "humidity": 65.39, "timestamp": "2024-01-17T10:23:27.069369"}
-            {"sensor_id": 230, "temperature": 26.4, "humidity": 60.85, "timestamp": "2024-01-17T10:23:27.069607"}
-            {"sensor_id": 231, "temperature": 33.48, "humidity": 69.14, "timestamp": "2024-01-17T10:23:27.069861"}
-            {"sensor_id": 232, "temperature": 19.05, "humidity": 39.03, "timestamp": "2024-01-17T10:23:27.070095"}
-            {"sensor_id": 233, "temperature": 17.68, "humidity": 51.12, "timestamp": "2024-01-17T10:23:27.070365"}
-            {"sensor_id": 234, "temperature": 33.84, "humidity": 47.24, "timestamp": "2024-01-17T10:23:27.070673"}
-            {"sensor_id": 235, "temperature": 22.24, "humidity": 53.74, "timestamp": "2024-01-17T10:23:27.070940"}
-            {"sensor_id": 236, "temperature": 34.03, "humidity": 69.56, "timestamp": "2024-01-17T10:23:27.071158"}
-            {"sensor_id": 237, "temperature": 28.85, "humidity": 40.56, "timestamp": "2024-01-17T10:23:27.071766"}
-            {"sensor_id": 238, "temperature": 33.47, "humidity": 49.81, "timestamp": "2024-01-17T10:23:27.072058"}
-            {"sensor_id": 239, "temperature": 18.49, "humidity": 65.73, "timestamp": "2024-01-17T10:23:27.072277"}
-            {"sensor_id": 240, "temperature": 17.74, "humidity": 42.75, "timestamp": "2024-01-17T10:23:27.072534"}
-            {"sensor_id": 241, "temperature": 29.0, "humidity": 46.19, "timestamp": "2024-01-17T10:23:27.072809"}
-            {"sensor_id": 242, "temperature": 30.24, "humidity": 42.81, "timestamp": "2024-01-17T10:23:27.073079"}
-            {"sensor_id": 243, "temperature": 17.85, "humidity": 47.79, "timestamp": "2024-01-17T10:23:27.073280"}
-            {"sensor_id": 244, "temperature": 25.56, "humidity": 42.51, "timestamp": "2024-01-17T10:23:27.073488"}
-            {"sensor_id": 245, "temperature": 17.11, "humidity": 41.47, "timestamp": "2024-01-17T10:23:27.073751"}
-            {"sensor_id": 246, "temperature": 26.36, "humidity": 41.06, "timestamp": "2024-01-17T10:23:27.073975"}
-            {"sensor_id": 247, "temperature": 28.01, "humidity": 57.95, "timestamp": "2024-01-17T10:23:27.074274"}
-            {"sensor_id": 248, "temperature": 15.05, "humidity": 57.49, "timestamp": "2024-01-17T10:23:27.074471"}
-            {"sensor_id": 249, "temperature": 19.18, "humidity": 50.18, "timestamp": "2024-01-17T10:23:27.074714"}
-            {"sensor_id": 250, "temperature": 17.9, "humidity": 65.12, "timestamp": "2024-01-17T10:23:27.075094"}
-            {"sensor_id": 251, "temperature": 34.78, "humidity": 54.32, "timestamp": "2024-01-17T10:23:27.075353"}
-            {"sensor_id": 252, "temperature": 23.86, "humidity": 50.61, "timestamp": "2024-01-17T10:23:27.075559"}
-            {"sensor_id": 253, "temperature": 30.44, "humidity": 52.85, "timestamp": "2024-01-17T10:23:27.075852"}
-            {"sensor_id": 254, "temperature": 23.67, "humidity": 67.12, "timestamp": "2024-01-17T10:23:27.076146"}
-            {"sensor_id": 255, "temperature": 21.78, "humidity": 44.61, "timestamp": "2024-01-17T10:23:27.076441"}
-            {"sensor_id": 256, "temperature": 16.5, "humidity": 41.66, "timestamp": "2024-01-17T10:23:27.076666"}
-            {"sensor_id": 257, "temperature": 24.75, "humidity": 55.97, "timestamp": "2024-01-17T10:23:27.076914"}
-            {"sensor_id": 258, "temperature": 29.02, "humidity": 59.29, "timestamp": "2024-01-17T10:23:27.077250"}
-            {"sensor_id": 259, "temperature": 15.8, "humidity": 67.66, "timestamp": "2024-01-17T10:23:27.077489"}
-            {"sensor_id": 260, "temperature": 26.6, "humidity": 60.31, "timestamp": "2024-01-17T10:23:27.077735"}
-            {"sensor_id": 261, "temperature": 21.26, "humidity": 36.32, "timestamp": "2024-01-17T10:23:27.077999"}
-            {"sensor_id": 262, "temperature": 30.2, "humidity": 59.43, "timestamp": "2024-01-17T10:23:27.078627"}
-            {"sensor_id": 263, "temperature": 16.62, "humidity": 61.47, "timestamp": "2024-01-17T10:23:27.078947"}
-            {"sensor_id": 264, "temperature": 30.23, "humidity": 56.18, "timestamp": "2024-01-17T10:23:27.079266"}
-            {"sensor_id": 265, "temperature": 18.94, "humidity": 68.64, "timestamp": "2024-01-17T10:23:27.079593"}
-            {"sensor_id": 266, "temperature": 31.24, "humidity": 63.3, "timestamp": "2024-01-17T10:23:27.079922"}
-            {"sensor_id": 267, "temperature": 22.4, "humidity": 35.11, "timestamp": "2024-01-17T10:23:27.080238"}
-            {"sensor_id": 268, "temperature": 28.01, "humidity": 59.72, "timestamp": "2024-01-17T10:23:27.080565"}
-            {"sensor_id": 269, "temperature": 22.5, "humidity": 51.39, "timestamp": "2024-01-17T10:23:27.080882"}
-            {"sensor_id": 270, "temperature": 25.44, "humidity": 31.54, "timestamp": "2024-01-17T10:23:27.081218"}
-            {"sensor_id": 271, "temperature": 28.0, "humidity": 31.51, "timestamp": "2024-01-17T10:23:27.084924"}
-            {"sensor_id": 272, "temperature": 34.13, "humidity": 44.64, "timestamp": "2024-01-17T10:23:27.085274"}
-            {"sensor_id": 273, "temperature": 25.41, "humidity": 47.14, "timestamp": "2024-01-17T10:23:27.085616"}
-            {"sensor_id": 274, "temperature": 32.49, "humidity": 62.92, "timestamp": "2024-01-17T10:23:27.086000"}
-            {"sensor_id": 275, "temperature": 18.0, "humidity": 41.7, "timestamp": "2024-01-17T10:23:27.086320"}
-            {"sensor_id": 276, "temperature": 15.52, "humidity": 64.64, "timestamp": "2024-01-17T10:23:27.086613"}
-            {"sensor_id": 277, "temperature": 16.65, "humidity": 45.15, "timestamp": "2024-01-17T10:23:27.086920"}
-            {"sensor_id": 278, "temperature": 34.27, "humidity": 49.57, "timestamp": "2024-01-17T10:23:27.087229"}
-            {"sensor_id": 279, "temperature": 34.74, "humidity": 40.41, "timestamp": "2024-01-17T10:23:27.087545"}
-            {"sensor_id": 280, "temperature": 21.8, "humidity": 30.41, "timestamp": "2024-01-17T10:23:27.087858"}
-            {"sensor_id": 281, "temperature": 30.74, "humidity": 63.93, "timestamp": "2024-01-17T10:23:27.089605"}
-            {"sensor_id": 282, "temperature": 29.31, "humidity": 43.84, "timestamp": "2024-01-17T10:23:27.089978"}
-            {"sensor_id": 283, "temperature": 25.39, "humidity": 41.63, "timestamp": "2024-01-17T10:23:27.090334"}
-            {"sensor_id": 284, "temperature": 26.61, "humidity": 64.57, "timestamp": "2024-01-17T10:23:27.090707"}
-            {"sensor_id": 285, "temperature": 33.7, "humidity": 52.27, "timestamp": "2024-01-17T10:23:27.091113"}
-            {"sensor_id": 286, "temperature": 33.02, "humidity": 34.33, "timestamp": "2024-01-17T10:23:27.091468"}
-            {"sensor_id": 287, "temperature": 18.13, "humidity": 46.74, "timestamp": "2024-01-17T10:23:27.091870"}
-            {"sensor_id": 288, "temperature": 33.2, "humidity": 45.73, "timestamp": "2024-01-17T10:23:27.092235"}
-            {"sensor_id": 289, "temperature": 23.57, "humidity": 46.31, "timestamp": "2024-01-17T10:23:27.092579"}
-            {"sensor_id": 290, "temperature": 33.12, "humidity": 56.37, "timestamp": "2024-01-17T10:23:27.092936"}
-            {"sensor_id": 291, "temperature": 25.65, "humidity": 65.04, "timestamp": "2024-01-17T10:23:27.093285"}
-            {"sensor_id": 292, "temperature": 21.22, "humidity": 58.77, "timestamp": "2024-01-17T10:23:27.093606"}
-            {"sensor_id": 293, "temperature": 24.52, "humidity": 53.87, "timestamp": "2024-01-17T10:23:27.096342"}
-            {"sensor_id": 294, "temperature": 24.78, "humidity": 59.43, "timestamp": "2024-01-17T10:23:27.096724"}
-            {"sensor_id": 295, "temperature": 30.33, "humidity": 34.37, "timestamp": "2024-01-17T10:23:27.097077"}
-            {"sensor_id": 296, "temperature": 16.37, "humidity": 56.88, "timestamp": "2024-01-17T10:23:27.097461"}
-            {"sensor_id": 297, "temperature": 26.69, "humidity": 52.7, "timestamp": "2024-01-17T10:23:27.097826"}
-            {"sensor_id": 298, "temperature": 33.41, "humidity": 56.97, "timestamp": "2024-01-17T10:23:27.098187"}
-            {"sensor_id": 299, "temperature": 26.25, "humidity": 68.43, "timestamp": "2024-01-17T10:23:27.098561"}
-            {"sensor_id": 300, "temperature": 32.12, "humidity": 69.2, "timestamp": "2024-01-17T10:23:27.098925"}
-            {"sensor_id": 301, "temperature": 15.93, "humidity": 61.02, "timestamp": "2024-01-17T10:23:27.099292"}
-            {"sensor_id": 302, "temperature": 31.25, "humidity": 44.66, "timestamp": "2024-01-17T10:23:27.099657"}
-            {"sensor_id": 303, "temperature": 25.58, "humidity": 69.07, "timestamp": "2024-01-17T10:23:27.100012"}
-            {"sensor_id": 304, "temperature": 31.64, "humidity": 33.69, "timestamp": "2024-01-17T10:23:27.105196"}
-            {"sensor_id": 305, "temperature": 27.56, "humidity": 55.05, "timestamp": "2024-01-17T10:23:27.105574"}
-            {"sensor_id": 306, "temperature": 17.04, "humidity": 42.67, "timestamp": "2024-01-17T10:23:27.106014"}
-            {"sensor_id": 307, "temperature": 28.65, "humidity": 64.83, "timestamp": "2024-01-17T10:23:27.106560"}
-            {"sensor_id": 308, "temperature": 34.34, "humidity": 51.43, "timestamp": "2024-01-17T10:23:27.106938"}
-            {"sensor_id": 309, "temperature": 30.63, "humidity": 67.91, "timestamp": "2024-01-17T10:23:27.107381"}
-            {"sensor_id": 310, "temperature": 33.47, "humidity": 53.27, "timestamp": "2024-01-17T10:23:27.107762"}
-            {"sensor_id": 311, "temperature": 27.74, "humidity": 52.29, "timestamp": "2024-01-17T10:23:27.108353"}
-            {"sensor_id": 312, "temperature": 31.21, "humidity": 45.74, "timestamp": "2024-01-17T10:23:27.108762"}
-            {"sensor_id": 313, "temperature": 27.51, "humidity": 44.02, "timestamp": "2024-01-17T10:23:27.109145"}
-            {"sensor_id": 314, "temperature": 25.74, "humidity": 56.37, "timestamp": "2024-01-17T10:23:27.109568"}
-            {"sensor_id": 315, "temperature": 33.44, "humidity": 33.22, "timestamp": "2024-01-17T10:23:27.109965"}
-            {"sensor_id": 316, "temperature": 28.1, "humidity": 30.82, "timestamp": "2024-01-17T10:23:27.114186"}
-            {"sensor_id": 317, "temperature": 16.16, "humidity": 66.88, "timestamp": "2024-01-17T10:23:27.114617"}
-            {"sensor_id": 318, "temperature": 20.22, "humidity": 59.0, "timestamp": "2024-01-17T10:23:27.115012"}
-            {"sensor_id": 319, "temperature": 29.51, "humidity": 39.0, "timestamp": "2024-01-17T10:23:27.115476"}
-            {"sensor_id": 320, "temperature": 29.71, "humidity": 32.22, "timestamp": "2024-01-17T10:23:27.115870"}
-            {"sensor_id": 321, "temperature": 27.73, "humidity": 53.97, "timestamp": "2024-01-17T10:23:27.116317"}
-            {"sensor_id": 322, "temperature": 28.73, "humidity": 64.74, "timestamp": "2024-01-17T10:23:27.116708"}
-            {"sensor_id": 323, "temperature": 18.31, "humidity": 51.33, "timestamp": "2024-01-17T10:23:27.117050"}
-            {"sensor_id": 324, "temperature": 20.86, "humidity": 41.45, "timestamp": "2024-01-17T10:23:27.117496"}
-            {"sensor_id": 325, "temperature": 25.33, "humidity": 34.55, "timestamp": "2024-01-17T10:23:27.117902"}
-            {"sensor_id": 326, "temperature": 26.09, "humidity": 47.37, "timestamp": "2024-01-17T10:23:27.119542"}
-            {"sensor_id": 327, "temperature": 26.07, "humidity": 58.94, "timestamp": "2024-01-17T10:23:27.119975"}
-            {"sensor_id": 328, "temperature": 22.65, "humidity": 38.28, "timestamp": "2024-01-17T10:23:27.120445"}
-            {"sensor_id": 329, "temperature": 15.16, "humidity": 57.92, "timestamp": "2024-01-17T10:23:27.120865"}
-            {"sensor_id": 330, "temperature": 34.16, "humidity": 64.86, "timestamp": "2024-01-17T10:23:27.121276"}
-            {"sensor_id": 331, "temperature": 24.54, "humidity": 56.38, "timestamp": "2024-01-17T10:23:27.121739"}
-            {"sensor_id": 332, "temperature": 20.61, "humidity": 42.77, "timestamp": "2024-01-17T10:23:27.122158"}
-            {"sensor_id": 333, "temperature": 20.66, "humidity": 67.72, "timestamp": "2024-01-17T10:23:27.124005"}
-            {"sensor_id": 334, "temperature": 33.91, "humidity": 47.09, "timestamp": "2024-01-17T10:23:27.124434"}
-            {"sensor_id": 335, "temperature": 24.72, "humidity": 45.64, "timestamp": "2024-01-17T10:23:27.124858"}
-            {"sensor_id": 336, "temperature": 24.79, "humidity": 66.3, "timestamp": "2024-01-17T10:23:27.125321"}
-            {"sensor_id": 337, "temperature": 33.32, "humidity": 44.03, "timestamp": "2024-01-17T10:23:27.125739"}
-            {"sensor_id": 338, "temperature": 16.32, "humidity": 34.42, "timestamp": "2024-01-17T10:23:27.126191"}
-            {"sensor_id": 339, "temperature": 17.57, "humidity": 35.8, "timestamp": "2024-01-17T10:23:27.126610"}
-            {"sensor_id": 340, "temperature": 23.15, "humidity": 40.04, "timestamp": "2024-01-17T10:23:27.126902"}
-            {"sensor_id": 341, "temperature": 30.72, "humidity": 33.16, "timestamp": "2024-01-17T10:23:27.127258"}
-            {"sensor_id": 342, "temperature": 19.95, "humidity": 38.8, "timestamp": "2024-01-17T10:23:27.127663"}
-            {"sensor_id": 343, "temperature": 19.9, "humidity": 30.64, "timestamp": "2024-01-17T10:23:27.127913"}
-            {"sensor_id": 344, "temperature": 34.85, "humidity": 46.47, "timestamp": "2024-01-17T10:23:27.129355"}
-            {"sensor_id": 345, "temperature": 31.97, "humidity": 55.05, "timestamp": "2024-01-17T10:23:27.129686"}
-            {"sensor_id": 346, "temperature": 22.43, "humidity": 47.69, "timestamp": "2024-01-17T10:23:27.129997"}
-            {"sensor_id": 347, "temperature": 18.6, "humidity": 45.83, "timestamp": "2024-01-17T10:23:27.130270"}
-            {"sensor_id": 348, "temperature": 19.35, "humidity": 38.48, "timestamp": "2024-01-17T10:23:27.130569"}
-            {"sensor_id": 349, "temperature": 32.66, "humidity": 41.23, "timestamp": "2024-01-17T10:23:27.130966"}
-            {"sensor_id": 350, "temperature": 23.24, "humidity": 51.87, "timestamp": "2024-01-17T10:23:27.131214"}
-            {"sensor_id": 351, "temperature": 16.11, "humidity": 56.83, "timestamp": "2024-01-17T10:23:27.131518"}
-            {"sensor_id": 352, "temperature": 25.34, "humidity": 52.77, "timestamp": "2024-01-17T10:23:27.131840"}
-            {"sensor_id": 353, "temperature": 27.58, "humidity": 63.21, "timestamp": "2024-01-17T10:23:27.132186"}
-            {"sensor_id": 354, "temperature": 17.45, "humidity": 35.75, "timestamp": "2024-01-17T10:23:27.132449"}
-            {"sensor_id": 355, "temperature": 30.25, "humidity": 33.11, "timestamp": "2024-01-17T10:23:27.132762"}
-            {"sensor_id": 356, "temperature": 26.2, "humidity": 58.82, "timestamp": "2024-01-17T10:23:27.133158"}
-            {"sensor_id": 357, "temperature": 19.76, "humidity": 44.31, "timestamp": "2024-01-17T10:23:27.133414"}
-            {"sensor_id": 358, "temperature": 33.71, "humidity": 43.57, "timestamp": "2024-01-17T10:23:27.134904"}
-            {"sensor_id": 359, "temperature": 23.33, "humidity": 50.43, "timestamp": "2024-01-17T10:23:27.135307"}
-            {"sensor_id": 360, "temperature": 32.36, "humidity": 41.02, "timestamp": "2024-01-17T10:23:27.135636"}
-            {"sensor_id": 361, "temperature": 29.94, "humidity": 61.29, "timestamp": "2024-01-17T10:23:27.135997"}
-            {"sensor_id": 362, "temperature": 25.36, "humidity": 55.46, "timestamp": "2024-01-17T10:23:27.136322"}
-            {"sensor_id": 363, "temperature": 29.49, "humidity": 65.73, "timestamp": "2024-01-17T10:23:27.136691"}
-            {"sensor_id": 364, "temperature": 16.93, "humidity": 65.17, "timestamp": "2024-01-17T10:23:27.137020"}
-            {"sensor_id": 365, "temperature": 27.24, "humidity": 60.46, "timestamp": "2024-01-17T10:23:27.137342"}
-            {"sensor_id": 366, "temperature": 31.56, "humidity": 51.23, "timestamp": "2024-01-17T10:23:27.137697"}
-            {"sensor_id": 367, "temperature": 26.7, "humidity": 54.5, "timestamp": "2024-01-17T10:23:27.138035"}
-            {"sensor_id": 368, "temperature": 27.58, "humidity": 38.74, "timestamp": "2024-01-17T10:23:27.138448"}
-            {"sensor_id": 369, "temperature": 33.41, "humidity": 47.23, "timestamp": "2024-01-17T10:23:27.138797"}
-            {"sensor_id": 370, "temperature": 22.31, "humidity": 35.55, "timestamp": "2024-01-17T10:23:27.140911"}
-            {"sensor_id": 371, "temperature": 24.71, "humidity": 43.87, "timestamp": "2024-01-17T10:23:27.141220"}
-            {"sensor_id": 372, "temperature": 32.69, "humidity": 52.72, "timestamp": "2024-01-17T10:23:27.141587"}
-            {"sensor_id": 373, "temperature": 32.54, "humidity": 59.59, "timestamp": "2024-01-17T10:23:27.141851"}
-            {"sensor_id": 374, "temperature": 28.51, "humidity": 42.76, "timestamp": "2024-01-17T10:23:27.142289"}
-            {"sensor_id": 375, "temperature": 33.4, "humidity": 52.77, "timestamp": "2024-01-17T10:23:27.142733"}
-            {"sensor_id": 376, "temperature": 15.47, "humidity": 39.52, "timestamp": "2024-01-17T10:23:27.143127"}
-            {"sensor_id": 377, "temperature": 19.63, "humidity": 65.92, "timestamp": "2024-01-17T10:23:27.143577"}
-            {"sensor_id": 378, "temperature": 29.01, "humidity": 35.85, "timestamp": "2024-01-17T10:23:27.144056"}
-            {"sensor_id": 379, "temperature": 34.26, "humidity": 69.13, "timestamp": "2024-01-17T10:23:27.144509"}
-            {"sensor_id": 380, "temperature": 26.25, "humidity": 36.71, "timestamp": "2024-01-17T10:23:27.145020"}
-            {"sensor_id": 381, "temperature": 16.85, "humidity": 60.24, "timestamp": "2024-01-17T10:23:27.145485"}
-            {"sensor_id": 382, "temperature": 33.71, "humidity": 48.83, "timestamp": "2024-01-17T10:23:27.145899"}
-            {"sensor_id": 383, "temperature": 30.21, "humidity": 51.81, "timestamp": "2024-01-17T10:23:27.146633"}
-            {"sensor_id": 384, "temperature": 24.91, "humidity": 69.54, "timestamp": "2024-01-17T10:23:27.147103"}
-            {"sensor_id": 385, "temperature": 25.76, "humidity": 44.32, "timestamp": "2024-01-17T10:23:27.147599"}
-            {"sensor_id": 386, "temperature": 22.63, "humidity": 51.31, "timestamp": "2024-01-17T10:23:27.148032"}
-            {"sensor_id": 387, "temperature": 16.73, "humidity": 68.62, "timestamp": "2024-01-17T10:23:27.148492"}
-            {"sensor_id": 388, "temperature": 29.59, "humidity": 65.06, "timestamp": "2024-01-17T10:23:27.148947"}
-            {"sensor_id": 389, "temperature": 22.64, "humidity": 66.64, "timestamp": "2024-01-17T10:23:27.149391"}
-            {"sensor_id": 390, "temperature": 21.96, "humidity": 58.14, "timestamp": "2024-01-17T10:23:27.149868"}
-            {"sensor_id": 391, "temperature": 15.56, "humidity": 66.73, "timestamp": "2024-01-17T10:23:27.150506"}
-            {"sensor_id": 392, "temperature": 20.83, "humidity": 36.98, "timestamp": "2024-01-17T10:23:27.150983"}
-            {"sensor_id": 393, "temperature": 26.56, "humidity": 60.17, "timestamp": "2024-01-17T10:23:27.151487"}
-            {"sensor_id": 394, "temperature": 32.44, "humidity": 49.01, "timestamp": "2024-01-17T10:23:27.151980"}
-            {"sensor_id": 395, "temperature": 26.14, "humidity": 49.9, "timestamp": "2024-01-17T10:23:27.152422"}
-            {"sensor_id": 396, "temperature": 21.22, "humidity": 68.59, "timestamp": "2024-01-17T10:23:27.152888"}
-            {"sensor_id": 397, "temperature": 21.7, "humidity": 53.39, "timestamp": "2024-01-17T10:23:27.153350"}
-            {"sensor_id": 398, "temperature": 28.25, "humidity": 47.38, "timestamp": "2024-01-17T10:23:27.153785"}
-            {"sensor_id": 399, "temperature": 16.44, "humidity": 46.52, "timestamp": "2024-01-17T10:23:27.154407"}
-            {"sensor_id": 400, "temperature": 27.87, "humidity": 35.84, "timestamp": "2024-01-17T10:23:27.154889"}
+        - name: MESSAGE_TEMPLATE
+          value: flights
         - name: TOPIC
-          value: big-internal-data
+          value: flights-internal-data
         - name: DELAY_MS
           value: "100"
         - name: USER_CRT
@@ -1112,7 +312,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -1134,19 +334,19 @@ kind: Deployment
 metadata:
   labels:
     app: streams
-    type: big-internal
-  name: big-internal-streams
+    type: flights-internal
+  name: flights-internal-streams
 spec:
   replicas: 3
   selector:
     matchLabels:
       app: streams
-      type: big-internal
+      type: flights-internal
   template:
     metadata:
       labels:
         app: streams
-        type: big-internal
+        type: flights-internal
     spec:
       affinity:
         nodeAffinity:
@@ -1160,11 +360,11 @@ spec:
       containers:
       - env:
         - name: APPLICATION_ID
-          value: big-internal-data-streams
+          value: flights-internal-data-streams
         - name: SOURCE_TOPIC
-          value: big-internal-data
+          value: flights-internal-data
         - name: TARGET_TOPIC
-          value: big-internal-data-reversed
+          value: flights-internal-data-reversed
         - name: USER_CRT
           value: ${secrets:strimzi-kafka/kafka-internal-streams:user.crt}
         - name: USER_KEY
@@ -1177,414 +377,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
-        imagePullPolicy: Always
-        name: streams
-        resources:
-          limits:
-            cpu: 250m
-            memory: 1000Mi
-          requests:
-            cpu: 50m
-            memory: 50Mi
-      serviceAccountName: clients-sa
-      tolerations:
-      - effect: NoSchedule
-        key: nodetype
-        operator: Equal
-        value: connect
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: consumer
-    type: fast-external
-  name: fast-external-consumer
-spec:
-  replicas: 20
-  selector:
-    matchLabels:
-      app: consumer
-      type: fast-external
-  template:
-    metadata:
-      labels:
-        app: consumer
-        type: fast-external
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodetype
-                operator: In
-                values:
-                - connect
-      containers:
-      - env:
-        - name: TOPIC
-          value: fast-external-data-reversed
-        - name: GROUP_ID
-          value: fast-external-data-consumer
-        - name: USER_CRT
-          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
-        - name: USER_KEY
-          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
-        - name: BOOTSTRAP_SERVERS
-          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
-        - name: CA_CRT
-          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
-        - name: LOG_LEVEL
-          value: INFO
-        - name: MESSAGE_COUNT
-          value: "10000000"
-        - name: CLIENT_TYPE
-          value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
-        imagePullPolicy: Always
-        name: consumer
-        resources:
-          limits:
-            cpu: 250m
-            memory: 250Mi
-          requests:
-            cpu: 50m
-            memory: 50Mi
-      serviceAccountName: clients-sa
-      tolerations:
-      - effect: NoSchedule
-        key: nodetype
-        operator: Equal
-        value: connect
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: producer
-    type: fast-external
-  name: fast-external-producer
-spec:
-  replicas: 6
-  selector:
-    matchLabels:
-      app: producer
-      type: fast-external
-  template:
-    metadata:
-      labels:
-        app: producer
-        type: fast-external
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodetype
-                operator: In
-                values:
-                - connect
-      containers:
-      - env:
-        - name: TOPIC
-          value: fast-external-data
-        - name: DELAY_MS
-          value: "1"
-        - name: USER_CRT
-          value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
-        - name: USER_KEY
-          value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
-        - name: BOOTSTRAP_SERVERS
-          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
-        - name: CA_CRT
-          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
-        - name: LOG_LEVEL
-          value: INFO
-        - name: MESSAGE_COUNT
-          value: "10000000"
-        - name: PRODUCER_ACKS
-          value: all
-        - name: ADDITIONAL_CONFIG
-        - name: CLIENT_TYPE
-          value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
-        imagePullPolicy: Always
-        name: producer
-        resources:
-          limits:
-            cpu: 250m
-            memory: 350Mi
-          requests:
-            cpu: 50m
-            memory: 50Mi
-      serviceAccountName: clients-sa
-      tolerations:
-      - effect: NoSchedule
-        key: nodetype
-        operator: Equal
-        value: connect
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: streams
-    type: fast-external
-  name: fast-external-streams
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: streams
-      type: fast-external
-  template:
-    metadata:
-      labels:
-        app: streams
-        type: fast-external
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodetype
-                operator: In
-                values:
-                - connect
-      containers:
-      - env:
-        - name: APPLICATION_ID
-          value: fast-external-data-streams
-        - name: SOURCE_TOPIC
-          value: fast-external-data
-        - name: TARGET_TOPIC
-          value: fast-external-data-reversed
-        - name: USER_CRT
-          value: ${secrets:strimzi-kafka/kafka-external-streams:user.crt}
-        - name: USER_KEY
-          value: ${secrets:strimzi-kafka/kafka-external-streams:user.key}
-        - name: BOOTSTRAP_SERVERS
-          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
-        - name: CA_CRT
-          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
-        - name: LOG_LEVEL
-          value: INFO
-        - name: CLIENT_TYPE
-          value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
-        imagePullPolicy: Always
-        name: streams
-        resources:
-          limits:
-            cpu: 250m
-            memory: 1000Mi
-          requests:
-            cpu: 50m
-            memory: 50Mi
-      serviceAccountName: clients-sa
-      tolerations:
-      - effect: NoSchedule
-        key: nodetype
-        operator: Equal
-        value: connect
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: consumer
-    type: fast-internal
-  name: fast-internal-consumer
-spec:
-  replicas: 20
-  selector:
-    matchLabels:
-      app: consumer
-      type: fast-internal
-  template:
-    metadata:
-      labels:
-        app: consumer
-        type: fast-internal
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodetype
-                operator: In
-                values:
-                - connect
-      containers:
-      - env:
-        - name: TOPIC
-          value: fast-internal-data-reversed
-        - name: GROUP_ID
-          value: fast-internal-data-consumer
-        - name: USER_CRT
-          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.crt}
-        - name: USER_KEY
-          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.key}
-        - name: BOOTSTRAP_SERVERS
-          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
-        - name: CA_CRT
-          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
-        - name: LOG_LEVEL
-          value: INFO
-        - name: MESSAGE_COUNT
-          value: "10000000"
-        - name: CLIENT_TYPE
-          value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
-        imagePullPolicy: Always
-        name: consumer
-        resources:
-          limits:
-            cpu: 250m
-            memory: 250Mi
-          requests:
-            cpu: 50m
-            memory: 50Mi
-      serviceAccountName: clients-sa
-      tolerations:
-      - effect: NoSchedule
-        key: nodetype
-        operator: Equal
-        value: connect
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: producer
-    type: fast-internal
-  name: fast-internal-producer
-spec:
-  replicas: 6
-  selector:
-    matchLabels:
-      app: producer
-      type: fast-internal
-  template:
-    metadata:
-      labels:
-        app: producer
-        type: fast-internal
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodetype
-                operator: In
-                values:
-                - connect
-      containers:
-      - env:
-        - name: MESSAGE
-          value: |
-            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
-            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
-            Another line! What a message, right? I think it is enough!
-            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
-            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
-            Another line! What a message, right? I think it is enough!
-            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
-            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
-            Another line! What a message, right? I think it is enough! Demo time!
-        - name: TOPIC
-          value: fast-internal-data
-        - name: DELAY_MS
-          value: "1"
-        - name: USER_CRT
-          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.crt}
-        - name: USER_KEY
-          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.key}
-        - name: BOOTSTRAP_SERVERS
-          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
-        - name: CA_CRT
-          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
-        - name: LOG_LEVEL
-          value: INFO
-        - name: MESSAGE_COUNT
-          value: "10000000"
-        - name: PRODUCER_ACKS
-          value: all
-        - name: ADDITIONAL_CONFIG
-        - name: CLIENT_TYPE
-          value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
-        imagePullPolicy: Always
-        name: producer
-        resources:
-          limits:
-            cpu: 250m
-            memory: 350Mi
-          requests:
-            cpu: 50m
-            memory: 50Mi
-      serviceAccountName: clients-sa
-      tolerations:
-      - effect: NoSchedule
-        key: nodetype
-        operator: Equal
-        value: connect
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: streams
-    type: fast-internal
-  name: fast-internal-streams
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: streams
-      type: fast-internal
-  template:
-    metadata:
-      labels:
-        app: streams
-        type: fast-internal
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodetype
-                operator: In
-                values:
-                - connect
-      containers:
-      - env:
-        - name: APPLICATION_ID
-          value: fast-internal-data-streams
-        - name: SOURCE_TOPIC
-          value: fast-internal-data
-        - name: TARGET_TOPIC
-          value: fast-internal-data-reversed
-        - name: USER_CRT
-          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.crt}
-        - name: USER_KEY
-          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.key}
-        - name: BOOTSTRAP_SERVERS
-          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
-        - name: CA_CRT
-          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
-        - name: LOG_LEVEL
-          value: INFO
-        - name: CLIENT_TYPE
-          value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -1649,7 +442,7 @@ spec:
           value: INFO
         - name: MESSAGE_COUNT
           value: "10000000"
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -1696,8 +489,8 @@ spec:
                 - connect
       containers:
       - env:
-        - name: MESSAGE
-          value: 'order_id: 1234, amount: 99.99'
+        - name: MESSAGE_TEMPLATE
+          value: stargate
         - name: TOPIC
           value: http-internal-data
         - name: DELAY_MS
@@ -1717,7 +510,7 @@ spec:
         - name: PRODUCER_ACKS
           value: all
         - name: ADDITIONAL_CONFIG
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -1770,7 +563,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -1835,7 +628,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -1882,9 +675,8 @@ spec:
                 - connect
       containers:
       - env:
-        - name: MESSAGE
-          value: |
-            {"state_class":"measurement","battery":50,"humidity":58.4,"last_seen":"2023-08-11T11:49:49.075Z","linkquality":33,"temperature":21.3,"voltage":3000,"unit_of_measurement":"°C","device_class":"temperature"}
+        - name: MESSAGE_TEMPLATE
+          value: iot_device
         - name: TOPIC
           value: iot-external-data
         - name: DELAY_MS
@@ -1906,7 +698,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -1971,7 +763,7 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: streams
         resources:
@@ -2036,7 +828,7 @@ spec:
           value: "10000000"
         - name: CLIENT_TYPE
           value: KafkaConsumer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: consumer
         resources:
@@ -2083,17 +875,8 @@ spec:
                 - connect
       containers:
       - env:
-        - name: MESSAGE
-          value: |
-            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
-            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
-            Another line! What a message, right? I think it is enough!
-            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
-            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
-            Another line! What a message, right? I think it is enough!
-            I am sending a little big bigger messages, no random ones, but a longer than hello world, wdyt?
-            I started to write a story about it, but it seems the data are not enough to fill all the pages that book requires.
-            Another line! What a message, right? I think it is enough! Demo time!
+        - name: MESSAGE_TEMPLATE
+          value: iot_device
         - name: TOPIC
           value: iot-internal-data
         - name: DELAY_MS
@@ -2115,7 +898,7 @@ spec:
         - name: ADDITIONAL_CONFIG
         - name: CLIENT_TYPE
           value: KafkaProducer
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: producer
         resources:
@@ -2180,7 +963,405 @@ spec:
           value: INFO
         - name: CLIENT_TYPE
           value: KafkaStreams
-        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.7.0
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 1000Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+    type: payment-external
+  name: payment-external-consumer
+spec:
+  replicas: 20
+  selector:
+    matchLabels:
+      app: consumer
+      type: payment-external
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: payment-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: payment-external-data-reversed
+        - name: GROUP_ID
+          value: payment-external-data-consumer
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-consumer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: payment-external
+  name: payment-external-producer
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: producer
+      type: payment-external
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: payment-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: MESSAGE_TEMPLATE
+          value: payment
+        - name: DELAY_MS
+          value: "1"
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-producer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-producer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        - name: CLIENT_TYPE
+          value: KafkaProducer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: payment-external
+  name: payment-external-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: streams
+      type: payment-external
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: payment-external
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: APPLICATION_ID
+          value: payment-external-data-streams
+        - name: SOURCE_TOPIC
+          value: payment-external-data
+        - name: TARGET_TOPIC
+          value: payment-external-data-reversed
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-external-streams:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-external-streams:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
+        imagePullPolicy: Always
+        name: streams
+        resources:
+          limits:
+            cpu: 250m
+            memory: 1000Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+    type: payment-internal
+  name: payment-internal-consumer
+spec:
+  replicas: 20
+  selector:
+    matchLabels:
+      app: consumer
+      type: payment-internal
+  template:
+    metadata:
+      labels:
+        app: consumer
+        type: payment-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: TOPIC
+          value: payment-internal-data-reversed
+        - name: GROUP_ID
+          value: payment-internal-data-consumer
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-consumer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: CLIENT_TYPE
+          value: KafkaConsumer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
+        imagePullPolicy: Always
+        name: consumer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+    type: payment-internal
+  name: payment-internal-producer
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: producer
+      type: payment-internal
+  template:
+    metadata:
+      labels:
+        app: producer
+        type: payment-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: MESSAGE_TEMPLATE
+          value: payment
+        - name: TOPIC
+          value: payment-internal-data
+        - name: DELAY_MS
+          value: "1"
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-producer:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: MESSAGE_COUNT
+          value: "10000000"
+        - name: PRODUCER_ACKS
+          value: all
+        - name: ADDITIONAL_CONFIG
+        - name: CLIENT_TYPE
+          value: KafkaProducer
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
+        imagePullPolicy: Always
+        name: producer
+        resources:
+          limits:
+            cpu: 250m
+            memory: 350Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+      - effect: NoSchedule
+        key: nodetype
+        operator: Equal
+        value: connect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streams
+    type: payment-internal
+  name: payment-internal-streams
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: streams
+      type: payment-internal
+  template:
+    metadata:
+      labels:
+        app: streams
+        type: payment-internal
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - connect
+      containers:
+      - env:
+        - name: APPLICATION_ID
+          value: payment-internal-data-streams
+        - name: SOURCE_TOPIC
+          value: payment-internal-data
+        - name: TARGET_TOPIC
+          value: payment-internal-data-reversed
+        - name: USER_CRT
+          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.crt}
+        - name: USER_KEY
+          value: ${secrets:strimzi-kafka/kafka-internal-streams:user.key}
+        - name: BOOTSTRAP_SERVERS
+          value: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
+        - name: CA_CRT
+          value: ${secrets:strimzi-kafka/anubis-cluster-ca-cert:ca.crt}
+        - name: LOG_LEVEL
+          value: INFO
+        - name: CLIENT_TYPE
+          value: KafkaStreams
+        image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.8.0
         imagePullPolicy: Always
         name: streams
         resources:
