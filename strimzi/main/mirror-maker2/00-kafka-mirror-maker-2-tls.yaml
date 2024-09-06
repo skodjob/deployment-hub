@@ -1,9 +1,9 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaMirrorMaker2
 metadata:
-  name: replicator-set
+  name: replicator-carter
   labels:
-    mode: mirror
+    mode: main
 spec:
   version: 3.8.0
   replicas: 3
@@ -14,7 +14,7 @@ spec:
     limits:
       memory: 2Gi
       cpu: "2"
-  connectCluster: "horus"
+  connectCluster: "heimdall"
   clusters:
     - alias: "anubis"
       bootstrapServers: anubis-kafka-bootstrap.strimzi-kafka.svc:9093
@@ -28,18 +28,18 @@ spec:
           secretName: superuser-anubis
           certificate: user.crt
           key: user.key
-    - alias: "horus"
-      bootstrapServers: horus-kafka-bootstrap.strimzi-kafka-kraft.svc:9093
+    - alias: "heimdall"
+      bootstrapServers: heimdall-kafka-automation-bootstrap-strimzi-kafka.apps.worker-02.strimzi.app-services-dev.net:443
       tls:
         trustedCertificates:
           # This secret must be copied from target cluster to source cluster where mm2 lives to properly access target Kafka
-          - secretName: horus-cluster-ca-cert
+          - secretName: heimdall-cluster-ca-cert
             certificate: ca.crt
       # This secret must be copied from target cluster to source cluster where mm2 lives to properly access target Kafka
       authentication:
         type: tls
         certificateAndKey:
-          secretName: superuser-horus
+          secretName: superuser-heimdall
           certificate: user.crt
           key: user.key
       config:
@@ -49,10 +49,10 @@ spec:
         status.storage.replication.factor: -1
   mirrors:
     - sourceCluster: "anubis"
-      targetCluster: "horus"
+      targetCluster: "heimdall"
       sourceConnector:
         config:
-          replication.factor: 3
+          replication.factor: 5
           offset-syncs.topic.replication.factor: 3
           sync.topic.acls.enabled: "false"
         autoRestart:
@@ -103,7 +103,7 @@ metadata:
   name: mirror-maker-2-metrics
   labels:
     app: strimzi
-    mode: mirror
+    mode: main
 data:
   metrics-config.yml: |
     # See https://github.com/prometheus/jmx_exporter for more info about JMX Prometheus Exporter metrics

@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: entity-operator
   namespaceSelector:
     matchNames:
-      - strimzi-kafka
+      - strimzi-kafka-kraft
   podMetricsEndpoints:
     - path: /metrics
       port: healthcheck
@@ -30,7 +30,7 @@ spec:
         values: ["Kafka", "KafkaConnect", "KafkaConnectS2I", "KafkaMirrorMaker", "KafkaMirrorMaker2"]
   namespaceSelector:
     matchNames:
-      - strimzi-kafka
+      - strimzi-kafka-kraft
   podMetricsEndpoints:
     - path: /metrics
       port: tcp-prometheus
@@ -77,7 +77,7 @@ spec:
       app: "strimzi-canary"
   namespaceSelector:
     matchNames:
-      - strimzi-kafka
+      - strimzi-kafka-kraft
   podMetricsEndpoints:
     - path: /metrics
       port: metrics

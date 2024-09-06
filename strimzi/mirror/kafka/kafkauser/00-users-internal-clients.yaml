@@ -2,11 +2,10 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
-  name: kafka-internal-producer
-  namespace: strimzi-kafka
+  name: horus-producer
   labels:
-    strimzi.io/cluster: anubis
-    mode: main
+    strimzi.io/cluster: horus
+    mode: mirror
 spec:
   authentication:
     type: tls
@@ -15,30 +14,9 @@ spec:
     acls:
       - resource:
           type: topic
-          name: big-internal-data
+          name: anubis.
+          patternType: prefix
         operations:
-          - Write
-          - Create
-          - Describe
-      - resource:
-          type: topic
-          name: fast-internal-data
-        operations:
-          - Write
-          - Create
-          - Describe
-      - resource:
-          type: topic
-          name: iot-internal-data
-        operations:
-          - Write
-          - Create
-          - Describe
-      - resource:
-          type: topic
-          name: http-internal-data
-        operations:
-          - Read
           - Write
           - Create
           - Describe
@@ -51,11 +29,10 @@ spec:
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
-  name: kafka-internal-streams
-  namespace: strimzi-kafka
+  name: horus-streams
   labels:
-    strimzi.io/cluster: anubis
-    mode: main
+    strimzi.io/cluster: horus
+    mode: mirror
 spec:
   authentication:
     type: tls
@@ -64,142 +41,25 @@ spec:
     acls:
       - resource:
           type: topic
-          name: big-internal-data
-        operations:
-          - Read
-          - Describe
-      - resource:
-          type: group
-          name: big-internal-data-streams
+          name: anubis.
           patternType: prefix
         operations:
           - Read
           - Describe
       - resource:
           type: group
-          name: big-internal-data-reversed
-        operations:
-          - Describe
-          - Write
-          - Create
-      - resource:
-          type: topic
-          name: big-internal-data-reversed
-        operations:
-          - Describe
-          - Write
-          - Create
-
-      - resource:
-          type: topic
-          name: fast-internal-data
-        operations:
-          - Read
-          - Describe
-      - resource:
-          type: group
-          name: fast-internal-data-streams
+          name: anubis.
           patternType: prefix
         operations:
           - Read
-          - Describe
       - resource:
           type: group
-          name: fast-internal-data-reversed
-        operations:
-          - Describe
-          - Write
-          - Create
-      - resource:
-          type: topic
-          name: fast-internal-data-reversed
-        operations:
-          - Describe
-          - Write
-          - Create
-
-      - resource:
-          type: topic
-          name: iot-internal-data
-        operations:
-          - Read
-          - Describe
-      - resource:
-          type: group
-          name: iot-internal-data-streams
+          name: anubis.
           patternType: prefix
         operations:
-          - Read
-          - Describe
-      - resource:
-          type: group
-          name: iot-internal-data-reversed
-        operations:
           - Describe
           - Write
           - Create
-      - resource:
-          type: topic
-          name: iot-internal-data-reversed
-        operations:
-          - Describe
-          - Write
-          - Create
-  template:
-    secret:
-      metadata:
-        annotations:
-          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets=true"
----
-apiVersion: kafka.strimzi.io/v1beta2
-kind: KafkaUser
-metadata:
-  name: kafka-internal-consumer
-  namespace: strimzi-kafka
-  labels:
-    strimzi.io/cluster: anubis
-    mode: main
-spec:
-  authentication:
-    type: tls
-  authorization:
-    type: simple
-    acls:
-      - resource:
-          type: topic
-          name: big-internal-data-reversed
-        operations:
-          - Read
-          - Describe
-      - resource:
-          type: group
-          name: big-internal-data-consumer
-        operations:
-          - Read
-          - Describe
-      - resource:
-          type: topic
-          name: fast-internal-data-reversed
-        operations:
-          - Read
-          - Describe
-      - resource:
-          type: group
-          name: fast-internal-data-consumer
-        operations:
-          - Read
-          - Describe
-      - resource:
-          type: topic
-          name: iot-internal-data-reversed
-        operations:
-          - Read
-          - Describe
-      - resource:
-          type: group
-          name: iot-internal-data-consumer
-        operations:
-          - Read
           - Describe
   template:
     secret:
@@ -210,11 +70,10 @@ spec:
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
-  name: bridge-internal
-  namespace: strimzi-kafka
+  name: horus-consumer
   labels:
-    strimzi.io/cluster: anubis
-    mode: main
+    strimzi.io/cluster: horus
+    mode: mirror
 spec:
   authentication:
     type: tls
@@ -223,22 +82,16 @@ spec:
     acls:
       - resource:
           type: topic
-          name: http
-          patternType: prefix
+          name: anubis.fast-external-data
         operations:
           - Read
           - Describe
-          - Write
-          - Create
       - resource:
           type: group
-          name: http
-          patternType: prefix
+          name: fast-kraft-anubis-external-data-consumer
         operations:
           - Read
           - Describe
-          - Write
-          - Create
   template:
     secret:
       metadata:

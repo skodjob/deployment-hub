@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: strimzi-cluster-operator
+  name: strimzi-cluster-operator-kraft
   labels:
     app: strimzi
-    mode: main
+    mode: mirror
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: strimzi-cluster-operator
+      name: strimzi-cluster-operator-kraft
       strimzi.io/kind: cluster-operator
   template:
     metadata:
       labels:
-        name: strimzi-cluster-operator
+        name: strimzi-cluster-operator-kraft
         strimzi.io/kind: cluster-operator
-        mode: main
+        mode: mirror
     spec:
       serviceAccountName: strimzi-cluster-operator
       volumes:
@@ -26,7 +26,7 @@ spec:
             sizeLimit: 1Mi
         - name: co-config-volume
           configMap:
-            name: strimzi-cluster-operator
+            name: strimzi-cluster-operator-kraft
       containers:
         - name: strimzi-cluster-operator
           image: quay.io/strimzi/operator@sha256:2f7af9590bd7ac18647da6f81347b0728df6ca43d176c512f19f8d7d6437948c
@@ -93,7 +93,7 @@ spec:
             - name: STRIMZI_LEADER_ELECTION_ENABLED
               value: "true"
             - name: STRIMZI_LEADER_ELECTION_LEASE_NAME
-              value: "strimzi-cluster-operator"
+              value: "strimzi-cluster-operator-kraft"
             - name: STRIMZI_LEADER_ELECTION_LEASE_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -105,7 +105,7 @@ spec:
             - name: STRIMZI_LOG_LEVEL
               value: "DEBUG"
             - name: STRIMZI_CUSTOM_RESOURCE_SELECTOR
-              value: mode=main
+              value: mode=mirror
           livenessProbe:
             httpGet:
               path: /healthy
