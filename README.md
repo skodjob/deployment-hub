@@ -5,7 +5,7 @@ Collection of deployment files for projects deployed in our long-running scenari
 One of the used projects is [Strimzi](https://github.com/strimzi/strimzi-kafka-operator) project.
 You can find the examples of our deployment configuration in [strimzi](strimzi) folder.
 
-In our example we deploy 2 Strimzi operators to manager KRaft and Zookeeper mode Kafka clusters.
+In our example we deploy 2 Strimzi operators to manager Main and Mirror Kafka clusters.
 Between the clusters there is a KafkaMirrorMaker2 established to mirror data from one cluster to another.
 
 ## Debezium
