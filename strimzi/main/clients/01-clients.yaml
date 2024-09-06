@@ -52,7 +52,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 250Mi
+            memory: 200Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -98,7 +98,7 @@ spec:
         - name: TOPIC
           value: flights-external-data
         - name: DELAY_MS
-          value: "100"
+          value: "50"
         - name: BOOTSTRAP_SERVERS
           value: anubis-kafka-automation-bootstrap-strimzi-kafka.apps.worker-01.strimzi.app-services-dev.net:443
         - name: CA_CRT
@@ -118,7 +118,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 350Mi
+            memory: 400Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -248,7 +248,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 250Mi
+            memory: 200Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -294,7 +294,7 @@ spec:
         - name: TOPIC
           value: flights-internal-data
         - name: DELAY_MS
-          value: "100"
+          value: "50"
         - name: USER_CRT
           value: ${secrets:strimzi-kafka/kafka-internal-producer:user.crt}
         - name: USER_KEY
@@ -318,7 +318,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 350Mi
+            memory: 400Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -450,7 +450,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 250Mi
+            memory: 200Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -469,7 +469,7 @@ metadata:
     type: http-internal
   name: http-internal-producer
 spec:
-  replicas: 5
+  replicas: 7
   selector:
     matchLabels:
       app: producer
@@ -520,7 +520,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 350Mi
+            memory: 400Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -638,7 +638,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 250Mi
+            memory: 200Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -657,7 +657,7 @@ metadata:
     type: iot-external
   name: iot-external-producer
 spec:
-  replicas: 7
+  replicas: 8
   selector:
     matchLabels:
       app: producer
@@ -708,7 +708,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 350Mi
+            memory: 400Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -838,7 +838,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 250Mi
+            memory: 200Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -857,7 +857,7 @@ metadata:
     type: iot-internal
   name: iot-internal-producer
 spec:
-  replicas: 7
+  replicas: 8
   selector:
     matchLabels:
       app: producer
@@ -908,7 +908,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 350Mi
+            memory: 400Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -1038,7 +1038,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 250Mi
+            memory: 200Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -1057,7 +1057,7 @@ metadata:
     type: payment-external
   name: payment-external-producer
 spec:
-  replicas: 6
+  replicas: 9
   selector:
     matchLabels:
       app: producer
@@ -1108,7 +1108,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 350Mi
+            memory: 400Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -1238,7 +1238,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 250Mi
+            memory: 200Mi
           requests:
             cpu: 50m
             memory: 50Mi
@@ -1257,7 +1257,7 @@ metadata:
     type: payment-internal
   name: payment-internal-producer
 spec:
-  replicas: 6
+  replicas: 9
   selector:
     matchLabels:
       app: producer
@@ -1308,7 +1308,7 @@ spec:
         resources:
           limits:
             cpu: 250m
-            memory: 350Mi
+            memory: 400Mi
           requests:
             cpu: 50m
             memory: 50Mi
