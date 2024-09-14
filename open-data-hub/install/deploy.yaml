@@ -449,7 +449,21 @@ spec:
                         - Removed
                         pattern: ^(Managed|Unmanaged|Force|Removed)$
                         type: string
+                      registriesNamespace:
+                        default: odh-model-registries
+                        description: Namespace for model registries to be installed,
+                          configurable only once when model registry is enabled, defaults
+                          to "odh-model-registries"
+                        maxLength: 63
+                        pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?)?$
+                        type: string
                     type: object
+                    x-kubernetes-validations:
+                    - message: RegistriesNamespace is immutable when model registry
+                        is Managed
+                      rule: (self.managementState != 'Managed') || (oldSelf.registriesNamespace
+                        == '') || (oldSelf.managementState != 'Managed')|| (self.registriesNamespace
+                        == oldSelf.registriesNamespace)
                   ray:
                     description: Ray component configuration.
                     properties:
@@ -639,6 +653,16 @@ spec:
           status:
             description: DataScienceClusterStatus defines the observed state of DataScienceCluster.
             properties:
+              components:
+                description: Expose component's specific status
+                properties:
+                  modelregistry:
+                    description: ModelRegistry component status
+                    properties:
+                      registriesNamespace:
+                        type: string
+                    type: object
+                type: object
               conditions:
                 description: Conditions describes the state of the DataScienceCluster
                   resource.
@@ -802,6 +826,9 @@ spec:
                 description: Namespace for applications to be installed, non-configurable,
                   default to "opendatahub"
                 type: string
+                x-kubernetes-validations:
+                - message: ApplicationsNamespace is immutable
+                  rule: self == oldSelf
               devFlags:
                 description: |-
                   Internal development useful field to test customizations.
@@ -2152,7 +2179,7 @@ spec:
               fieldPath: metadata.namespace
         - name: DEFAULT_MANIFESTS_PATH
           value: /opt/manifests
-        image: quay.io/opendatahub/opendatahub-operator@sha256:1bdd1dc277904c2b51748f05bb80604d4a89dfe4a59799ab0cc20cfdaf247465
+        image: quay.io/opendatahub/opendatahub-operator@sha256:1071b54a8b764bc8385631bddee124d89bdd8f90b402532d5cfaadcaffb05fda
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2199,6 +2226,34 @@ spec:
         secret:
           defaultMode: 420
           secretName: opendatahub-operator-controller-webhook-cert
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    service.beta.openshift.io/inject-cabundle: "true"
+  name: opendatahub-operator-mutating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: opendatahub-operator-webhook-service
+      namespace: opendatahub-operator-system
+      path: /mutate-opendatahub-io-v1
+  failurePolicy: Fail
+  name: mutate.operator.opendatahub.io
+  rules:
+  - apiGroups:
+    - datasciencecluster.opendatahub.io
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datascienceclusters
+  sideEffects: None
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
