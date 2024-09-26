@@ -895,6 +895,8 @@ spec:
                         description: |-
                           Namespace where it is deployed. If not provided, the default is to
                           use '-auth-provider' suffix on the ApplicationsNamespace of the DSCI.
+                        maxLength: 63
+                        pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?)?$
                         type: string
                     type: object
                   controlPlane:
@@ -921,6 +923,8 @@ spec:
                         default: istio-system
                         description: Namespace is a namespace where Service Mesh is
                           deployed. Defaults to "istio-system".
+                        maxLength: 63
+                        pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?)?$
                         type: string
                     type: object
                   managementState:
@@ -2139,7 +2143,7 @@ spec:
               fieldPath: metadata.namespace
         - name: DEFAULT_MANIFESTS_PATH
           value: /opt/manifests
-        image: quay.io/opendatahub/opendatahub-operator@sha256:b1336eeea715fafb57eb0a4e8cd62d03c9fcafcb05745e7c0447cfadda58c84a
+        image: quay.io/opendatahub/opendatahub-operator@sha256:cd061e70973a9d52daa57f7593815215914d1e1aab3799f460f8cd7f42be0a87
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
