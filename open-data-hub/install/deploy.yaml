@@ -825,6 +825,8 @@ spec:
                 default: opendatahub
                 description: Namespace for applications to be installed, non-configurable,
                   default to "opendatahub"
+                maxLength: 63
+                pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?)?$
                 type: string
                 x-kubernetes-validations:
                 - message: ApplicationsNamespace is immutable
@@ -865,6 +867,8 @@ spec:
                   namespace:
                     default: opendatahub
                     description: Namespace for monitoring if it is enabled
+                    maxLength: 63
+                    pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?)?$
                     type: string
                 type: object
               serviceMesh:
@@ -2144,7 +2148,7 @@ spec:
               fieldPath: metadata.namespace
         - name: DEFAULT_MANIFESTS_PATH
           value: /opt/manifests
-        image: quay.io/opendatahub/opendatahub-operator@sha256:db050cae7a7af21b8235c5088962e5b65e0440f722f1797ead8c210e6e3c912f
+        image: quay.io/opendatahub/opendatahub-operator@sha256:c4c174dffe80fe14002321cd396fde70c3f46215a1ed2a910116aa41f9d5a0ba
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
