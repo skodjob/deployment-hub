@@ -2148,7 +2148,9 @@ spec:
               fieldPath: metadata.namespace
         - name: DEFAULT_MANIFESTS_PATH
           value: /opt/manifests
-        image: quay.io/opendatahub/opendatahub-operator@sha256:5761cd98490aabe67dd6cba54f8709c73a9590b1211d1cfcd163a4d2882d6a26
+        - name: ODH_PLATFORM_TYPE
+          value: OpenDataHub
+        image: quay.io/opendatahub/opendatahub-operator@sha256:517c9eb49493610ea2ced98a749a3b2c094f360edd96acbeef35bc9603acec98
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
