@@ -251,6 +251,17 @@ spec:
                         - Removed
                         pattern: ^(Managed|Unmanaged|Force|Removed)$
                         type: string
+                      nim:
+                        description: Configures and enables NVIDIA NIM integration
+                        properties:
+                          managementState:
+                            default: Managed
+                            enum:
+                            - Managed
+                            - Removed
+                            pattern: ^(Managed|Unmanaged|Force|Removed)$
+                            type: string
+                        type: object
                       serving:
                         description: |-
                           Serving configures the KNative-Serving stack used for model serving. A Service
@@ -2144,7 +2155,7 @@ spec:
           value: /opt/manifests
         - name: ODH_PLATFORM_TYPE
           value: OpenDataHub
-        image: quay.io/opendatahub/opendatahub-operator@sha256:895ca188fb1f5ef5a3282cadc3e30c90f94ce99dcda3e4760ac35c23656b1a04
+        image: quay.io/opendatahub/opendatahub-operator@sha256:fe0b7c67919e79eb0d315e331ef90c4b63c86ea0f5f42407f8b2c7334bd4d030
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
