@@ -2,12 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 namePrefix: http-internal-
-commonLabels:
-  type: http-internal
 
 replicas:
-  - name: producer
-    count: 7
+  - count: 7
+    name: producer
 
 resources:
   - ../../base
@@ -22,3 +20,7 @@ patches:
   - path: streams.yaml
     target:
       name: streams
+labels:
+  - includeSelectors: true
+    pairs:
+      type: http-internal

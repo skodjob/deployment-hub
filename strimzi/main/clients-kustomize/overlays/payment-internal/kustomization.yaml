@@ -2,16 +2,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 namePrefix: payment-internal-
-commonLabels:
-  type: payment-internal
 
 replicas:
-  - name: producer
-    count: 9
-  - name: consumer
-    count: 20
-  - name: streams
-    count: 3
+  - count: 9
+    name: producer
+  - count: 20
+    name: consumer
+  - count: 3
+    name: streams
 
 resources:
   - ../../base
@@ -26,3 +24,7 @@ patches:
   - path: streams.yaml
     target:
       name: streams
+labels:
+  - includeSelectors: true
+    pairs:
+      type: payment-internal
