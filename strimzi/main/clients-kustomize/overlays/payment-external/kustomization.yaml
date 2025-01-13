@@ -4,27 +4,27 @@ kind: Kustomization
 namePrefix: payment-external-
 
 replicas:
-- count: 9
-  name: producer
-- count: 20
-  name: consumer
-- count: 3
-  name: streams
+  - count: 9
+    name: producer
+  - count: 20
+    name: consumer
+  - count: 3
+    name: streams
 
 resources:
 - ../../base
 
 patches:
-- path: producer.yaml
-  target:
-    name: producer
-- path: consumer.yaml
-  target:
-    name: consumer
-- path: streams.yaml
-  target:
-    name: streams
+  - path: producer.yaml
+    target:
+      name: producer
+  - path: consumer.yaml
+    target:
+      name: consumer
+  - path: streams.yaml
+    target:
+      name: streams
 labels:
-- includeSelectors: true
-  pairs:
-    type: payment-external
+  - includeSelectors: true
+    pairs:
+      type: payment-external
