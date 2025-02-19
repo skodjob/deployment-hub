@@ -10,3 +10,19 @@ metadata:
 spec:
   authentication:
     type: tls
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: console-user
+  labels:
+    strimzi.io/cluster: heimdall
+    mode: mirror
+spec:
+  authentication:
+    type: scram-sha-512
+  template:
+    secret:
+      metadata:
+        annotations:
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets=true"
