@@ -13,12 +13,12 @@ spec:
     secret:
       metadata:
         annotations:
-          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets=true"
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets-mirror notin (strimzi-kafka-kraft)"
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
-  name: console-user
+  name: console-user-horus
   labels:
     strimzi.io/cluster: horus
     mode: mirror
@@ -29,4 +29,4 @@ spec:
     secret:
       metadata:
         annotations:
-          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets=true"
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets notin (strimzi-kafka-kraft)"
