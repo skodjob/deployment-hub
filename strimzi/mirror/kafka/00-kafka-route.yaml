@@ -304,8 +304,13 @@ spec:
                 # label on KE pods
                 strimzi.io/kind: Kafka
   cruiseControl:
-    brokerCapacity:
-      cpu: "26"
+    autoRebalance:
+      - mode: add-brokers
+        template:
+          name: horus-add-remove-broker-template
+      - mode: remove-brokers
+        template:
+          name: horus-add-remove-broker-template
     config:
       cruise.control.metrics.topic.num.partitions: 1
       cruise.control.metrics.topic.replication.factor: 3

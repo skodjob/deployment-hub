@@ -5,7 +5,47 @@ metadata:
   labels:
     strimzi.io/cluster: horus
     mode: mirror
+spec:
+  # Default configuration for mode is full
+  mode: full
+  goals:
+    - RackAwareGoal
+    - MinTopicLeadersPerBrokerGoal
+    - ReplicaCapacityGoal
+    - DiskCapacityGoal
+    - NetworkInboundCapacityGoal
+    - NetworkOutboundCapacityGoal
+    - ReplicaDistributionGoal
+    - PotentialNwOutGoal
+    - DiskUsageDistributionGoal
+    - NetworkInboundUsageDistributionGoal
+    - NetworkOutboundUsageDistributionGoal
+    # ❌ Removed: CpuCapacityGoal
+    # ❌ Removed: CpuUsageDistributionGoal
+    - TopicReplicaDistributionGoal
+    - LeaderReplicaDistributionGoal
+    - LeaderBytesInDistributionGoal
+    - PreferredLeaderElectionGoal
+    - IntraBrokerDiskCapacityGoal
+    - IntraBrokerDiskUsageDistributionGoal
+---
+# Rebalance resource-template for adding-removing brokers
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaRebalance
+metadata:
+  name: horus-add-remove-broker-template
   annotations:
-    strimzi.io/rebalance-auto-approval: "true"
-# no goals specified, using the default goals from the Cruise Control configuration
-spec: {}
+    strimzi.io/rebalance-template: "true"
+  labels:
+    strimzi.io/cluster: horus
+    mode: mirror
+spec:
+  goals:
+    - CpuCapacityGoal
+    - NetworkInboundCapacityGoal
+    - DiskCapacityGoal
+    - RackAwareGoal
+    - MinTopicLeadersPerBrokerGoal
+    - NetworkOutboundCapacityGoal
+    - ReplicaCapacityGoal
+  skipHardGoalCheck: true
