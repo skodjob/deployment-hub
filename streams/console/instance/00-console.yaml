@@ -1,0 +1,116 @@
+---
+apiVersion: console.streamshub.github.com/v1alpha1
+kind: Console
+metadata:
+  name: streams-console
+spec:
+  hostname: consoleHostName
+  security:
+    oidc:
+      authServerUrl: authServerUrl
+      clientId: streams-console
+      clientSecret:
+        valueFrom:
+          secretKeyRef:
+            name: streams-console-oidc
+            key: streams-console-oidc
+    subjects:
+      - claim: groups
+        include:
+          - developers
+        roleNames:
+          - developers
+      - claim: groups
+        include:
+          - administrators
+        roleNames:
+          - administrators
+    roles:
+      # developers may perform any operation with clusters 'a' and 'b'.
+      - name: developers
+        rules:
+          - resources:
+              - kafkas
+            resourceNames:
+              - "*"
+            privileges:
+              - 'ALL'
+      - name: administrators
+        rules:
+          - resources:
+              - kafkas
+            resourceNames:
+              - "*"
+            privileges:
+              - 'ALL'
+  metricsSources:
+    - name: internal-prometheus
+      type: openshift-monitoring
+  kafkaClusters:
+    - name: anubis
+      namespace: strimzi-kafka
+      listener: console
+      metricsSource: internal-prometheus
+      credentials:
+        kafkaUser:
+          name: console-user-anubis
+      security:
+        roles:
+          - name: developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                resourceNames:
+                  - "*"
+                privileges:
+                  - GET
+                  - LIST
+          - name: administrators
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes/configs
+                resourceNames:
+                  - "*"
+                privileges:
+                  - ALL
+    - name: horus
+      namespace: strimzi-kafka-kraft
+      listener: console
+      metricsSource: internal-prometheus
+      credentials:
+        kafkaUser:
+          name: console-user-horus
+      security:
+        roles:
+          - name: developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                resourceNames:
+                  - "*"
+                privileges:
+                  - GET
+                  - LIST
+          - name: administrators
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes/configs
+                resourceNames:
+                  - "*"
+                privileges:
+                  - ALL
+
