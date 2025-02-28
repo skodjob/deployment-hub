@@ -1,0 +1,37 @@
+---
+apiVersion: registry.apicur.io/v1
+kind: ApicurioRegistry
+metadata:
+  name: streams-registry
+spec:
+  configuration:
+    env:
+      - name: REGISTRY_EVENTS_KAFKA_TOPIC
+        value: "streams-registry-schemas"
+    kafkasql:
+      bootstrapServers: 'anubis-kafka-bootstrap.strimzi-kafka.svc:9093'
+      security:
+        tls:
+          keystoreSecretName: superuser-anubis
+          truststoreSecretName: anubis-cluster-ca-cert
+    logLevel: INFO
+    persistence: kafkasql
+    registryLogLevel: DEBUG
+  deployment:
+    host: streams-registry-streams-registry.apps.worker-01.strimzi.app-services-dev.net
+    replicas: 1
+#---
+#apiVersion: kafka.strimzi.io/v1beta2
+#kind: KafkaTopic
+#metadata:
+#  name: kafka-journal
+#  namespace: strimzi-kafka
+#  labels:
+#    strimzi.io/cluster: anubis
+#    mode: main
+#spec:
+#  replicas: 3
+#  partitions: 20
+#  config:
+#    min.insync.replicas: 2
+#    cleanup.policy: compact
