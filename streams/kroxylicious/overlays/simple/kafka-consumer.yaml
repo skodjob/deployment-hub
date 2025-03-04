@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatever
+spec:
+  template:
+    spec:
+      containers:
+        - name: consumer
+          env:
+            - name: TOPIC
+              value: kroxy-simple-data
+            - name: GROUP_ID
+              value: kroxy-simple-consumer-group
+            - name: BOOTSTRAP_SERVERS
+              value: kroxy-simple-anubis-vc-bootstrap.streams-kroxy.svc.cluster.local:9093
+            - name: CA_CRT
+              value: ${secrets:streams-kroxy/kroxy-simple-cert:ca.crt}
+      serviceAccountName: kroxy-simple-clients-sa

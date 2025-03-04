@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatever
+spec:
+  template:
+    spec:
+      containers:
+        - name: producer
+          env:
+            - name: MESSAGE_TEMPLATE
+              value: "flights"
+            - name: TOPIC
+              value: kroxy-simple-data
+            - name: DELAY_MS
+              value: "1000"
+            - name: BOOTSTRAP_SERVERS
+              value: kroxy-simple-anubis-vc-bootstrap.streams-kroxy.svc.cluster.local:9093
+            - name: CA_CRT
+              value: ${secrets:streams-kroxy/kroxy-simple-cert:ca.crt}
+      serviceAccountName: kroxy-simple-clients-sa
