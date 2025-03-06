@@ -29,7 +29,7 @@ spec:
             name: strimzi-cluster-operator
       containers:
         - name: strimzi-cluster-operator
-          image: quay.io/strimzi/operator@sha256:fe7d886f3eae4217c99d67a6c79b95f3d800da2b1dbfb494564bfd3bcd15a52f
+          image: quay.io/strimzi/operator@sha256:2ca8e04af4bc8c0083b23f55a00b5635e23c459a9b4b9fa16d98c39f5c57b69d
           ports:
             - containerPort: 8080
               name: http
@@ -49,33 +49,33 @@ spec:
             - name: STRIMZI_OPERATION_TIMEOUT_MS
               value: "300000"
             - name: STRIMZI_DEFAULT_KAFKA_EXPORTER_IMAGE
-              value: quay.io/strimzi/kafka@sha256:f62f2c329fb5429dccd8ecbf13a97e56ea332c43b30b302e114058fbe6ae0caa
+              value: quay.io/strimzi/kafka@sha256:4d0c4cbd3c942b65c698adaac78349e7fa09df39fb775119f78be7b9d27f1cdc
             - name: STRIMZI_DEFAULT_CRUISE_CONTROL_IMAGE
-              value: quay.io/strimzi/kafka@sha256:f62f2c329fb5429dccd8ecbf13a97e56ea332c43b30b302e114058fbe6ae0caa
+              value: quay.io/strimzi/kafka@sha256:4d0c4cbd3c942b65c698adaac78349e7fa09df39fb775119f78be7b9d27f1cdc
             - name: STRIMZI_KAFKA_IMAGES
               value: |
-                3.9.0=quay.io/strimzi/kafka@sha256:86789f72429b09aa9bbbdb31fab98a8ed22345aec5cb59fbc6c7f06516e829e1
-                4.0.0=quay.io/strimzi/kafka@sha256:f62f2c329fb5429dccd8ecbf13a97e56ea332c43b30b302e114058fbe6ae0caa
+                3.9.0=quay.io/strimzi/kafka@sha256:05622a049d8b677d2e88f29b3439bf11a4d27f9e05d698e351a2150af768e06d
+                4.0.0=quay.io/strimzi/kafka@sha256:4d0c4cbd3c942b65c698adaac78349e7fa09df39fb775119f78be7b9d27f1cdc
             - name: STRIMZI_KAFKA_CONNECT_IMAGES
               value: |
-                3.9.0=quay.io/strimzi/kafka@sha256:86789f72429b09aa9bbbdb31fab98a8ed22345aec5cb59fbc6c7f06516e829e1
-                4.0.0=quay.io/strimzi/kafka@sha256:f62f2c329fb5429dccd8ecbf13a97e56ea332c43b30b302e114058fbe6ae0caa
+                3.9.0=quay.io/strimzi/kafka@sha256:05622a049d8b677d2e88f29b3439bf11a4d27f9e05d698e351a2150af768e06d
+                4.0.0=quay.io/strimzi/kafka@sha256:4d0c4cbd3c942b65c698adaac78349e7fa09df39fb775119f78be7b9d27f1cdc
             - name: STRIMZI_KAFKA_MIRROR_MAKER_2_IMAGES
               value: |
-                3.9.0=quay.io/strimzi/kafka@sha256:86789f72429b09aa9bbbdb31fab98a8ed22345aec5cb59fbc6c7f06516e829e1
-                4.0.0=quay.io/strimzi/kafka@sha256:f62f2c329fb5429dccd8ecbf13a97e56ea332c43b30b302e114058fbe6ae0caa
+                3.9.0=quay.io/strimzi/kafka@sha256:05622a049d8b677d2e88f29b3439bf11a4d27f9e05d698e351a2150af768e06d
+                4.0.0=quay.io/strimzi/kafka@sha256:4d0c4cbd3c942b65c698adaac78349e7fa09df39fb775119f78be7b9d27f1cdc
             - name: STRIMZI_DEFAULT_TOPIC_OPERATOR_IMAGE
-              value: quay.io/strimzi/operator@sha256:fe7d886f3eae4217c99d67a6c79b95f3d800da2b1dbfb494564bfd3bcd15a52f
+              value: quay.io/strimzi/operator@sha256:2ca8e04af4bc8c0083b23f55a00b5635e23c459a9b4b9fa16d98c39f5c57b69d
             - name: STRIMZI_DEFAULT_USER_OPERATOR_IMAGE
-              value: quay.io/strimzi/operator@sha256:fe7d886f3eae4217c99d67a6c79b95f3d800da2b1dbfb494564bfd3bcd15a52f
+              value: quay.io/strimzi/operator@sha256:2ca8e04af4bc8c0083b23f55a00b5635e23c459a9b4b9fa16d98c39f5c57b69d
             - name: STRIMZI_DEFAULT_KAFKA_INIT_IMAGE
-              value: quay.io/strimzi/operator@sha256:fe7d886f3eae4217c99d67a6c79b95f3d800da2b1dbfb494564bfd3bcd15a52f
+              value: quay.io/strimzi/operator@sha256:2ca8e04af4bc8c0083b23f55a00b5635e23c459a9b4b9fa16d98c39f5c57b69d
             - name: STRIMZI_DEFAULT_KAFKA_BRIDGE_IMAGE
               value: quay.io/strimzi/kafka-bridge:latest
             - name: STRIMZI_DEFAULT_KANIKO_EXECUTOR_IMAGE
               value: quay.io/strimzi/kaniko-executor@sha256:ef1a39c363e145041d80103c3c12da9429ce06cf21dff6fb1fb75d0c0ed9c35b
             - name: STRIMZI_DEFAULT_MAVEN_BUILDER
-              value: quay.io/strimzi/maven-builder@sha256:1baf517cc394f898ce49737d3857517a4943e33afb0a5e8869fafafe524b3e2c
+              value: quay.io/strimzi/maven-builder@sha256:a9cf5272a53b9bed3ca7fe049523bcaeaed9e132d574b268b0c928a5738d5be5
             - name: STRIMZI_OPERATOR_NAMESPACE
               valueFrom:
                 fieldRef:
