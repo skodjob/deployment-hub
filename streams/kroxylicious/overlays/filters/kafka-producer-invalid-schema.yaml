@@ -25,36 +25,36 @@ spec:
                     values:
                       - services
       containers:
-        - env:
-          - name: MESSAGE_TEMPLATE
-            # Let's send valid schema, but it is not expected by Kroxy
-            value: "flights"
-          - name: TOPIC
-            value: kroxy-filters-data-invalid
-          - name: DELAY_MS
-            value: "100000"
-          - name: BOOTSTRAP_SERVERS
-            value: kroxy-filters-anubis-vc-bootstrap.streams-kroxy-filters.svc.cluster.local:9093
-          - name: CA_CRT
-            value: ${secrets:streams-kroxy-filters/kroxy-filters-cert:ca.crt}
-          - name: ADDITIONAL_CONFIG
-            value: |
-              value.serializer=io.apicurio.registry.serde.jsonschema.JsonSchemaKafkaSerializer
-              apicurio.registry.url=http://streams-registry-service.streams-registry.svc.cluster.local:8080
-              apicurio.registry.auto-register=true
-              apicurio.registry.auto-register.if-exists=RETURN
-              apicurio.registry.find-latest=false
-              apicurio.registry.check-existence=true
-              apicurio.registry.artifact-resolver-strategy=io.apicurio.registry.serde.strategy.SimpleTopicIdStrategy
-          - name: LOG_LEVEL
-            value: INFO
-          - name: MESSAGE_COUNT
-            value: "10000000"
-          - name: CLIENT_TYPE
-            value: KafkaProducer
+        - name: producer
+          env:
+            - name: MESSAGE_TEMPLATE
+              # Let's send valid schema, but it is not expected by Kroxy
+              value: "flights"
+            - name: TOPIC
+              value: kroxy-filters-data-invalid
+            - name: DELAY_MS
+              value: "100000"
+            - name: BOOTSTRAP_SERVERS
+              value: kroxy-filters-anubis-vc-bootstrap.streams-kroxy-filters.svc.cluster.local:9093
+            - name: CA_CRT
+              value: ${secrets:streams-kroxy-filters/kroxy-filters-cert:ca.crt}
+            - name: ADDITIONAL_CONFIG
+              value: |
+                value.serializer=io.apicurio.registry.serde.jsonschema.JsonSchemaKafkaSerializer
+                apicurio.registry.url=http://streams-registry-service.streams-registry.svc.cluster.local:8080
+                apicurio.registry.auto-register=true
+                apicurio.registry.auto-register.if-exists=RETURN
+                apicurio.registry.find-latest=false
+                apicurio.registry.check-existence=true
+                apicurio.registry.artifact-resolver-strategy=io.apicurio.registry.serde.strategy.SimpleTopicIdStrategy
+            - name: LOG_LEVEL
+              value: INFO
+            - name: MESSAGE_COUNT
+              value: "10000000"
+            - name: CLIENT_TYPE
+              value: KafkaProducer
           image: clients-image:latest
           imagePullPolicy: Always
-          name: consumer
           resources:
             limits:
               cpu: 250m
