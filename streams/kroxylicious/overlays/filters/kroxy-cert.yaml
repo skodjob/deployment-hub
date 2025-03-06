@@ -1,0 +1,18 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert
+spec:
+  commonName: streams-kroxy-filters.svc.cluster.local
+  secretName: kroxy-filters-cert
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: kroxy-filters-keystore-password
+        key: keystore.password
+  dnsNames:
+    - kroxy-filters-anubis-vc-bootstrap.streams-kroxy-filters.svc.cluster.local
+    - "*.streams-kroxy-filters.svc.cluster.local"
+    - streams-kroxy-filters.svc.cluster.local
