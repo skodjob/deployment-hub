@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consumer
+  name: consumer-direct
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer-direct
+  template:
+    metadata:
+      labels:
+        app: consumer-direct
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
+      containers:
+        - name: consumer
+          env:
+            - name: TOPIC
+              value: kroxy-filters-data
+            - name: GROUP_ID
+              value: kroxy-filters-consumer-group-direct
+            - name: USER_CRT
+              value: ${secrets:streams-kroxy-filters/superuser-anubis:user.crt}
+            - name: USER_KEY
+              value: ${secrets:streams-kroxy-filters/superuser-anubis:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: anubis-kafka-bootstrap.strimzi-kafka.svc.cluster.local:9093
+            - name: CA_CRT
+              value: ${secrets:streams-kroxy-filters/anubis-cluster-ca-cert:ca.crt}
+            - name: LOG_LEVEL
+              value: INFO
+            - name: MESSAGE_COUNT
+              value: "10000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+          image: clients-image:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 250m
+              memory: 200Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+      serviceAccountName: clients-sa
+      tolerations:
+        - effect: NoSchedule
+          key: nodetype
+          operator: Equal
+          value: services

@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  config.yaml: |
+    adminHttp:
+      endpoints:
+        prometheus: {}
+    virtualClusters:
+      - name: anubis-virtual-cluster
+        targetCluster:
+          bootstrapServers: anubis-kafka-bootstrap.strimzi-kafka.svc.cluster.local:9093
+          tls:
+            trust:
+              storeFile: /opt/kroxylicious/trust/ca.p12
+              storePassword:
+                passwordFile: /opt/kroxylicious/trust/ca.password
+            key:
+              privateKeyFile: /opt/kroxylicious/key/user.key 
+              certificateFile: /opt/kroxylicious/key/user.crt 
+        gateways: 
+          - name: loadbalancer
+            sniHostIdentifiesNode:
+              bootstrapAddress: kroxy-filters-anubis-vc-bootstrap.streams-kroxy-filters.svc.cluster.local:9093
+              advertisedBrokerAddressPattern: kroxy-filters-anubis-vc-broker-$(nodeId).streams-kroxy-filters.svc.cluster.local
+            tls:
+              key:
+                storeFile: /opt/kroxylicious/client/keystore.p12
+                storePassword:
+                  passwordFile: /opt/kroxylicious/keystore-password/keystore.password
+                storeType: PKCS12
+        logNetwork: false
+        logFrames: false
+    filterDefinitions:
+      - name: encrypt
+        type: RecordEncryption
+        config:
+          kms: VaultKmsService
+          kmsConfig:
+            vaultTransitEngineUrl: https://skodjob-vault-skodjob-vault.apps.skodjob-infra.strimzi.app-services-dev.net/v1/transit
+            vaultToken:
+              passwordFile: /opt/kroxylicious/vault/token
+          selector: TemplateKekSelector
+          selectorConfig:
+            template: "KEK_$(topicName)"
+          unresolvedKeyPolicy: PASSTHROUGH_UNENCRYPTED
+      - name: record-validation
+        type: RecordValidation
+        config:
+          rules:
+            - topicNames:
+                - kroxy-filters-data
+              keyRule:
+                schemaValidationConfig:
+                  apicurioGlobalId: 36                                       
+                  apicurioRegistryUrl: http://streams-registry-service.streams-registry.svc.cluster.local:8080               
+                allowNulls: true
+                allowEmpty: true
+              valueRule:
+                schemaValidationConfig:
+                  apicurioGlobalId: 36                                       
+                  apicurioRegistryUrl: http://streams-registry-service.streams-registry.svc.cluster.local:8080
+          defaultRule:
+            keyRule:
+              schemaValidationConfig:
+                apicurioGlobalId: 36                                       
+                apicurioRegistryUrl: http://streams-registry-service.streams-registry.svc.cluster.local:8080               
+              allowNulls: true
+              allowEmpty: true
+            valueRule:
+              schemaValidationConfig:
+                apicurioGlobalId: 36                                       
+                apicurioRegistryUrl: http://streams-registry-service.streams-registry.svc.cluster.local:8080              
+    defaultFilters:
+      - record-validation
+      - encrypt
