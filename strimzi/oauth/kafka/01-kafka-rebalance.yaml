@@ -1,0 +1,52 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaRebalance
+metadata:
+  name: ra-rebalance
+  labels:
+    strimzi.io/cluster: ra
+    mode: main
+spec:
+  # Default configuration for mode is full
+  mode: full
+  goals:
+    - RackAwareGoal
+    - MinTopicLeadersPerBrokerGoal
+    - ReplicaCapacityGoal
+    - DiskCapacityGoal
+    - NetworkInboundCapacityGoal
+    - NetworkOutboundCapacityGoal
+    - ReplicaDistributionGoal
+    - PotentialNwOutGoal
+    - DiskUsageDistributionGoal
+    - NetworkInboundUsageDistributionGoal
+    - NetworkOutboundUsageDistributionGoal
+    # ❌ Removed: CpuCapacityGoal
+    # ❌ Removed: CpuUsageDistributionGoal
+    - TopicReplicaDistributionGoal
+    - LeaderReplicaDistributionGoal
+    - LeaderBytesInDistributionGoal
+    - PreferredLeaderElectionGoal
+    - IntraBrokerDiskCapacityGoal
+    - IntraBrokerDiskUsageDistributionGoal
+  skipHardGoalCheck: true
+---
+# Rebalance resource-template for adding-removing brokers
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaRebalance
+metadata:
+  name: ra-add-remove-broker-template
+  annotations:
+    strimzi.io/rebalance-template: "true"
+  labels:
+    # Template doesn't need to have strimzi.io/cluster label as it is referenced from Kafka CR
+    mode: main
+spec:
+  goals:
+    - CpuCapacityGoal
+    - NetworkInboundCapacityGoal
+    - DiskCapacityGoal
+    - RackAwareGoal
+    - MinTopicLeadersPerBrokerGoal
+    - NetworkOutboundCapacityGoal
+    - ReplicaCapacityGoal
+  skipHardGoalCheck: true

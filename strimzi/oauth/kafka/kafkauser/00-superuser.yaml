@@ -1,0 +1,76 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: superuser-ra
+  labels:
+    strimzi.io/cluster: ra
+    mode: main
+spec:
+  authentication:
+    type: tls
+  template:
+    secret:
+      metadata:
+        annotations:
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets-mirror notin (strimzi-kafka-oauth)"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: console-user-ra
+  labels:
+    strimzi.io/cluster: ra
+    mode: main
+spec:
+  authentication:
+    type: scram-sha-512
+  template:
+    secret:
+      metadata:
+        annotations:
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets notin (strimzi-kafka-oauth)"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  labels:
+    strimzi.io/cluster: ra
+    mode: main
+  name: team-flights-client
+spec:
+  authentication:
+    type: tls
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  labels:
+    strimzi.io/cluster: ra
+    mode: main
+  name: team-payments-client
+spec:
+  authentication:
+    type: tls
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  labels:
+    strimzi.io/cluster: ra
+    mode: main
+  name: team-marketing-client
+spec:
+  authentication:
+    type: tls
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  labels:
+    strimzi.io/cluster: ra
+    mode: main
+  name: team-ops-client
+spec:
+  authentication:
+    type: tls

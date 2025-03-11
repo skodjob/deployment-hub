@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - 000-Lease-strimzi-cluster-operator.yaml
+  - 010-ServiceAccount-strimzi-cluster-operator.yaml
+  - 021-ClusterRoleBinding-strimzi-cluster-operator-global-tealc.yaml
+  - 021-ClusterRoleBinding-strimzi-cluster-operator-namespaced-tealc.yaml
+  - 022-RoleBinding-strimzi-cluster-operator-leader-election-tealc.yaml
+  - 023-ClusterRoleBinding-strimzi-cluster-operator-watched-tealc.yaml
+  - 030-ClusterRoleBinding-strimzi-cluster-operator-kafka-broker-delegation-tealc.yaml
+  - 031-ClusterRoleBinding-strimzi-cluster-operator-entity-operator-delegation-tealc.yaml
+  - 033-ClusterRoleBinding-strimzi-cluster-operator-kafka-client-delegation-tealc.yaml
+  - 050-ConfigMap-strimzi-cluster-operator.yaml
+  - 060-Deployment-strimzi-cluster-operator.yaml
+  - 099-podmonitor.yaml

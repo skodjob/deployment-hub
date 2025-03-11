@@ -1,0 +1,445 @@
+# Consumer from flights - valid
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: team-flights-client-valid-consumer
+  name: team-flights-client-valid-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team-flights-client-valid-consumer
+  template:
+    metadata:
+      labels:
+        app: team-flights-client-valid-consumer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: consumer
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.9.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            # Oauth Config
+            - name: OAUTH_CLIENT_ID
+              value: team-flights-client
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: clientSecret
+                  name: team-flights-client-oauth
+            - name: OAUTH_TOKEN_ENDPOINT_URI
+              value: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/token
+            # TLS config
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka-oauth/ra-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka-oauth/team-flights-client:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka-oauth/team-flights-client:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: ra-kafka-bootstrap.strimzi-kafka-oauth.svc:9093
+            - name: TOPIC
+              value: anubis.flights-internal-data
+            - name: GROUP_ID
+              value: flights-valid-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "services"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
+# Consumer from payments - valid
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: team-payments-client-valid-consumer
+  name: team-payments-client-valid-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team-payments-client-valid-consumer
+  template:
+    metadata:
+      labels:
+        app: team-payments-client-valid-consumer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: consumer
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.9.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            # Oauth Config
+            - name: OAUTH_CLIENT_ID
+              value: team-payments-client
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: clientSecret
+                  name: team-payments-client-oauth
+            - name: OAUTH_TOKEN_ENDPOINT_URI
+              value: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/token
+            # TLS config
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka-oauth/ra-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka-oauth/team-payments-client:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka-oauth/team-payments-client:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: ra-kafka-bootstrap.strimzi-kafka-oauth.svc:9093
+            - name: TOPIC
+              value: anubis.payment-internal-data
+            - name: GROUP_ID
+              value: payments-valid-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "services"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
+# Ops consumer from flights - valid
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: team-ops-flights-client-valid-consumer
+  name: team-ops-flights-client-valid-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team-ops-flights-client-valid-consumer
+  template:
+    metadata:
+      labels:
+        app: team-ops-flights-client-valid-consumer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: consumer
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.9.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            # Oauth Config
+            - name: OAUTH_CLIENT_ID
+              value: team-ops-client
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: clientSecret
+                  name: team-ops-client-oauth
+            - name: OAUTH_TOKEN_ENDPOINT_URI
+              value: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/token
+            # TLS config
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka-oauth/ra-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka-oauth/team-ops-client:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka-oauth/team-ops-client:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: ra-kafka-bootstrap.strimzi-kafka-oauth.svc:9093
+            - name: TOPIC
+              value: anubis.flights-internal-data
+            - name: GROUP_ID
+              value: ops-flights-valid-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "services"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
+# Ops consumer from payments - valid
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: team-ops-payments-client-valid-consumer
+  name: team-ops-payments-client-valid-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team-ops-payments-client-valid-consumer
+  template:
+    metadata:
+      labels:
+        app: team-ops-payments-client-valid-consumer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: consumer
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.9.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            # Oauth Config
+            - name: OAUTH_CLIENT_ID
+              value: team-ops-client
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: clientSecret
+                  name: team-ops-client-oauth
+            - name: OAUTH_TOKEN_ENDPOINT_URI
+              value: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/token
+            # TLS config
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka-oauth/ra-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka-oauth/team-ops-client:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka-oauth/team-ops-client:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: ra-kafka-bootstrap.strimzi-kafka-oauth.svc:9093
+            - name: TOPIC
+              value: anubis.payment-internal-data
+            - name: GROUP_ID
+              value: ops-payments-valid-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "services"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
+# Marketing consumer from payments - valid
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: team-marketing-payments-client-valid-consumer
+  name: team-marketing-payments-client-valid-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team-marketing-payments-client-valid-consumer
+  template:
+    metadata:
+      labels:
+        app: team-marketing-payments-client-valid-consumer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: consumer
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.9.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            # Oauth Config
+            - name: OAUTH_CLIENT_ID
+              value: team-marketing-client
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: clientSecret
+                  name: team-marketing-client-oauth
+            - name: OAUTH_TOKEN_ENDPOINT_URI
+              value: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/token
+            # TLS config
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka-oauth/ra-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka-oauth/team-marketing-client:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka-oauth/team-marketing-client:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: ra-kafka-bootstrap.strimzi-kafka-oauth.svc:9093
+            - name: TOPIC
+              value: anubis.payment-internal-data
+            - name: GROUP_ID
+              value: marketing-payments-valid-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "services"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
+# Marketing consumer from flights - valid
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: team-marketing-flights-client-valid-consumer
+  name: team-marketing-flights-client-valid-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team-marketing-flights-client-valid-consumer
+  template:
+    metadata:
+      labels:
+        app: team-marketing-flights-client-valid-consumer
+    spec:
+      serviceAccountName: clients-sa
+      containers:
+        - name: consumer
+          image: quay.io/strimzi-test-clients/test-clients:latest-kafka-3.9.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 250Mi
+              cpu: 250m
+          env:
+            # Oauth Config
+            - name: OAUTH_CLIENT_ID
+              value: team-marketing-client
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: clientSecret
+                  name: team-marketing-client-oauth
+            - name: OAUTH_TOKEN_ENDPOINT_URI
+              value: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/token
+            # TLS config
+            - name: CA_CRT
+              value: ${secrets:strimzi-kafka-oauth/ra-cluster-ca-cert:ca.crt}
+            - name: USER_CRT
+              value: ${secrets:strimzi-kafka-oauth/team-marketing-client:user.crt}
+            - name: USER_KEY
+              value: ${secrets:strimzi-kafka-oauth/team-marketing-client:user.key}
+            - name: BOOTSTRAP_SERVERS
+              value: ra-kafka-bootstrap.strimzi-kafka-oauth.svc:9093
+            - name: TOPIC
+              value: anubis.flights-internal-data
+            - name: GROUP_ID
+              value: marketing-flights-valid-consumer
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MESSAGE_COUNT
+              value: "100000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+      tolerations:
+        - key: "nodetype"
+          operator: "Equal"
+          value: "services"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
+# Some invalid configurations
