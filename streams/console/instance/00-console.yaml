@@ -113,3 +113,37 @@ spec:
                   - "*"
                 privileges:
                   - ALL
+    - name: ra
+      namespace: strimzi-kafka-oauth
+      listener: console
+      metricsSource: internal-prometheus
+      credentials:
+        kafkaUser:
+          name: console-user-ra
+      security:
+        roles:
+          - name: developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                resourceNames:
+                  - "*"
+                privileges:
+                  - GET
+                  - LIST
+          - name: administrators
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes/configs
+                resourceNames:
+                  - "*"
+                privileges:
+                  - ALL
+
