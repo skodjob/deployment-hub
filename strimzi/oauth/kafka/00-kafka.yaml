@@ -184,12 +184,12 @@ spec:
           enableOauthBearer: true
           failFast: true
           includeAcceptHeader: true
-          jwksEndpointUri: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/certs
+          jwksEndpointUri: https://keycloak.skodjob.io/realms/skodjob-authz/protocol/openid-connect/certs
           jwksExpirySeconds: 500
           jwksRefreshSeconds: 400
           type: oauth
           userNameClaim: preferred_username
-          validIssuerUri: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz
+          validIssuerUri: https://keycloak.skodjob.io/realms/skodjob-authz
       - name: route
         port: 9666
         type: route
@@ -202,12 +202,12 @@ spec:
           enableOauthBearer: true
           failFast: true
           includeAcceptHeader: true
-          jwksEndpointUri: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/certs
+          jwksEndpointUri: https://keycloak.skodjob.io/realms/skodjob-authz/protocol/openid-connect/certs
           jwksExpirySeconds: 500
           jwksRefreshSeconds: 400
           type: oauth
           userNameClaim: preferred_username
-          validIssuerUri: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz
+          validIssuerUri: https://keycloak.skodjob.io/realms/skodjob-authz
       - name: console
         port: 9777
         tls: true
@@ -229,7 +229,7 @@ spec:
       disableTlsHostnameVerification: true
       delegateToKafkaAcls: false
       includeAcceptHeader: true
-      tokenEndpointUri: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/token
+      tokenEndpointUri: https://keycloak.skodjob.io/realms/skodjob-authz/protocol/openid-connect/token
       superUsers:
         - CN=superuser-ra
         - superuser-ra
