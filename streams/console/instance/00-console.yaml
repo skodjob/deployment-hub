@@ -17,24 +17,57 @@ spec:
     subjects:
       - claim: groups
         include:
-          - developers
+          - streams-viewers
         roleNames:
-          - developers
+          - streams-viewers
+      - claim: groups
+        include:
+          - streams-developers
+        roleNames:
+          - streams-developers
+      - claim: groups
+        include:
+          - streams-administrators
+        roleNames:
+          - streams-administrators
       - claim: groups
         include:
           - administrators
         roleNames:
           - administrators
     roles:
-      # developers may perform any operation with clusters 'a' and 'b'.
-      - name: developers
+      - name: streams-viewers
         rules:
           - resources:
               - kafkas
             resourceNames:
               - "*"
             privileges:
-              - 'ALL'
+              - 'GET'
+              - 'LIST'
+      - name: streams-developers
+        rules:
+          - resources:
+              - kafkas
+            resourceNames:
+              - "*"
+            privileges:
+              - 'CREATE'
+              - 'GET'
+              - 'LIST'
+              - 'UPDATE'
+      - name: streams-administrators
+        rules:
+          - resources:
+              - kafkas
+            resourceNames:
+              - "*"
+            privileges:
+              - 'CREATE'
+              - 'GET'
+              - 'LIST'
+              - 'UPDATE'
+              - 'DELETE'
       - name: administrators
         rules:
           - resources:
@@ -56,7 +89,7 @@ spec:
           name: console-user-anubis
       security:
         roles:
-          - name: developers
+          - name: streams-viewers
             rules:
               - resources:
                   - topics
@@ -68,6 +101,38 @@ spec:
                 privileges:
                   - GET
                   - LIST
+          - name: streams-developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                resourceNames:
+                  - "*"
+                privileges:
+                  - CREATE
+                  - GET
+                  - LIST
+                  - UPDATE
+              - resources:
+                  - rebalances
+                resourceNames:
+                  - "*"
+                privileges:
+                  - GET
+                  - LIST
+          - name: streams-administrators
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes/configs
+                resourceNames:
+                  - "*"
+                privileges:
+                  - ALL
           - name: administrators
             rules:
               - resources:
@@ -89,7 +154,7 @@ spec:
           name: console-user-horus
       security:
         roles:
-          - name: developers
+          - name: streams-viewers
             rules:
               - resources:
                   - topics
@@ -101,6 +166,38 @@ spec:
                 privileges:
                   - GET
                   - LIST
+          - name: streams-developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                resourceNames:
+                  - "*"
+                privileges:
+                  - CREATE
+                  - GET
+                  - LIST
+                  - UPDATE
+              - resources:
+                  - rebalances
+                resourceNames:
+                  - "*"
+                privileges:
+                  - GET
+                  - LIST
+          - name: streams-administrators
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes/configs
+                resourceNames:
+                  - "*"
+                privileges:
+                  - ALL
           - name: administrators
             rules:
               - resources:
@@ -122,7 +219,7 @@ spec:
           name: console-user-ra
       security:
         roles:
-          - name: developers
+          - name: streams-viewers
             rules:
               - resources:
                   - topics
@@ -134,6 +231,38 @@ spec:
                 privileges:
                   - GET
                   - LIST
+          - name: streams-developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                resourceNames:
+                  - "*"
+                privileges:
+                  - CREATE
+                  - GET
+                  - LIST
+                  - UPDATE
+              - resources:
+                  - rebalances
+                resourceNames:
+                  - "*"
+                privileges:
+                  - GET
+                  - LIST
+          - name: streams-administrators
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes/configs
+                resourceNames:
+                  - "*"
+                privileges:
+                  - ALL
           - name: administrators
             rules:
               - resources:
