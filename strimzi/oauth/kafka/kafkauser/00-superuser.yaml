@@ -41,6 +41,11 @@ metadata:
 spec:
   authentication:
     type: tls
+  template:
+    secret:
+      metadata:
+        annotations:
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets notin (strimzi-kafka-oauth)"
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
@@ -52,6 +57,11 @@ metadata:
 spec:
   authentication:
     type: tls
+  template:
+    secret:
+      metadata:
+        annotations:
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets notin (strimzi-kafka-oauth)"
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
@@ -63,6 +73,11 @@ metadata:
 spec:
   authentication:
     type: tls
+  template:
+    secret:
+      metadata:
+        annotations:
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets notin (strimzi-kafka-oauth)"
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
@@ -74,3 +89,8 @@ metadata:
 spec:
   authentication:
     type: tls
+  template:
+    secret:
+      metadata:
+        annotations:
+          replicator.v1.mittwald.de/replicate-to-matching: "strimzi.io/sync-secrets notin (strimzi-kafka-oauth)"
