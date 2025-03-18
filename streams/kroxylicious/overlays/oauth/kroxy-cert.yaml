@@ -1,0 +1,18 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert
+spec:
+  commonName: streams-kroxy-oauth.svc.cluster.local
+  secretName: kroxy-oauth-cert
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: kroxy-oauth-keystore-password
+        key: keystore.password
+  dnsNames:
+    - kroxy-oauth-vc-bootstrap.streams-kroxy-oauth.svc.cluster.local
+    - "*.streams-kroxy-oauth.svc.cluster.local"
+    - streams-kroxy-oauth.svc.cluster.local
