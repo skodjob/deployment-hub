@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kroxylicious
+spec:
+  template:
+    spec:
+      containers:
+        - name: kroxylicious
+          ports:
+            - containerPort: 9190
+              name: metrics
+            - containerPort: 9693
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/kroxylicious/config/config.yaml
+              subPath: config.yaml
+            - name: superuser-ra-volume
+              readOnly: true
+              mountPath: /opt/kroxylicious/key
+            - name: ra-cluster-ca-cert-volume
+              readOnly: true
+              mountPath: /opt/kroxylicious/trust
+            - name: kroxy-oauth-cert
+              readOnly: true
+              mountPath: /opt/kroxylicious/client
+            - name: kroxy-keystore-password
+              readOnly: true
+              mountPath: /opt/kroxylicious/keystore-password
+            - name: vault-token
+              readOnly: true
+              mountPath: /opt/kroxylicious/vault
+      volumes:
+        - name: config-volume
+          configMap:
+            name: kroxy-oauth-config
+        - name: superuser-ra-volume
+          secret:
+            secretName: superuser-ra
+        - name: ra-cluster-ca-cert-volume
+          secret:
+            secretName: ra-cluster-ca-cert
+        # Generated cert from Cert-manager
+        - name: kroxy-oauth-cert
+          secret:
+            secretName: kroxy-oauth-cert
+        # Password to keystore
+        - name: kroxy-keystore-password
+          secret:
+            secretName: kroxy-oauth-keystore-password
+        # Vault token
+        - name: vault-token
+          secret:
+            secretName: kroxy-oauth-vault-token

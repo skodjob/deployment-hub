@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namePrefix: kroxy-oauth-
+
+replicas:
+  - count: 1
+    name: producer
+  - count: 1
+    name: consumer
+
+resources:
+  - ../../base
+  - kafka-clients-role.yaml
+  - kroxy-keystore-password.yaml
+  - vault-token.yaml
+  - kafka-consumer-direct.yaml
+  - kafka-producer-invalid.yaml
+
+patches:
+  - path: kafka-producer.yaml
+    target:
+      name: producer
+  - path: kafka-consumer.yaml
+    target:
+      name: consumer
+  - path: kroxylicious-config.yaml
+    target:
+      name: config
+  - path: kroxylicious-deployment.yaml
+    target:
+      name: proxy
+  - path: kroxy-cert.yaml
+    target:
+      name: cert
+
+labels:
+  - includeSelectors: true
+    pairs:
+      type: kroxy-oauth
+
+images:
+  - name: clients-image
+    newName: quay.io/strimzi-test-clients/test-clients
+    newTag: latest-kafka-3.9.0

@@ -1,0 +1,64 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  config.yaml: |
+    adminHttp:
+      endpoints:
+        prometheus: {}
+    virtualClusters:
+      - name: ra-virtual-cluster
+        targetCluster:
+          bootstrapServers: ra-kafka-bootstrap.strimzi-kafka-oauth.svc.cluster.local:9093
+          tls:
+            trust:
+              storeFile: /opt/kroxylicious/trust/ca.p12
+              storePassword:
+                passwordFile: /opt/kroxylicious/trust/ca.password
+            key:
+              privateKeyFile: /opt/kroxylicious/key/user.key 
+              certificateFile: /opt/kroxylicious/key/user.crt 
+        gateways: 
+          - name: loadbalancer
+            sniHostIdentifiesNode:
+              bootstrapAddress: kroxy-oauth-vc-bootstrap.streams-kroxy-oauth.svc.cluster.local:9093
+              advertisedBrokerAddressPattern: kroxy-oauth-vc-broker-$(nodeId).streams-kroxy-oauth.svc.cluster.local
+            tls:
+              key:
+                storeFile: /opt/kroxylicious/client/keystore.p12
+                storePassword:
+                  passwordFile: /opt/kroxylicious/keystore-password/keystore.password
+                storeType: PKCS12
+        logNetwork: false
+        logFrames: false
+    filterDefinitions:
+      - name: encrypt
+        type: RecordEncryption
+        config:
+          kms: VaultKmsService
+          kmsConfig:
+            vaultTransitEngineUrl: https://skodjob-vault-skodjob-vault.apps.skodjob-infra.strimzi.app-services-dev.net/v1/transit
+            vaultToken:
+              passwordFile: /opt/kroxylicious/vault/token
+          selector: TemplateKekSelector
+          selectorConfig:
+            template: "KEK_$(topicName)"
+          unresolvedKeyPolicy: PASSTHROUGH_UNENCRYPTED
+      - name: oauth
+        type: OauthBearerValidation
+        config:
+          jwksEndpointUrl: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz/protocol/openid-connect/certs
+          jwksEndpointRefreshMs: 3600000        
+          jwksEndpointRetryBackoffMs: 100       
+          jwksEndpointRetryBackoffMaxMs: 10000  
+          scopeClaimName: scope                 
+          subClaimName: sub                     
+          authenticateBackOffMaxMs: 60000       
+          authenticateCacheMaxSize: 1000  
+          expectedAudience: account,team-payments-client
+          expectedIssuer: https://skodjob-keycloak-ingress-skodjob-keycloak.apps.skodjob-infra.strimzi.app-services-dev.net/realms/skodjob-authz
+    defaultFilters:
+      - oauth
+      - encrypt
