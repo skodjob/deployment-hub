@@ -14,9 +14,33 @@ rules:
     verbs: ["get"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kafka-client-role
+  namespace: strimzi-kafka-oauth
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: kafka-client-role-binding
+subjects:
+  - kind: ServiceAccount
+    name: kroxy-oauth-clients-sa
+    namespace: streams-kroxy-oauth
+roleRef:
+  kind: Role
+  name: kroxy-oauth-kafka-client-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kafka-client-role-binding
+  namespace: strimzi-kafka-oauth
 subjects:
   - kind: ServiceAccount
     name: kroxy-oauth-clients-sa
