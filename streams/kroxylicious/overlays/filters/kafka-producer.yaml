@@ -2,13 +2,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: whatever
+  labels:
+    app: producer
+    kroxy: filters
+  name: producer
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
   template:
+    metadata:
+      labels:
+        app: producer
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
       containers:
-        - name: producer
-          env:
+        - env:
             - name: MESSAGE_TEMPLATE
               value: "payment_fiat"
             - name: TOPIC
@@ -28,4 +46,27 @@ spec:
                 apicurio.registry.find-latest=false
                 apicurio.registry.check-existence=true
                 apicurio.registry.artifact-resolver-strategy=io.apicurio.registry.serde.strategy.SimpleTopicIdStrategy
+            - name: LOG_LEVEL
+              value: INFO
+            - name: MESSAGE_COUNT
+              value: "10000000"
+            - name: PRODUCER_ACKS
+              value: all
+            - name: CLIENT_TYPE
+              value: KafkaProducer
+          image: clients-image:latest
+          imagePullPolicy: Always
+          name: producer
+          resources:
+            limits:
+              cpu: 250m
+              memory: 400Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
       serviceAccountName: kroxy-filters-clients-sa
+      tolerations:
+        - effect: NoSchedule
+          key: nodetype
+          operator: Equal
+          value: services

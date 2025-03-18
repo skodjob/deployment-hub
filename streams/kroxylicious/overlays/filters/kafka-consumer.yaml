@@ -2,13 +2,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: whatever
+  labels:
+    app: consumer
+    kroxy: filters
+  name: consumer
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
   template:
+    metadata:
+      labels:
+        app: consumer
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
       containers:
-        - name: consumer
-          env:
+        - env:
             - name: TOPIC
               value: kroxy-filters-data
             - name: GROUP_ID
@@ -17,4 +35,25 @@ spec:
               value: kroxy-filters-vc-bootstrap.streams-kroxy-filters.svc.cluster.local:9093
             - name: CA_CRT
               value: ${secrets:streams-kroxy-filters/kroxy-filters-cert:ca.crt}
+            - name: LOG_LEVEL
+              value: INFO
+            - name: MESSAGE_COUNT
+              value: "10000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+          image: clients-image:latest
+          imagePullPolicy: Always
+          name: consumer
+          resources:
+            limits:
+              cpu: 250m
+              memory: 200Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
       serviceAccountName: kroxy-filters-clients-sa
+      tolerations:
+        - effect: NoSchedule
+          key: nodetype
+          operator: Equal
+          value: services

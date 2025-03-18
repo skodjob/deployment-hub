@@ -2,13 +2,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: whatever
+  labels:
+    app: consumer
+    kroxy: oauth
+  name: consumer
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
   template:
+    metadata:
+      labels:
+        app: consumer
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodetype
+                    operator: In
+                    values:
+                      - services
       containers:
-        - name: consumer
-          env:
+        - env:
             # Oauth Config
             - name: OAUTH_CLIENT_ID
               value: team-ops-client
@@ -31,4 +49,25 @@ spec:
               value: ${secrets:strimzi-kafka-oauth/team-ops-client:user.crt}
             - name: USER_KEY
               value: ${secrets:strimzi-kafka-oauth/team-ops-client:user.key}
+            - name: LOG_LEVEL
+              value: INFO
+            - name: MESSAGE_COUNT
+              value: "10000000"
+            - name: CLIENT_TYPE
+              value: KafkaConsumer
+          image: clients-image:latest
+          imagePullPolicy: Always
+          name: consumer
+          resources:
+            limits:
+              cpu: 250m
+              memory: 200Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
       serviceAccountName: kroxy-oauth-clients-sa
+      tolerations:
+        - effect: NoSchedule
+          key: nodetype
+          operator: Equal
+          value: services
