@@ -13,7 +13,10 @@ spec:
             - name: OAUTH_CLIENT_ID
               value: team-ops-client
             - name: OAUTH_CLIENT_SECRET
-              value: ${secrets:strimzi-kafka-oauth/team-ops-client-oauth:clientSecret}
+              valueFrom:
+                secretKeyRef:
+                  key: clientSecret
+                  name: team-ops-client-oauth
             - name: OAUTH_TOKEN_ENDPOINT_URI
               value: https://keycloak.skodjob.io/realms/skodjob-authz/protocol/openid-connect/token
             - name: TOPIC

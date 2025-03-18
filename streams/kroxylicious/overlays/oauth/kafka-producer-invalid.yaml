@@ -31,7 +31,10 @@ spec:
             - name: OAUTH_CLIENT_ID
               value: team-payments-client
             - name: OAUTH_CLIENT_SECRET
-              value: ${secrets:strimzi-kafka-oauth/team-payments-client-oauth:clientSecret}
+              valueFrom:
+                secretKeyRef:
+                  key: clientSecret
+                  name: team-payments-client-oauth
             - name: OAUTH_TOKEN_ENDPOINT_URI
               value: https://keycloak.skodjob.io/realms/skodjob-authz/protocol/openid-connect/token
             - name: MESSAGE_TEMPLATE
