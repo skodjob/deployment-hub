@@ -147,26 +147,11 @@ data:
         topic: "$4"
         partition: "$5"
       help: "Kafka $1 JMX metric type $2"
-      type: COUNTER
-    - pattern: kafka.(.+)<type=(.+)-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(compression-rate|.+-avg|.+-replica|.+-lag|.+-lead)
-      name: kafka_$2_$6
-      labels:
-        clientId: "$3"
-        topic: "$4"
-        partition: "$5"
-      help: "Kafka $1 JMX metric type $2"
       type: GAUGE
 
     #kafka.producer:type=producer-topic-metrics,client-id="{clientid}",topic="{topic}"
     #kafka.consumer:type=consumer-fetch-manager-metrics,client-id="{clientid}",topic="{topic}"", partition="{partition}"
     - pattern: kafka.(.+)<type=(.+)-metrics, client-id=(.+), topic=(.+)><>(.+-total)
-      name: kafka_$2_$5
-      labels:
-        clientId: "$3"
-        topic: "$4"
-      help: "Kafka $1 JMX metric type $2"
-      type: COUNTER
-    - pattern: kafka.(.+)<type=(.+)-metrics, client-id=(.+), topic=(.+)><>(compression-rate|.+-avg)
       name: kafka_$2_$5
       labels:
         clientId: "$3"
