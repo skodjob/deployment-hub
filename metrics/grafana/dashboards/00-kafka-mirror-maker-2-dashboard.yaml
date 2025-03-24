@@ -215,7 +215,7 @@ spec:
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
-                "axisLabel": "Bytes/sec",
+                "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
                 "drawStyle": "line",
@@ -258,7 +258,7 @@ spec:
                   }
                 ]
               },
-              "unit": "bytes"
+              "unit": "binBps"
             },
             "overrides": []
           },
@@ -312,7 +312,7 @@ spec:
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
-                "axisLabel": "Bytes/sec",
+                "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
                 "drawStyle": "line",
@@ -355,7 +355,7 @@ spec:
                   }
                 ]
               },
-              "unit": "bytes"
+              "unit": "binBps"
             },
             "overrides": []
           },
@@ -552,6 +552,7 @@ spec:
         },
         {
           "datasource": "${DS_THANOS}",
+          "description": "The number of records that this task has consumed from the source but not yet produced to the target.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -653,7 +654,7 @@ spec:
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
-                "axisLabel": "bytes",
+                "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
                 "drawStyle": "line",
@@ -695,7 +696,7 @@ spec:
                   }
                 ]
               },
-              "unit": "short"
+              "unit": "bytes"
             },
             "overrides": []
           },
@@ -735,6 +736,7 @@ spec:
         },
         {
           "datasource": "${DS_THANOS}",
+          "description": "Time duration that this task takes to commit its offsets to the target.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -744,7 +746,7 @@ spec:
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
-                "axisLabel": "ms",
+                "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
                 "drawStyle": "line",
@@ -826,6 +828,7 @@ spec:
         },
         {
           "datasource": "${DS_THANOS}",
+          "description": "Time duration between record timestamp in the source topic and the time when the source connector handles the record (aka. MM2 consumer lag time).",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -889,6 +892,10 @@ spec:
                   {
                     "id": "custom.width",
                     "value": 65
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -913,6 +920,10 @@ spec:
                   {
                     "id": "custom.width",
                     "value": 45
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -925,6 +936,10 @@ spec:
                   {
                     "id": "custom.width",
                     "value": 41
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -1059,6 +1074,7 @@ spec:
         },
         {
           "datasource": "${DS_THANOS}",
+          "description": "The end to end latency from the record timestamp in the source topic to the time when the record is written successfully to the target cluster.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1121,6 +1137,10 @@ spec:
                   {
                     "id": "custom.width",
                     "value": 65
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -1133,6 +1153,10 @@ spec:
                   {
                     "id": "custom.width",
                     "value": 70
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -1145,6 +1169,10 @@ spec:
                   {
                     "id": "custom.width",
                     "value": 45
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -1157,6 +1185,10 @@ spec:
                   {
                     "id": "custom.width",
                     "value": 41
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -1291,6 +1323,7 @@ spec:
         },
         {
           "datasource": "${DS_THANOS}",
+          "description": "The latency for synchronizing the consumer groups of the source cluster to the target cluster.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1301,7 +1334,7 @@ spec:
                 "cellOptions": {
                   "type": "auto"
                 },
-                "filterable": false,
+                "filterable": true,
                 "inspect": false
               },
               "mappings": [],
@@ -1322,15 +1355,19 @@ spec:
             "overrides": [
               {
                 "matcher": {
-                  "id": "byName",
-                  "options": "partition"
+                "id": "byName",
+                "options": "Latency"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "ms"
                 },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 76
-                  }
-                ]
+                {
+                  "id": "custom.width",
+                  "value": 127
+                }
+              ]
               },
               {
                 "matcher": {
@@ -1340,79 +1377,7 @@ spec:
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 76
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Current"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 65
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Average"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 70
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Min"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 45
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Max"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 41
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Time"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 155
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Source"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 267
+                    "value": 71
                   }
                 ]
               }
@@ -1426,109 +1391,52 @@ spec:
           },
           "id": 41,
           "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "frameIndex": 0,
             "showHeader": true,
-            "sortBy": [
-              {
-                "desc": false,
-                "displayName": "Time"
-              }
-            ]
+            "sortBy": []
           },
           "pluginVersion": "10.4.1",
           "targets": [
             {
               "datasource": "${DS_THANOS}",
               "exemplar": false,
-              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
+              "expr": "sum by (source, target, topic, partition, group) (kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\"})",              
               "format": "table",
               "instant": true,
               "interval": "",
               "legendFormat": "",
               "refId": "A"
-            },
-            {
-              "datasource": "${DS_THANOS}",
-              "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_avg{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "interval": "",
-              "legendFormat": "",
-              "refId": "B"
-            },
-            {
-              "datasource": "${DS_THANOS}",
-              "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_min{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "interval": "",
-              "legendFormat": "",
-              "refId": "C"
-            },
-            {
-              "datasource": "${DS_THANOS}",
-              "exemplar": true,
-              "expr": "sum(kafka_connect_mirror_mirrorcheckpointconnector_checkpoint_latency_ms_max{strimzi_io_kind=~\"KafkaMirrorMaker2\",strimzi_io_cluster=\"$strimzi_mirror_maker_cluster_name\", clusterName=~\"$OPENSHIFT_CLUSTER\"}) by (source, target)",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "interval": "",
-              "legendFormat": "",
-              "refId": "D"
             }
           ],
-          "title": "Offset Synchronization Latency",
+          "title": "Consumer Group Offset Sync Latency",
           "transformations": [
             {
               "id": "organize",
               "options": {
-                "excludeByName": {},
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true,
+                  "container": true,
+                  "endpoint": true,
+                  "instance": true
+                },
                 "indexByName": {
                   "Time": 0,
-                  "Value": 3,
-                  "partition": 2,
+                  "Value": 6,
+                  "group": 2,
+                  "partition": 3,
+                  "source": 4,
+                  "target": 5,
                   "topic": 1
                 },
                 "renameByName": {
-                  "Value": "Lag",
-                  "partition": "Partition",
-                  "topic": "Topic"
-                }
-              }
-            },
-            {
-              "id": "merge",
-              "options": {}
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {},
-                "renameByName": {
-                  "Value #A": "Current",
-                  "Value #Avg": "Average",
-                  "Value #B": "Average",
-                  "Value #C": "Min",
-                  "Value #D": "Max",
+                  "group": "Group",
+                  "instance": "",
                   "partition": "Partition",
                   "source": "Source",
                   "target": "Target",
                   "topic": "Topic",
-                  "{partition=\"2\", topic=\"my-cluster-source.kafka-test-apps\"}": "Min"
+                  "Value": "Latency"
                 }
               }
             }
@@ -1537,6 +1445,7 @@ spec:
         },
         {
           "datasource": "${DS_THANOS}",
+          "description": "Consumer lag which in the context of the replication indicates whether the consumer in the source connector can keep up with the rate records are produced in the source.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1546,7 +1455,7 @@ spec:
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
-                "axisLabel": "",
+                "axisLabel": "offset",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
                 "drawStyle": "line",
@@ -1627,6 +1536,7 @@ spec:
         },
         {
           "datasource": "${DS_THANOS}",
+          "description": "Consumer lag which in the context of the replication indicates whether the consumer in the source connector can keep up with the rate records are produced in the source.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2444,6 +2354,6 @@ spec:
       },
       "timezone": "",
       "title": "Strimzi Kafka Mirror Maker 2",
-      "version": 7,
+      "version": 10,
       "weekStart": ""
     }
